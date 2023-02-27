@@ -3,28 +3,11 @@
 #### 介绍
 PilotGo-web contains web frontend for PilotGo.
 
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+说明：当前**PiltoGo**项目正在快速迭代当中。为保持前后端功能的一致性，**PiltoGo** web端源码托管在**PilotGo**主仓当中，点击[这里](https://gitee.com/openeuler/PilotGo)查看。
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+1.  请参阅[PilotGo](https://gitee.com/openeuler/PilotGo)主项目
 
 
 #### 特技
