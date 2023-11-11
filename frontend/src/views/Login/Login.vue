@@ -1,14 +1,14 @@
 <template>
     <div class="login-page">
         <div class="login-form-bg">
-            <img alt="login background" src="../assets/login-bg.png" />
+            <img alt="login background" src="../../assets/login-bg.png" />
             <div class="login-form">
                 <div class="login-title">
                     <p>PilotGo运维平台</p>
                     <span>账户登录</span>
                 </div>
 
-                <el-form :model="loginForm" status-icon class="form">
+                <el-form :model="loginForm" status-icon class="form" :rules="rules">
                     <el-form-item class="form-item" prop="email" label="邮箱">
                         <el-input class="form-item-input" type="text" v-model="loginForm.email" placeholder="请输入邮箱">
                         </el-input>
@@ -30,11 +30,34 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { checkEmail } from "./logic";
 
 const loginForm = ref({
     email: "",
     password: "",
 });
+
+const rules = {
+    email: [
+        {
+            required: true,
+            message: "请输入邮箱",
+            trigger: "blur"
+        },
+        {
+            validator: checkEmail,
+            message: "请输入正确的邮箱格式",
+            trigger: "blur"
+        }
+    ],
+    password: [
+        {
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
+        }
+    ],
+}
 
 </script>
 
