@@ -31,7 +31,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ElMessage } from 'element-plus';
+import  Cookies from 'js-cookie';
 import { loginByEmail } from "@/request/user";
+import { RespCodeOK } from "@/request/request";
+import { CookieAuthToken } from "@/global/defines";
 import { checkEmail } from "./logic";
 
 const loginFormRef = ref()
@@ -63,18 +66,25 @@ const rules = {
 }
 
 function submitLogin() {
-    loginFormRef.value.validate((valid:boolean) => {
+    loginFormRef.value.validate((valid: boolean) => {
         if (valid) {
             let data = {
-                username: loginData.value.email,
+                email: loginData.value.email,
                 password: loginData.value.password
             }
-            loginByEmail(data).then((resp) => {
-                ElMessage.success("login success")
-            }).catch(error => {
-                ElMessage.error("failed to login" + error.msg)
+            loginByEmail(data).then((resp: any) => {
+                if (resp.code == RespCodeOK) {
+                    // update cookie
+                    Cookies.set(CookieAuthToken, resp.data.token)
+
+                    ElMessage.success("login success")
+                } else {
+                    ElMessage.error("failed to login:" + resp.msg)
+                }
+            }).catch((error) => {
+                ElMessage.error("failed to login:" + error)
             })
-        }else {
+        } else {
             ElMessage.error("login user or email invalid")
         }
     });
