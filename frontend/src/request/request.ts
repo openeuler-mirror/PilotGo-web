@@ -3,7 +3,7 @@ import axios from 'axios';
 // 创建一个axios实例
 const instance = axios.create({
   baseURL: '/api/v1', // 设置你的API的基本URL
-  // timeout: 5000, // 设置请求超时时间
+  timeout: 10000, // 设置请求超时时间
 });
 
 // 添加请求拦截器，你可以在这里添加请求头等配置

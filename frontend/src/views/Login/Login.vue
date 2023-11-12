@@ -8,18 +8,18 @@
                     <span>账户登录</span>
                 </div>
 
-                <el-form :model="loginForm" status-icon class="form" :rules="rules">
+                <el-form :model="loginData" ref="loginFormRef" status-icon class="form" :rules="rules">
                     <el-form-item class="form-item" prop="email" label="邮箱">
-                        <el-input class="form-item-input" type="text" v-model="loginForm.email" placeholder="请输入邮箱">
+                        <el-input class="form-item-input" type="text" v-model="loginData.email" placeholder="请输入邮箱">
                         </el-input>
                     </el-form-item>
                     <el-form-item class="form-item" prop="password" label="输入密码">
-                        <el-input class="form-item-input" type="password" v-model="loginForm.password" placeholder="请输入密码">
+                        <el-input class="form-item-input" type="password" v-model="loginData.password" placeholder="请输入密码">
                         </el-input>
                     </el-form-item>
                 </el-form>
                 <el-row class="form-btn">
-                    <el-button class="btn" type="primary">
+                    <el-button class="btn" type="primary" @click="submitLogin">
                         登 录
                     </el-button>
                 </el-row>
@@ -30,9 +30,12 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { ElMessage } from 'element-plus';
+import { loginByEmail } from "@/request/user";
 import { checkEmail } from "./logic";
 
-const loginForm = ref({
+const loginFormRef = ref()
+const loginData = ref({
     email: "",
     password: "",
 });
@@ -57,6 +60,24 @@ const rules = {
             trigger: "blur"
         }
     ],
+}
+
+function submitLogin() {
+    loginFormRef.value.validate((valid:boolean) => {
+        if (valid) {
+            let data = {
+                username: loginData.value.email,
+                password: loginData.value.password
+            }
+            loginByEmail(data).then((resp) => {
+                ElMessage.success("login success")
+            }).catch(error => {
+                ElMessage.error("failed to login" + error.msg)
+            })
+        }else {
+            ElMessage.error("login user or email invalid")
+        }
+    });
 }
 
 </script>
