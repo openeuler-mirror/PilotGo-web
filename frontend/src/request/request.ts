@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+
+// 公共定义
+export const RespCodeOK = 200
+
 // 创建一个axios实例
 const instance = axios.create({
   baseURL: '/api/v1', // 设置你的API的基本URL
