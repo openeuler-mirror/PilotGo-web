@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router'
 import  Cookies from 'js-cookie';
 import { loginByEmail } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
@@ -65,6 +66,8 @@ const rules = {
     ],
 }
 
+const router = useRouter()
+
 function submitLogin() {
     loginFormRef.value.validate((valid: boolean) => {
         if (valid) {
@@ -76,6 +79,8 @@ function submitLogin() {
                 if (resp.code == RespCodeOK) {
                     // update cookie
                     Cookies.set(CookieAuthToken, resp.data.token)
+
+                    router.push('/home')
 
                     ElMessage.success("login success")
                 } else {
