@@ -11,7 +11,9 @@
             </el-aside>
             <el-container>
                 <el-header style="height:10%">Header</el-header>
-                <el-main>Main</el-main>
+                <el-main>
+                    <router-view/>
+                </el-main>
             </el-container>
         </el-container>
     </div>
