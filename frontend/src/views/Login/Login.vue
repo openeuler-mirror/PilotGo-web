@@ -1,7 +1,7 @@
 <template>
     <div class="login-page">
         <div class="login-form-bg">
-            <img alt="login background" src="../../assets/login-bg.png" />
+            <img alt="login background" src="@/assets/login-bg.png" />
             <div class="login-form">
                 <div class="login-title">
                     <p>PilotGo运维平台</p>
@@ -32,7 +32,7 @@
 import { ref } from "vue";
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router'
-import  Cookies from 'js-cookie';
+import Cookies from 'js-cookie';
 import { loginByEmail } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 import { CookieAuthToken } from "@/global/defines";
