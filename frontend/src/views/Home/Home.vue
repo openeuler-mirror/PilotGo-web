@@ -1,6 +1,3 @@
-<script setup lang="ts">
-</script>
-
 <template>
     <div class="home">
         <el-container>
@@ -9,7 +6,7 @@
                     <img src="../../assets/logo.png" alt="">
                 </div>
                 <el-menu>
-                    <p>menu</p>
+                    <sidebar/>
                 </el-menu>
             </el-aside>
             <el-container>
@@ -19,6 +16,11 @@
         </el-container>
     </div>
 </template>
+
+<script setup lang="ts">
+import Sidebar from "./components/Sidebar.vue";
+</script>
+
 
 <style lang="scss">
 .home {
