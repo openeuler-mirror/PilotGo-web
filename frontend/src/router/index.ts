@@ -16,27 +16,33 @@ let sidebarRoutes = [
   {
     path: '/home',
     name: 'home',
-    redirect:"/overview",
+    redirect: "/overview",
     component: () => import("../views/Home/Home.vue"),
-    children:[
+    children: [
       {
         path: '/overview',
         name: 'overview',
         component: () => import('../views/Overview/Overview.vue'),
+        meta: {
+          title: 'overview', header_title: "概览", panel: "overview", icon: 'HomeFilled',
+          breadcrumb: [
+            { name: '概览' },
+          ]
+        }
       },
+      {
+        path: '/usermanager',
+        name: 'UserManager',
+        component: () => import('@/views/UserManager/UserManage.vue'),
+        meta: {
+          title: 'usermanager',
+          header_title: '用户管理',
+          panel: 'usermanager',
+          icon: 'el-icon-user-solid',
+          breadcrumb: [{ name: '用户管理' }],
+        },
+      }
     ]
-  },
-  {
-    path: '/usermanager',
-    name: 'UserManager',
-    component: () => import('@/views/UserManager/UserManage.vue'),
-    meta: {
-      title: 'usermanager',
-      header_title: '用户管理',
-      panel: 'usermanager',
-      icon_class: 'el-icon-user-solid',
-      breadcrumb: [{ name: '用户管理' }],
-    },
   }
 ]
 
@@ -46,3 +52,24 @@ const router = createRouter({
 });
 
 export default router;
+
+import { routerStore, type Menu } from "@/stores/router";
+export function updateSidebarItems() {
+  let menus = []
+  for (let route of sidebarRoutes[0].children) {
+
+    // 迭代 /home 下的所有组件
+    let obj: Menu = {
+      path: route.path,
+      title: route.meta.header_title,
+      hidden: false,
+      panel: route.meta.panel,
+      icon: route.meta.icon,
+      subMenus: null,
+    }
+
+    menus.push(obj)
+  }
+
+  routerStore().menus = menus
+}
