@@ -3,7 +3,7 @@
         <div class="header">
             <div class="header_content">
                 <div class="table_search">
-                    <slot name="table_search"></slot>
+                    <slot name="table_search" :searchData="searchData"></slot>
                 </div>
                 <div class="table_action">
                     <slot name="table_action"></slot>
@@ -53,58 +53,22 @@ const pageSearch = ref({
     size: 10
 });
 
-const props = defineProps({
-    isLoadTable: {
-        type: Boolean,
-        default: function () {
-            return true;
-        }
-    },
-    isSource: {
-        type: Number,
-        default: function () {
-            return 1;
-        }
-    },
-    getData: {
-        type: Function,
-    },
-    getSourceData: {
-        type: Function,
-    },
-    showSelect: {
-        type: Boolean,
-        default: function () {
-            return true;
-        }
-    },
-    searchData: {
-        type: Object,
-        default: function () {
-            return {
-            };
-        }
-    },
-    treeNodes: {
-        type: Array,
-        default: function () {
-            return []
-        }
-    },
-    isRowClick: {
-        type: Boolean,
-        default: function () {
-            return false
-        }
-    }
-})
-
+const props = defineProps([
+    'isLoadTable',
+    'isSource',
+    'getData',
+    'getSourceData',
+    'showSelect',
+    'searchData',
+    'treeNodes',
+    'isRowClick'
+]);
 const loadData = async (pageParams: any) => {
     tableData.value = [];
     loading.value = true;
 
     try {
-        const response = await props.getData({ ...pageParams, ...props.searchData.value });
+        const response = await props.getData({ ...pageParams, ...props.searchData });
         const res = response;
         if (res.code === 200) {
             loading.value = false;
@@ -145,29 +109,6 @@ const handleSetTableData = (datas: any) => {
     tableData.value = datas;
 };
 
-const handleSearch = () => {
-    checked.value = false;
-    multipleTableRef.value.clearSelection();
-    selectRow.ids = [];
-    selectRow.rows = [];
-    loadData({ ...pageSearch.value, page: 1 });
-};
-
-const changeExpandRow = (row: any) => {
-    multipleTableRef.value.toggleRowExpansion(row);
-};
-
-const expandSelect = (row: any, expandedRows: any) => {
-    expands.value = [];
-    if (expandedRows.length > 0) {
-        row ? expands.value.push(row.name) : '';
-    }
-};
-
-const handleLoadSearch = (data: any) => {
-    tableData.value = data;
-};
-
 const handleSizeChange = (newSize: number) => {
     pageSearch.value.size = newSize;
     loadData({ ...pageSearch.value });
@@ -202,23 +143,12 @@ const handleSelectAll = (selection: any) => {
     }
 };
 
-const refresh = () => {
-    checked.value = false;
-    multipleTableRef.value.clearSelection();
-    selectRow.ids = [];
-    selectRow.rows = [];
-    loadData({ ...pageSearch.value });
-};
 
 const tableRowClassName = ({ row, rowIndex }: any) => {
     // rowIndex备用，隔行显示颜色不同的时候用
     if (props.isRowClick) {
         return ['row-expand'];
     }
-};
-
-const handleClose = () => {
-    display.value = false;
 };
 
 const checkSelectTable = () => {
