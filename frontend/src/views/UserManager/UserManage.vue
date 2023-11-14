@@ -4,8 +4,8 @@
             <template v-slot:table_search>
                 <el-input placeholder="请输入邮箱名进行搜索..." prefix-icon="el-icon-search" clearable
                     style="width: 280px;margin-right: 10px;" v-model="emailInput"
-                    @keydown.enter.native="searchUser"></el-input>
-                <el-button icon="el-icon-search" @click="searchUser">
+                    @keydown.enter.native="getSearchUser"></el-input>
+                <el-button icon="el-icon-search" @click="getSearchUser">
                     搜索
                 </el-button>
             </template>
@@ -30,13 +30,19 @@
 <script lang='ts' setup>
 import Table from '@/components/UserManager/UserTable.vue'
 import { getUsers, searchUser } from '@/request/user'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 const loading = ref(false)
 const display = ref(false)
 const title = ref('')
 const rowData = ref()
 const type = ref('')
 const emailInput = ref('')
+const total = ref(0);
+const tableData = ref([]);
+const pageSearch = reactive({
+    page: 1,
+    size: 10
+});
 
 const handleEdit = (row: any) => {
     rowData.value = row;
@@ -44,9 +50,29 @@ const handleEdit = (row: any) => {
     title.value = "编辑用户";
     type.value = "update";
 }
+const getSearchUser = () => {
+    loading.value = true;
+    const searchData = { 'email': emailInput.value };
+    const pagedData = { ...pageSearch };
 
-searchUser({ 'email': emailInput.value }).then((res) => {
-})
+    searchUser(searchData, pagedData)
+        .then((res) => {
+            console.log(res)
+            if (res.data.code === 200) {
+                loading.value = false;
+                total.value = res.data.total;
+                pageSearch.page = res.data.page;
+                loading.value = false;
+                tableData.value = res.data;
+            } else {
+                loading.value = false;
+            }
+        })
+        .catch((error) => {
+            loading.value = false;
+            console.error('Error searching user:', error);
+        });
+};
 
 </script>
 

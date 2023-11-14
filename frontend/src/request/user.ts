@@ -16,10 +16,11 @@ export function getUsers(data: any) {
   });
 }
 // 按邮箱查找用户
-export function searchUser(data) {
+export function searchUser(data: any, paged: any) {
   return request({
     url: '/user/userSearch',
     method: 'post',
+    params: paged,
     data,
   });
 }
