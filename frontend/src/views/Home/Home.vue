@@ -20,7 +20,15 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
 import Sidebar from "./components/Sidebar.vue";
+
+import { updateSidebarItems } from "@/router/index";
+
+onMounted(()=>{
+    updateSidebarItems();
+})
+
 </script>
 
 
