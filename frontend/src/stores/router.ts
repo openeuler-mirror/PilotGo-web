@@ -11,7 +11,7 @@ export interface Menu {
 }
 
 export const routerStore = defineStore('router', () => {
-    const menus = ref<Menu[]>()
+    const menus = ref<Menu[]>([])
 
     return { menus }
 })
