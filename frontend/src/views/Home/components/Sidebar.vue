@@ -28,4 +28,15 @@ watchEffect(() => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.sidebar_icon {
+  width: 20px;
+  height: 20px;
+}
+
+.el-menu-item.is-active {
+  background: #f2f8ff !important;
+  border-right: 3px solid rgb(241, 139, 14);
+  color: rgb(241, 139, 14);
+}
+</style>
