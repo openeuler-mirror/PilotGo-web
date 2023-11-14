@@ -1,6 +1,14 @@
 <template>
     <div v-loading="loading" class="panel" style="height:100%">
         <Table :getData="getUsers" ref="table" id="exportTab">
+            <template v-slot:table_search>
+                <el-input placeholder="请输入邮箱名进行搜索..." prefix-icon="el-icon-search" clearable
+                    style="width: 280px;margin-right: 10px;" v-model="emailInput"
+                    @keydown.enter.native="searchUser"></el-input>
+                <el-button icon="el-icon-search" @click="searchUser">
+                    搜索
+                </el-button>
+            </template>
             <template v-slot:table>
                 <el-table-column prop="username" label="用户名">
                 </el-table-column>
@@ -13,10 +21,6 @@
                 <el-table-column prop="email" label="邮箱">
                 </el-table-column>
                 <el-table-column label="操作" fixed="right" class="operate">
-                    <template>
-                        <auth-button name="user_edit" class="editBtn" type="primary" plain size="mini">编辑</auth-button>
-                        <auth-button name="user_reset" class="editBtn" type="primary" plain size="mini">重置密码</auth-button>
-                    </template>
                 </el-table-column>
             </template>
         </Table>
@@ -25,13 +29,14 @@
 
 <script lang='ts' setup>
 import Table from '@/components/UserManager/UserTable.vue'
-import { getUsers } from '@/request/user'
+import { getUsers, searchUser } from '@/request/user'
 import { ref } from 'vue'
 const loading = ref(false)
 const display = ref(false)
 const title = ref('')
 const rowData = ref()
 const type = ref('')
+const emailInput = ref('')
 
 const handleEdit = (row: any) => {
     rowData.value = row;
@@ -39,6 +44,10 @@ const handleEdit = (row: any) => {
     title.value = "编辑用户";
     type.value = "update";
 }
+
+searchUser({ 'email': emailInput.value }).then((res) => {
+})
+
 </script>
 
 <style lang = 'scss' scoped></style>

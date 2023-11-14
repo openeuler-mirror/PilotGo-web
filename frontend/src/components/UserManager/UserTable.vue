@@ -105,8 +105,7 @@ const loadData = async (pageParams: any) => {
 
     try {
         const response = await props.getData({ ...pageParams, ...props.searchData.value });
-        const res = response.data;
-
+        const res = response;
         if (res.code === 200) {
             loading.value = false;
             total.value = res.total;
@@ -126,7 +125,7 @@ const getSData = async (data: any) => {
 
     try {
         const response = await props.getSourceData(data);
-        const res = response.data;
+        const res = response;
 
         if (res.code === 200) {
             total.value = res.total;
