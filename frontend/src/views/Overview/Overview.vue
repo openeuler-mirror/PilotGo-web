@@ -33,7 +33,23 @@
             </div>
         </div>
         <div class="recent">
-            <p>recent message</p>
+            <div>
+                <el-badge :value="messageNum">
+                    <MessageBox class="message_icon"></MessageBox>
+                    <span>消息提醒</span>
+                </el-badge>
+            </div>
+            <el-timeline :reverse="false">
+                <el-timeline-item v-for="item, index in Message" :key="index" :timestamp="item.activeAt"
+                    color="rgb(92, 123, 217)" size="large" placement="top">
+                    <el-card>
+                        <h4 style="display: inline-block">{{ item.labels.alertname }}</h4>
+                        <span style="color: rgb(11, 35, 117); cursor: pointer">详情</span>
+                        <br /><br />
+                        <p>{{ item.annotations.summary }}</p>
+                    </el-card>
+                </el-timeline-item>
+            </el-timeline>
         </div>
         <div class="depart">
             <p>department chart</p>
@@ -69,6 +85,19 @@ let tooltips = ref([
         name: "日志",
         description: "查看执行动作的结果以及失败的具体原因",
     },
+]);
+
+const messageNum = ref(0);
+const Message = ref([
+  {
+    activeAt: "",
+    labels: {
+      alertname: "暂无",
+    },
+    annotations: {
+      summary: "暂无",
+    },
+  },
 ]);
 
 </script>
