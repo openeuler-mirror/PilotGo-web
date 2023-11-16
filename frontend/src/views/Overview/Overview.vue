@@ -18,15 +18,15 @@
                 </div>
             </div>
             <div class="bottom">
-                <div class="top_panel zx">
+                <div class="bottom_panel zx">
                     <span>在线机器</span>
                     <p style="color: rgb(92, 123, 217)">{{ normal }}</p>
                 </div>
-                <div class="top_panel lx">
+                <div class="bottom_panel lx">
                     <span>离线机器</span>
                     <p style="color: rgb(138, 138, 138)">{{ offline }}</p>
                 </div>
-                <div class="top_panel kx">
+                <div class="bottom_panel kx">
                     <span>未分配机器</span>
                     <p style="color: rgb(253, 190, 0)">{{ free }}</p>
                 </div>
@@ -146,7 +146,7 @@ let tooltips = ref([
             justify-content: space-evenly;
             align-items: center;
 
-            .top_panel {
+            .bottom_panel {
                 width: 28%;
                 height: 64%;
                 border: 1px dashed #aaa;
@@ -170,6 +170,21 @@ let tooltips = ref([
                     font-size: 24px;
                     font-weight: bold;
                 }
+            }
+
+            .zx {
+                background: url(@/assets/overview/zx.png) no-repeat left center;
+                background-size: 72%;
+            }
+
+            .lx {
+                background: url(@/assets/overview/lx.png) no-repeat left center;
+                background-size: 72%;
+            }
+
+            .kx {
+                background: url(@/assets/overview/kx.png) no-repeat left center;
+                background-size: 72%;
             }
         }
     }
