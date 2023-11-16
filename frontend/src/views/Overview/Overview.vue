@@ -33,10 +33,11 @@
             </div>
         </div>
         <div class="recent">
-            <div>
+            <div class="message">
+                &nbsp;
+                <MessageBox class="message_icon"></MessageBox>
                 <el-badge :value="messageNum">
-                    <MessageBox class="message_icon"></MessageBox>
-                    <span>消息提醒</span>
+                    <span>&nbsp;消息提醒&nbsp;&nbsp;</span>
                 </el-badge>
             </div>
             <el-timeline :reverse="false">
@@ -89,15 +90,15 @@ let tooltips = ref([
 
 const messageNum = ref(0);
 const Message = ref([
-  {
-    activeAt: "",
-    labels: {
-      alertname: "暂无",
+    {
+        activeAt: "",
+        labels: {
+            alertname: "暂无",
+        },
+        annotations: {
+            summary: "暂无",
+        },
     },
-    annotations: {
-      summary: "暂无",
-    },
-  },
 ]);
 
 </script>
@@ -108,6 +109,8 @@ const Message = ref([
     height: 100%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
 
     .total {
         width: 48%;
@@ -220,25 +223,30 @@ const Message = ref([
 
     .recent {
         width: 48%;
-        height: 45%;
+        height: 40%;
+        box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
 
         .message {
-            position: relative;
-            z-index: 2;
-            justify-content: start;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-end;
             background-color: #fff;
             color: rgb(11, 35, 117);
             font-size: 16px;
             width: 100%;
             height: 13%;
-            // padding: 2.6%;
             box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
+
+            .message_icon {
+                height: 60%;
+            }
         }
     }
 
     .depart {
-        width: 100%;
+        width: 98%;
         height: 55%;
+        box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.1);
     }
 }
 </style>
