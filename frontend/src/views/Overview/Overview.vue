@@ -53,13 +53,14 @@
             </el-timeline>
         </div>
         <div class="depart">
-            <p>department chart</p>
+            <DepartChart></DepartChart>
         </div>
     </div>
 </template>
   
 <script setup lang="ts">
 import { ref } from "vue";
+import DepartChart from "./components/DepartChart.vue";
 
 const userName = ref("暂无");
 const userDeptName = ref("暂无");
