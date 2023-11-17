@@ -4,12 +4,13 @@
         <p>department panel</p>
     </div>
     <div class="cluster">
-        <p>cluster panel</p>
+        <PGTable></PGTable>
     </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import PGTable from "@/components/PGTable.vue"
 </script>
 
 <style lang="scss" scoped>
