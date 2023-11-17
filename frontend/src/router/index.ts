@@ -32,6 +32,36 @@ let sidebarRoutes = [
         },
       },
       {
+        path: '/cluster',
+        component: () => import('../views/Cluster/Cluster.vue'),
+        meta: { title: 'cluster', header_title: "系统", panel: "cluster", icon: 'Platform' },
+        children: [
+          {
+            path: '',
+            redirect: '/cluster/macList'
+          },
+          {
+            path: '/cluster/macList',
+            name: 'macList',
+            component: () => import('../views/Cluster/Cluster.vue'),
+            meta: {
+              header_title: "机器列表",
+              panel: "/cluster/macList",
+              breadcrumb: [
+                {
+                  name: '系统', path: '/cluster', children: [
+                    { name: 'createBatch', menuName: '创建批次' },
+                  ]
+                },
+                { name: '机器列表' },
+              ],
+              icon: ''
+            }
+          }
+        ]
+      },
+
+      {
         path: '/usermanager',
         name: 'UserManager',
         component: () => import('@/views/UserManager/UserManage.vue'),
