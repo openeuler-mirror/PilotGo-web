@@ -52,7 +52,17 @@ const props = defineProps({
 
     .header {
         width: 100%;
-        height: 200px;
+        height: 6%;
+        border-radius: 6px 6px 0 0;
+        background: linear-gradient(to right, rgb(11, 35, 117) 0%, rgb(96, 122, 207) 100%, );
+        display: flex;
+        align-items: center;
+
+        span {
+            color: #fff;
+            margin-left: 10px;
+        }
+
     }
 
     .content {
