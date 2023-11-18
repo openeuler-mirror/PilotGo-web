@@ -1,7 +1,13 @@
 <template>
     <div class="container">
         <div class="header">
-            <p>table header</p>
+            <span>{{ title }}</span>
+            <div>
+                <slot name="search"></slot>
+            </div>
+            <div>
+                <slot name="action"></slot>
+            </div>
         </div>
         <div class="content">
             <el-table :data="props.data">
@@ -20,6 +26,8 @@
 <script lang="ts" setup>
 
 const props = defineProps({
+    title: String,
+
     showSelect: Boolean,
     data: Array,
 
@@ -32,10 +40,6 @@ const props = defineProps({
     }
 })
 
-
-function handleCurrentPageChange() {
-
-}
 
 </script>
 

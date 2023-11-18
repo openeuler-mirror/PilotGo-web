@@ -4,7 +4,7 @@
             <p>department panel</p>
         </div>
         <div class="cluster">
-            <PGTable :data="machines">
+            <PGTable :data="machines" title="机器列表">
                 <template v-slot:content>
                     <el-table-column label="ip">
                         <template v-slot="data">
