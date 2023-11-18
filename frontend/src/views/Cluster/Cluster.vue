@@ -4,13 +4,38 @@
         <p>department panel</p>
     </div>
     <div class="cluster">
-        <PGTable></PGTable>
+        <PGTable :data="machines">
+        <template v-slot:content>
+            <el-table-column label="ip">
+              <template v-slot="data">
+                <span title="查看机器详情">
+                    {{ data.row.ip }}
+                </span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="departname" label="部门">
+            </el-table-column>
+            <el-table-column prop="cpu" label="cpu">
+            </el-table-column>
+            <el-table-column label="状态">
+              <template slot-scope="scope">
+                <!-- <state-dot :state="scope.row.state"></state-dot> -->
+              </template>
+            </el-table-column>
+            <el-table-column prop="systeminfo" label="系统">
+            </el-table-column>
+        </template>
+        </PGTable>
     </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import PGTable from "@/components/PGTable.vue"
+import {ref } from "vue";
+import PGTable from "@/components/PGTable.vue";
+
+const machines = ref([])
+
 </script>
 
 <style lang="scss" scoped>
