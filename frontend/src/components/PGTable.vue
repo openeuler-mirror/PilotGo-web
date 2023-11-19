@@ -4,7 +4,10 @@
             <p>table header</p>
         </div>
         <div class="content">
-            <p>table content</p>
+            <el-table :data="props.data">
+                <el-table-column type="selection" width="60" align="center"/>
+                <slot name="content"></slot>
+            </el-table>
         </div>
         <div class="pagination">
             <p>pagination content</p>
@@ -13,6 +16,12 @@
 </template>
 
 <script lang="ts" setup>
+
+const props = defineProps({
+    showSelect: Boolean,
+    data: Array,
+})
+
 </script>
 
 <style lang="scss" scoped>
