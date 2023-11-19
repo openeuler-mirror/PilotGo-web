@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="department">
-            <p>department panel</p>
+            <PGTree :data="department"/>
         </div>
         <div class="cluster">
             <PGTable :data="machines" title="机器列表" :showSelect="showSelect">
@@ -58,9 +58,12 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import PGTable from "@/components/PGTable.vue";
+import PGTree from "@/components/PGTree.vue";
 
 const machines = ref([])
 const showSelect = ref(true)
+
+const department = ref<any[]>([])
 
 </script>
 
