@@ -3,9 +3,6 @@
         <div class="header">
             <span>{{ title }}</span>
             <div>
-                <slot name="search"></slot>
-            </div>
-            <div>
                 <slot name="action"></slot>
             </div>
         </div>
