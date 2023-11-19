@@ -4,7 +4,8 @@
             <p>department panel</p>
         </div>
         <div class="cluster">
-            <PGTable :data="machines" title="机器列表">
+            <PGTable :data="machines" title="机器列表"
+            :showSelect="showSelect">
                 <template v-slot:content>
                     <el-table-column label="ip">
                         <template v-slot="data">
@@ -35,6 +36,7 @@ import { ref } from "vue";
 import PGTable from "@/components/PGTable.vue";
 
 const machines = ref([])
+const showSelect = ref(true)
 
 </script>
 

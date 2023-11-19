@@ -11,7 +11,7 @@
         </div>
         <div class="content">
             <el-table :data="props.data">
-                <el-table-column type="selection" width="60" align="center" />
+                <el-table-column type="selection" width="60" align="center" v-if="showSelect" />
                 <slot name="content"></slot>
             </el-table>
         </div>
@@ -28,7 +28,10 @@
 const props = defineProps({
     title: String,
 
-    showSelect: Boolean,
+    showSelect: {
+        type: Boolean,
+        default: false,
+    },
     data: Array,
 
     total: {
