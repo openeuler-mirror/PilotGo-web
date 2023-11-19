@@ -2,7 +2,7 @@
     <div class="container">
         <div class="header">
             <span>{{ title }}</span>
-            <div>
+            <div style="margin-right: 10px;">
                 <slot name="action"></slot>
             </div>
         </div>
@@ -57,6 +57,7 @@ const props = defineProps({
         background: linear-gradient(to right, rgb(11, 35, 117) 0%, rgb(96, 122, 207) 100%, );
         display: flex;
         align-items: center;
+        justify-content: space-between;
 
         span {
             color: #fff;
