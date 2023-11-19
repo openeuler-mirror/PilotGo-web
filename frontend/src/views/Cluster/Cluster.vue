@@ -4,8 +4,30 @@
             <p>department panel</p>
         </div>
         <div class="cluster">
-            <PGTable :data="machines" title="机器列表"
-            :showSelect="showSelect">
+            <PGTable :data="machines" title="机器列表" :showSelect="showSelect">
+                <template v-slot:action>
+                    <el-dropdown>
+                        <el-button type="primary">
+                            操作 <el-icon>
+                                <ArrowDown />
+                            </el-icon>
+                        </el-button>
+                        <template #dropdown>
+                        <el-dropdown-menu>
+                                <el-dropdown-item>
+                                    <el-button>
+                                        变更部门
+                                    </el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button>
+                                        删除
+                                    </el-button>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
+                </template>
                 <template v-slot:content>
                     <el-table-column label="ip">
                         <template v-slot="data">
@@ -22,6 +44,8 @@
                         <template slot-scope="scope">
                             <!-- <state-dot :state="scope.row.state"></state-dot> -->
                         </template>
+                    </el-table-column>
+                    <el-table-column prop="tags" label="标签">
                     </el-table-column>
                     <el-table-column prop="systeminfo" label="系统">
                     </el-table-column>
