@@ -5,12 +5,14 @@
         </div>
         <div class="content">
             <el-table :data="props.data">
-                <el-table-column type="selection" width="60" align="center"/>
+                <el-table-column type="selection" width="60" align="center" />
                 <slot name="content"></slot>
             </el-table>
         </div>
         <div class="pagination">
-            <p>pagination content</p>
+            <el-pagination layout="prev, pager, next" :total="total" :page-sizes="[10, 20, 50, 100]"
+                @current-change="onPageChanged">
+            </el-pagination>
         </div>
     </div>
 </template>
@@ -20,7 +22,20 @@
 const props = defineProps({
     showSelect: Boolean,
     data: Array,
+
+    total: {
+        type: Number,
+        default: 0,
+    },
+    onPageChanged: {
+        type: Function,
+    }
 })
+
+
+function handleCurrentPageChange() {
+
+}
 
 </script>
 
