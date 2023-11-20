@@ -33,12 +33,12 @@ let sidebarRoutes = [
       },
       {
         path: '/cluster',
-        component: () => import('../views/Cluster/Cluster.vue'),
         meta: { title: 'cluster', header_title: "系统", panel: "cluster", icon: 'Platform' },
         children: [
           {
             path: '',
-            redirect: '/cluster/macList'
+            // redirect: '/cluster/macList'
+            redirect: '/cluster/createBatch'
           },
           {
             path: '/cluster/macList',
@@ -54,6 +54,24 @@ let sidebarRoutes = [
                   ]
                 },
                 { name: '机器列表' },
+              ],
+              icon: ''
+            }
+          },
+          {
+            path: '/cluster/createBatch',
+            name: 'createBatch',
+            component: () => import('../views/Cluster/CreateBatch.vue'),
+            meta: {
+              header_title: "创建批次",
+              panel: "/cluster/createBatch",
+              breadcrumb: [
+                {
+                  name: '系统', path: '/cluster', children: [
+                    { name: 'macList', menuName: '机器列表' },
+                  ]
+                },
+                { name: '创建批次' },
               ],
               icon: ''
             }
