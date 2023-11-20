@@ -77,6 +77,35 @@ let sidebarRoutes = [
           }
         ]
       },
+      {
+        path: '/batch',
+        meta: {
+          title: 'batch', header_title: "批次", panel: "batch", icon: 'DocumentCopy',
+          breadcrumb: [
+            { name: '批次' },
+          ]
+        },
+        children: [
+          {
+            path: '',
+            redirect: '/batch/detail'
+          },
+          {
+            path: '/batch/detail',
+            name: 'BatchDetail',
+            component: () => import('../views/Batch/Batch.vue'),
+            meta: {
+              header_title: "批次详情",
+              panel: "batch",
+              breadcrumb: [
+                { name: '批次', path: '/batch' },
+                { name: '批次详情' }
+              ],
+              icon: ''
+            }
+          },
+        ]
+      },
 
       {
         path: '/usermanager',
