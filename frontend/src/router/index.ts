@@ -37,8 +37,7 @@ let sidebarRoutes = [
         children: [
           {
             path: '',
-            // redirect: '/cluster/macList'
-            redirect: '/cluster/createBatch'
+            redirect: '/cluster/macList'
           },
           {
             path: '/cluster/macList',

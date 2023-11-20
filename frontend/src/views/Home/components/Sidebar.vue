@@ -2,13 +2,24 @@
   <div>
     <template v-for="item in routes">
       <router-link :to="item.path">
-        <el-menu-item :index="item.panel">
-          <component class="sidebar_icon" :is="item.icon"></component>
+        <el-menu-item :index="item.panel" v-if="!item.subMenus">
+          <component class="sidebar_icon" :is="item.icon" ></component>
           <template #title>
             <span style="padding-left: 2px;">{{ item.title }}</span>
           </template>
         </el-menu-item>
       </router-link>
+      <el-sub-menu :index="item.panel" :key="item.title" v-if="item.subMenus">
+        <template #title>
+          <component class="sidebar_icon" :is="item.icon"></component>
+          <span style="padding-left: 2px;">{{ item.title }}</span>
+        </template>
+        <router-link v-for="subItem in item.subMenus" :key="subItem.title" :to="subItem.path">
+          <el-menu-item :index="subItem.title">
+            <span>{{ subItem.title }}</span>
+          </el-menu-item>
+        </router-link>
+      </el-sub-menu>
     </template>
   </div>
 </template>
