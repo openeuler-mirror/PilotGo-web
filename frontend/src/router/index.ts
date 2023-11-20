@@ -106,6 +106,23 @@ import { routerStore, type Menu } from '@/stores/router';
 export function updateSidebarItems() {
   let menus = [];
   for (let route of sidebarRoutes[0].children) {
+    let subMenus = []
+    if (route.children != null) {
+      for (let item of route.children) {
+        if (item.meta != null) {
+          let obj:Menu = {
+            path: item.path,
+            title: item.meta.header_title,
+            hidden:false,
+            panel: item.meta.panel,
+            icon: item.meta.icon,
+            subMenus: null,
+          }
+          subMenus.push(obj)
+        }
+      }
+    }
+
     // 迭代 /home 下的所有组件
     let obj: Menu = {
       path: route.path,
@@ -113,7 +130,7 @@ export function updateSidebarItems() {
       hidden: false,
       panel: route.meta.panel,
       icon: route.meta.icon,
-      subMenus: null,
+      subMenus: subMenus.length > 0 ? subMenus : null,
     };
 
     menus.push(obj);
