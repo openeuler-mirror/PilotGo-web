@@ -10,14 +10,16 @@
         <div class="creater">
             <el-form label-width="100px">
                 <el-form-item label="批次名称:" prop="batchName">
-                    <el-input class="ipInput" type="text" size="medium"
-                        autocomplete="off"></el-input>
+                    <el-input class="ipInput" type="text" size="medium" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="描述:" prop="description">
-                    <el-input class="ipInput" type="text" size="medium"
-                        autocomplete="off"></el-input>
+                    <el-input class="ipInput" type="text" size="medium" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
+            <el-transfer filterable filter-placeholder="请输入关键字" :titles="['备选项', '已选项']" style="width:100%">
+                <el-button class="transfer-footer" slot="left-footer" type="primary" plain size="small">重置</el-button>
+                <el-button class="transfer-footer" slot="right-footer" type="primary" plain size="small">创建</el-button>
+            </el-transfer>
         </div>
     </div>
 </template>
