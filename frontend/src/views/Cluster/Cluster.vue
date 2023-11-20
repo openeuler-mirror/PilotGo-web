@@ -1,7 +1,11 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree :data="department"/>
+            <PGTree :data="department">
+                <template v-slot:header>
+                    <p>部门</p>
+                </template>
+            </PGTree>
         </div>
         <div class="cluster">
             <PGTable :data="machines" title="机器列表" :showSelect="showSelect">
@@ -76,6 +80,7 @@ const department = ref<any[]>([])
     .department {
         width: 20%;
         height: 100%;
+        margin-right: 5px;
     }
 
     .cluster {
