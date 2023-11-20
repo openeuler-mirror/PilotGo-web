@@ -106,6 +106,17 @@ let sidebarRoutes = [
           },
         ]
       },
+      {
+        path: '/user',
+        name: 'User',
+        component: () => import('../views/User/User.vue'),
+        meta: {
+          title: 'user', header_title: "用户管理", panel: "user", icon: 'UserFilled',
+          breadcrumb: [
+            { name: '用户管理' },
+          ],
+        }
+      },
 
       {
         path: '/usermanager',
