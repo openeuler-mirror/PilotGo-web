@@ -149,20 +149,7 @@ let sidebarRoutes = [
             { name: '插件管理' },
           ],
         }
-      },
-
-      {
-        path: '/usermanager',
-        name: 'UserManager',
-        component: () => import('@/views/UserManager/UserManage.vue'),
-        meta: {
-          title: 'usermanager',
-          header_title: '用户管理',
-          panel: 'usermanager',
-          icon: 'el-icon-user-solid',
-          breadcrumb: [{ name: '用户管理' }],
-        },
-      },
+      }
     ],
   },
 ];
