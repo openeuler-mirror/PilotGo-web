@@ -34,6 +34,6 @@ const batches = ref([])
 <style lang="scss" scoped>
 .container {
     height: 100%;
-        width:100%;
+    width: 100%;
 }
 </style>

@@ -53,6 +53,7 @@ const props = defineProps({
     .header {
         width: 100%;
         height: 6%;
+        min-height: 40px;
         border-radius: 6px 6px 0 0;
         background: linear-gradient(to right, rgb(11, 35, 117) 0%, rgb(96, 122, 207) 100%, );
         display: flex;
