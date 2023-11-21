@@ -117,6 +117,17 @@ let sidebarRoutes = [
           ],
         }
       },
+      {
+        path: '/role',
+        name: 'Role',
+        component: () => import('../views/Role/Role.vue'),
+        meta: {
+          title: 'role', header_title: "角色管理", panel: "role", icon: 'Ticket',
+          breadcrumb: [
+            { name: '角色管理' },
+          ],
+        }
+      },
 
       {
         path: '/usermanager',
@@ -149,10 +160,10 @@ export function updateSidebarItems() {
     if (route.children != null) {
       for (let item of route.children) {
         if (item.meta != null) {
-          let obj:Menu = {
+          let obj: Menu = {
             path: item.path,
             title: item.meta.header_title,
-            hidden:false,
+            hidden: false,
             panel: item.meta.panel,
             icon: item.meta.icon,
             subMenus: null,
