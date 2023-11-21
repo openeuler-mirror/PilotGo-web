@@ -139,6 +139,17 @@ let sidebarRoutes = [
           ],
         }
       },
+      {
+        path: '/plugin',
+        name: 'Plugin',
+        component: () => import('../views/Plugin/Plugin.vue'),
+        meta: {
+          title: 'plugin', header_title: "插件管理", panel: "plugin", icon: 'Menu',
+          breadcrumb: [
+            { name: '插件管理' },
+          ],
+        }
+      },
 
       {
         path: '/usermanager',
