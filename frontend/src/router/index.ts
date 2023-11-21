@@ -128,6 +128,17 @@ let sidebarRoutes = [
           ],
         }
       },
+      {
+        path: '/audit',
+        name: 'Audit',
+        component: () => import('../views/Audit/Audit.vue'),
+        meta: {
+          title: 'audit', header_title: "审计日志", panel: "audit", icon: 'View',
+          breadcrumb: [
+            { name: '审计日志' },
+          ],
+        }
+      },
 
       {
         path: '/usermanager',
