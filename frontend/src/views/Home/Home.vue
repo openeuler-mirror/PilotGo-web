@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { ElMessage } from 'element-plus';
 
 import BreadCrumb from "./components/BreadCrumb.vue";
@@ -47,11 +47,9 @@ import Sidebar from "./components/Sidebar.vue";
 import { updateSidebarItems } from "@/router/index";
 import { platformVersion } from "@/request/basic"
 import { RespCodeOK } from "@/request/request";
+import { type User, userStore } from "@/stores/user";
 
-const user = ref({
-    name: "admin",
-})
-
+const user = ref<User>({})
 
 interface VersionInfo {
     commit?: string
@@ -62,6 +60,8 @@ const version = ref<VersionInfo>({})
 
 onMounted(() => {
     updateSidebarItems();
+
+    user.value = userStore().user
 
     platformVersion().then((resp: any) => {
         if (resp.code == RespCodeOK) {
@@ -78,6 +78,9 @@ onMounted(() => {
     })
 })
 
+watchEffect(() => {
+    user.value = userStore().user
+})
 </script>
 
 
