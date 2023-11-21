@@ -32,11 +32,12 @@
 import { ref } from "vue";
 import { ElMessage } from 'element-plus';
 import Cookies from 'js-cookie';
-import { directTo } from '@/router/index'
+import { directTo } from '@/router/index';
 import { loginByEmail } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 import { CookieAuthToken } from "@/global/defines";
 import { checkEmail } from "./logic";
+import { userStore} from "@/stores/user";
 
 const loginFormRef = ref()
 const loginData = ref({
@@ -70,13 +71,23 @@ function submitLogin() {
     loginFormRef.value.validate((valid: boolean) => {
         if (valid) {
             let data = {
-                email: loginData.value.email,
+                email: loginData.value.email.trim(),
                 password: loginData.value.password
             }
             loginByEmail(data).then((resp: any) => {
                 if (resp.code == RespCodeOK) {
                     // update cookie
                     Cookies.set(CookieAuthToken, resp.data.token)
+
+                    // store user info
+                    userStore().user = {
+                        // TODO:
+                        name: loginData.value.email.trim().split("@")[0],
+                        email: loginData.value.email.trim(),
+                        departmentID: resp.data.departId,
+                        department: resp.data.departName,
+                        roleID: resp.data.roleId,
+                    }
 
                     directTo('/home')
 
