@@ -3,9 +3,9 @@
         <div class="total">
             <div class="top">
                 <div class="user">
-                    <span>欢迎您：{{ userName }}</span>
-                    <span>所属部门：{{ userDeptName }}</span>
-                    <span>您的身份：{{ userType }}</span>
+                    <span>欢迎您：{{ user.name }}</span>
+                    <span>所属部门：{{ user.department }}</span>
+                    <span>您的身份：{{ user.roleID === "1"? "超级管理员" : "普通用户" }}</span>
                 </div>
                 <div class="tips">
                     <el-carousel style="width: 100%; height: 100%;" trigger="click" :interval="8000"
@@ -59,12 +59,12 @@
 </template>
   
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import DepartChart from "./components/DepartChart.vue";
 
-const userName = ref("暂无");
-const userDeptName = ref("暂无");
-const userType = ref("暂无");
+import { type User, userStore } from "@/stores/user";
+
+const user = ref<User>({})
 
 const normal = ref(0);
 const offline = ref(0);
@@ -102,6 +102,9 @@ const Message = ref([
     },
 ]);
 
+onMounted(() => {
+    user.value = userStore().user
+})
 </script>
   
 <style lang="scss" scoped>
