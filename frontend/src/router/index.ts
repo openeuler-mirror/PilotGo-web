@@ -197,3 +197,13 @@ export function updateSidebarItems() {
 
   routerStore().menus = menus;
 }
+
+router.beforeEach((to, from)=>{
+  if (to.meta && to.meta.header_title) {
+    document.title = to.meta.header_title
+  }
+})
+
+export function directTo(to:any) {
+  router.push(to)
+}
