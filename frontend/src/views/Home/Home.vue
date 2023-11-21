@@ -39,10 +39,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+
 import BreadCrumb from "./components/BreadCrumb.vue";
 import Sidebar from "./components/Sidebar.vue";
 
 import { updateSidebarItems } from "@/router/index";
+import { platformVersion } from "@/request/basic"
+import { RespCodeOK } from "@/request/request";
 
 const user = ref({
     name: "admin",
@@ -58,6 +62,20 @@ const version = ref<VersionInfo>({})
 
 onMounted(() => {
     updateSidebarItems();
+
+    platformVersion().then((resp: any) => {
+        if (resp.code == RespCodeOK) {
+            version.value = {
+                commit: resp.data.commit,
+                version: resp.data.version,
+                build_time: resp.data.build_time,
+            }
+        } else {
+            ElMessage.error("failed to login:" + resp.msg)
+        }
+    }).catch((err) => {
+        ElMessage.error("get platform version failed:", err)
+    })
 })
 
 </script>
