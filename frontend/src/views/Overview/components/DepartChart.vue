@@ -6,6 +6,10 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
+import { ElMessage } from 'element-plus';
+
+import { departMachinesOverview } from "@/request/overview";
+import { RespCodeOK } from "@/request/request";
 
 const chart = ref<any>();
 const option = ref({
@@ -22,7 +26,7 @@ const option = ref({
     },
     xAxis: {
         type: 'category',
-        data: [],
+        data: [] as string[],
     },
     yAxis: {
         type: 'value'
@@ -35,7 +39,7 @@ const option = ref({
     series: [
         {
             name: '在线',
-            data: [],
+            data: [] as number[],
             type: 'bar',
             itemStyle: {
                 color: 'rgb(92, 123, 217)',
@@ -48,7 +52,7 @@ const option = ref({
         },
         {
             name: '离线',
-            data: [],
+            data: [] as number[],
             type: 'bar',
             itemStyle: {
                 color: 'rgb(202, 205, 210)',
@@ -61,7 +65,7 @@ const option = ref({
         },
         {
             name: '未分配',
-            data: [],
+            data: [] as number[],
             type: 'bar',
             itemStyle: {
                 color: 'rgb(253, 190, 0)',
@@ -77,7 +81,26 @@ const option = ref({
 
 onMounted(() => {
     chart.value = echarts.init(document.getElementById("department-chart"))
-    chart.value.setOption(option.value)
+
+    departMachinesOverview().then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            // overview.value = resp.data.data.AgentStatus
+            console.log("resp", resp)
+            let data = resp.data.data
+            data.forEach((item: any) => {
+                option.value.xAxis.data.push(item.depart);
+                option.value.series[0].data.push(item.AgentStatus.normal);
+                option.value.series[1].data.push(item.AgentStatus.offline);
+                option.value.series[2].data.push(item.AgentStatus.free);
+            });
+
+            chart.value.setOption(option.value)
+        } else {
+            ElMessage.error("failed to get department machines overview info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get department machines overview info:" + err.msg)
+    })
 })
 
 </script>
