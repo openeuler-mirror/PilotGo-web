@@ -5,7 +5,7 @@
                 <div class="user">
                     <span>欢迎您：{{ user.name }}</span>
                     <span>所属部门：{{ user.department }}</span>
-                    <span>您的身份：{{ user.roleID === "1"? "超级管理员" : "普通用户" }}</span>
+                    <span>您的身份：{{ user.roleID === "1" ? "超级管理员" : "普通用户" }}</span>
                 </div>
                 <div class="tips">
                     <el-carousel style="width: 100%; height: 100%;" trigger="click" :interval="8000"
@@ -20,15 +20,15 @@
             <div class="bottom">
                 <div class="bottom_panel zx">
                     <span>在线机器</span>
-                    <p style="color: rgb(92, 123, 217)">{{ normal }}</p>
+                    <p style="color: rgb(92, 123, 217)">{{ overview.normal }}</p>
                 </div>
                 <div class="bottom_panel lx">
                     <span>离线机器</span>
-                    <p style="color: rgb(138, 138, 138)">{{ offline }}</p>
+                    <p style="color: rgb(138, 138, 138)">{{ overview.offline }}</p>
                 </div>
                 <div class="bottom_panel kx">
                     <span>未分配机器</span>
-                    <p style="color: rgb(253, 190, 0)">{{ free }}</p>
+                    <p style="color: rgb(253, 190, 0)">{{ overview.free }}</p>
                 </div>
             </div>
         </div>
@@ -60,15 +60,14 @@
   
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
 import DepartChart from "./components/DepartChart.vue";
 
 import { type User, userStore } from "@/stores/user";
+import { machinesOverview } from "@/request/overview";
+import { RespCodeOK } from "@/request/request";
 
 const user = ref<User>({})
-
-const normal = ref(0);
-const offline = ref(0);
-const free = ref(0);
 
 let tooltips = ref([
     {
@@ -102,8 +101,25 @@ const Message = ref([
     },
 ]);
 
+interface MachinesOverview {
+    normal?: number
+    offline?: number
+    free?: number
+}
+const overview = ref<MachinesOverview>({})
+
 onMounted(() => {
     user.value = userStore().user
+
+    machinesOverview().then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            overview.value = resp.data.data.AgentStatus
+        } else {
+            ElMessage.error("failed to get machines overview info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machines overview info:" + err.msg)
+    })
 })
 </script>
   

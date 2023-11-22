@@ -74,7 +74,7 @@ onMounted(() => {
             ElMessage.error("failed to login:" + resp.msg)
         }
     }).catch((err) => {
-        ElMessage.error("get platform version failed:", err)
+        ElMessage.error("get platform version failed:" + err)
     })
 })
 
