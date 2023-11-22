@@ -1,5 +1,7 @@
 
 // cookie定义
-export const CookieAuthToken = "token"
+// TODO: use simple token name
+// export const CookieAuthToken = "token"
+export const CookieAuthToken = "Admin-Token"
 
 

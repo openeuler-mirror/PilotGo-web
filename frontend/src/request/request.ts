@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 
 
 // 公共定义
@@ -30,11 +30,17 @@ instance.interceptors.response.use(
   },
   (error) => {
     // 处理响应错误
-    return Promise.reject(error);
+    if (error.response.data) {
+      return error.response.data;
+    }
+    return {
+      code: error.response.status,
+      msg: error.response.statusText,
+    }
   }
 );
 
 // 封装通用的request函数
-export default function request(config: any) {
+export default function request(config: AxiosRequestConfig) {
   return instance(config);
 }
