@@ -104,6 +104,20 @@ let sidebarRoutes = [
               icon: ''
             }
           },
+          {
+            path: '/batch/detail/:id',
+            name: 'BatchDetail2',
+            component: () => import('../views/Batch/Detail.vue'),
+            meta: {
+              header_title: "批次详情",
+              panel: "batch",
+              breadcrumb: [
+                { name: '批次', path: '/batch' },
+                { name: '批次详情' }
+              ],
+              icon: ''
+            }
+          },
         ]
       },
       {
@@ -198,12 +212,12 @@ export function updateSidebarItems() {
   routerStore().menus = menus;
 }
 
-router.beforeEach((to, from)=>{
+router.beforeEach((to, from) => {
   if (to.meta && to.meta.header_title) {
-    document.title = to.meta.header_title
+    document.title = to.meta.header_title as string
   }
 })
 
-export function directTo(to:any) {
+export function directTo(to: any) {
   router.push(to)
 }
