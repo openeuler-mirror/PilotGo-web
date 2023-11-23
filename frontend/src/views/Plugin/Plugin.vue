@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <PGTable :data="plugins" title="插件列表" :showSelect="true">
+        <PGTable :data="plugins" title="插件列表" :showSelect="true" :total="total" :currentPage="currentPage">
             <template v-slot:action>
                 <el-button type="primary">添加插件</el-button>
                 <el-button type="primary">移除</el-button>
@@ -32,10 +32,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+
 import PGTable from "@/components/PGTable.vue";
 
+import { getPluginsPaged } from "@/request/plugin";
+import { RespCodeOK } from "@/request/request";
+
 const plugins = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
+onMounted(() => {
+    getPluginsPaged({
+        page: currentPage.value,
+        size: pageSize.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            currentPage.value = resp.page
+            pageSize.value = resp.size
+            plugins.value = resp.data
+        } else {
+            ElMessage.error("failed to get plugins: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get plugins:" + err.msg)
+    })
+})
 
 </script>
 
