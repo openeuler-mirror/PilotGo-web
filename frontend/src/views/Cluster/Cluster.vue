@@ -67,17 +67,19 @@ import PGTable from "@/components/PGTable.vue";
 import PGTree from "@/components/PGTree.vue";
 import StateDot from "@/components/StateDot.vue";
 
-import { getDepartMachines } from "@/request/cluster";
+import { getDepartMachines, getSubDepartment } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
-const showSelect = ref(true)
 
-const department = ref<any[]>([])
-
-const machines = ref([])
+// 部门树
+const department = ref([{}])
 const departmentID = ref(1)
+
+// 机器列表
+const showSelect = ref(true)
+const machines = ref([])
 const currentPage = ref(1)
-const pageSize= ref(10)
+const pageSize = ref(10)
 const total = ref(0)
 
 onMounted(() => {
@@ -96,6 +98,24 @@ onMounted(() => {
         }
     }).catch((err: any) => {
         ElMessage.error("failed to get machines overview info:" + err.msg)
+    })
+
+    getSubDepartment({
+        DepartID: departmentID.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            // TODO: get subdepartment info
+            department.value = [{
+                id: resp.data.id,
+                label: resp.data.label,
+                pid: resp.data.pid
+            }]
+            console.log(department.value)
+        } else {
+            ElMessage.error("failed to get department info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get department info:" + err.msg)
     })
 })
 
