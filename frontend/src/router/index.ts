@@ -88,27 +88,28 @@ let sidebarRoutes = [
         children: [
           {
             path: '',
-            redirect: '/batch/detail'
+            redirect: '/batch/list'
           },
           {
-            path: '/batch/detail',
-            name: 'BatchDetail',
+            path: '/batch/list',
+            name: 'BatchList',
             component: () => import('../views/Batch/Batch.vue'),
             meta: {
-              header_title: "批次详情",
+              header_title: "批次列表",
               panel: "batch",
               breadcrumb: [
                 { name: '批次', path: '/batch' },
-                { name: '批次详情' }
+                { name: '批次列表' }
               ],
               icon: ''
-            }
+            },
           },
           {
             path: '/batch/detail/:id',
-            name: 'BatchDetail2',
+            name: 'BatchDetail',
             component: () => import('../views/Batch/Detail.vue'),
             meta: {
+              ignore: true,
               header_title: "批次详情",
               panel: "batch",
               breadcrumb: [
@@ -183,6 +184,9 @@ export function updateSidebarItems() {
     if (route.children != null) {
       for (let item of route.children) {
         if (item.meta != null) {
+          if ('ignore' in item.meta && item.meta.ignore === true) {
+            continue
+          }
           let obj: Menu = {
             path: item.path,
             title: item.meta.header_title,
