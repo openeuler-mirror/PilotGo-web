@@ -84,8 +84,6 @@ onMounted(() => {
 
     departMachinesOverview().then((resp: any) => {
         if (resp.code === RespCodeOK) {
-            // overview.value = resp.data.data.AgentStatus
-            console.log("resp", resp)
             let data = resp.data.data
             data.forEach((item: any) => {
                 option.value.xAxis.data.push(item.depart);

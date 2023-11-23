@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 </el-header>
-                <el-main style="padding: 0px;">
+                <el-main style="padding: 5px;">
                     <router-view />
                 </el-main>
                 <div class="footer">
