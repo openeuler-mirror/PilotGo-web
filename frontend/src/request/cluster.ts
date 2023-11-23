@@ -8,3 +8,12 @@ export function getDepartMachines(data: any) {
         params: data
     })
 }
+
+// 获取指定部门下的子部门
+export function getSubDepartment(data: any) {
+    return request({
+        url: 'macList/depart',
+        method: 'get',
+        params: data
+    })
+}
