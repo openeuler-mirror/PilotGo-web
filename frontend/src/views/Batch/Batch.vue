@@ -22,7 +22,7 @@
             <template v-slot:content>
                 <el-table-column label="批次名称">
                     <template #default="scope">
-                        <router-link :to="$route.path +'/'+ scope.row.ID">
+                        <router-link :to="'/batch/detail/' + scope.row.ID">
                             {{ scope.row.name }}
                         </router-link>
                     </template>
@@ -51,19 +51,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import PGTable from "@/components/PGTable.vue";
 import { ElMessage } from 'element-plus';
 
 import { RespCodeOK } from "@/request/request";
-import {getBatches} from '@/request/batch';
+import { getBatches } from '@/request/batch';
 
 const batches = ref([])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
 
-getBatches({
+onMounted(() => {
+    getBatches({
         page: currentPage.value,
         size: pageSize.value,
     }).then((resp: any) => {
@@ -76,6 +77,7 @@ getBatches({
     }).catch((err: any) => {
         ElMessage.error("failed to get batch info:" + err.msg)
     })
+})
 
 </script>
 
