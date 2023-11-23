@@ -22,7 +22,7 @@
             <template v-slot:content>
                 <el-table-column label="批次名称">
                     <template #default="scope">
-                        <router-link :to="$route.path + scope.row.ID">
+                        <router-link :to="$route.path +'/'+ scope.row.ID">
                             {{ scope.row.name }}
                         </router-link>
                     </template>
