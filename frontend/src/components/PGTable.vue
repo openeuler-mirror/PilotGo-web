@@ -7,13 +7,13 @@
             </div>
         </div>
         <div class="content">
-            <el-table :data="props.data">
+            <el-table :data="props.data" :header-cell-style="{ color: 'black', 'background-color': '#f6f8fd' }">
                 <el-table-column type="selection" width="60" align="center" v-if="showSelect" />
                 <slot name="content"></slot>
             </el-table>
         </div>
         <div class="pagination">
-            <el-pagination layout="prev, pager, next" :total="total" :page-sizes="[10, 20, 50, 100]"
+            <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" :current-page="currentPage" :page-sizes="pageSizes"
                 @current-change="onPageChanged">
             </el-pagination>
         </div>
@@ -35,6 +35,15 @@ const props = defineProps({
         type: Number,
         default: 0,
     },
+    currentPage: {
+        type: Number,
+        default: 1,
+    },
+    pageSizes: {
+        type: Array,
+        default: [10, 20, 50, 100],
+    },
+
     onPageChanged: {
         type: Function,
     }
