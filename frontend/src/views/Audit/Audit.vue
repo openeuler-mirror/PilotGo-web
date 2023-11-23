@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <PGTable :data="logs" title="审计日志" :showSelect="true">
+        <PGTable :data="logs" title="审计日志" :showSelect="false" :total="total" :currentPage="currentPage">
             <template v-slot:content>
                 <el-table-column prop="action" label="日志名称">
                 </el-table-column>
@@ -32,11 +32,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
 import PGTable from "@/components/PGTable.vue";
 
-const logs = ref([])
+import { getLogs } from "@/request/audit";
+import { RespCodeOK } from "@/request/request";
 
+const logs = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
+onMounted(() => {
+    getLogs({
+        page: currentPage.value,
+        size: pageSize.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            currentPage.value = resp.page
+            pageSize.value = resp.size
+            logs.value = resp.data
+        } else {
+            ElMessage.error("failed to get audit logs: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get audit logs:" + err.msg)
+    })
+})
 </script>
 
 <style lang="scss" scoped>
