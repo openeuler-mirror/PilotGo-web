@@ -19,6 +19,33 @@
                     </template>
                 </el-dropdown>
             </template>
+            <template v-slot:content>
+                <el-table-column label="批次名称">
+                    <template #default="scope">
+                        <router-link :to="$route.path + scope.row.ID">
+                            {{ scope.row.name }}
+                        </router-link>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="manager" label="创建者">
+                </el-table-column>
+                <el-table-column prop="DepartName" label="部门">
+                </el-table-column>
+                <el-table-column prop="CreatedAt" label="创建时间" sortable>
+                    <template #default="scope">
+                        <!-- <span>{{ scope.row.CreatedAt | dateFormat }}</span> -->
+                    </template>
+                </el-table-column>
+                <el-table-column prop="description" label="备注">
+                </el-table-column>
+                <el-table-column prop="operation" label="操作">
+                    <template #default="scope">
+                        <el-button name="batch_update" size="mini">
+                            编辑
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </template>
         </PGTable>
     </div>
 </template>
