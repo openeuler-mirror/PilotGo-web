@@ -8,7 +8,7 @@
             </PGTree>
         </div>
         <div class="cluster">
-            <PGTable :data="machines" title="机器列表" :showSelect="showSelect">
+            <PGTable :data="machines" title="机器列表" :showSelect="showSelect" :total="total" :currentPage="currentPage">
                 <template v-slot:action>
                     <el-dropdown>
                         <el-button type="primary">
@@ -45,8 +45,8 @@
                     <el-table-column prop="cpu" label="cpu">
                     </el-table-column>
                     <el-table-column label="状态">
-                        <template slot-scope="scope">
-                            <!-- <state-dot :state="scope.row.state"></state-dot> -->
+                        <template #default="scope">
+                            <state-dot :state="scope.row.state"></state-dot>
                         </template>
                     </el-table-column>
                     <el-table-column prop="tags" label="标签">
@@ -60,14 +60,44 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+
 import PGTable from "@/components/PGTable.vue";
 import PGTree from "@/components/PGTree.vue";
+import StateDot from "@/components/StateDot.vue";
 
-const machines = ref([])
+import { getDepartMachines } from "@/request/cluster";
+import { RespCodeOK } from "@/request/request";
+
 const showSelect = ref(true)
 
 const department = ref<any[]>([])
+
+const machines = ref([])
+const departmentID = ref(1)
+const currentPage = ref(1)
+const pageSize= ref(10)
+const total = ref(0)
+
+onMounted(() => {
+    getDepartMachines({
+        page: currentPage.value,
+        size: pageSize.value,
+        DepartId: departmentID.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            currentPage.value = resp.page
+            pageSize.value = resp.size
+            machines.value = resp.data
+        } else {
+            ElMessage.error("failed to get machines overview info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machines overview info:" + err.msg)
+    })
+})
 
 </script>
 
