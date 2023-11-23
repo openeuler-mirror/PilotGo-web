@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <PGTable :data="batches" title="批次列表" :showSelect="true">
+        <PGTable :data="batches" title="批次列表" :showSelect="true" :total="total" :currentPage="currentPage">
             <template v-slot:action>
                 <el-dropdown>
                     <el-button type="primary">
@@ -40,7 +40,7 @@
                 </el-table-column>
                 <el-table-column prop="operation" label="操作">
                     <template #default="scope">
-                        <el-button name="batch_update" size="mini">
+                        <el-button name="batch_update" size="small">
                             编辑
                         </el-button>
                     </template>
@@ -53,8 +53,29 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import PGTable from "@/components/PGTable.vue";
+import { ElMessage } from 'element-plus';
+
+import { RespCodeOK } from "@/request/request";
+import {getBatches} from '@/request/batch';
 
 const batches = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
+getBatches({
+        page: currentPage.value,
+        size: pageSize.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            batches.value = resp.data
+        } else {
+            ElMessage.error("failed to get batch info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get batch info:" + err.msg)
+    })
 
 </script>
 
