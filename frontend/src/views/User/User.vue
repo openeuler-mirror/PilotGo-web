@@ -24,9 +24,9 @@
                 <el-table-column prop="email" label="邮箱">
                 </el-table-column>
                 <el-table-column label="操作" fixed="right" class="operate">
-                    <template slot-scope="scope">
-                        <el-button name="user_edit" class="editBtn" type="primary" plain size="mini">编辑</el-button>
-                        <el-button name="user_reset" class="editBtn" type="primary" plain size="mini">重置密码</el-button>
+                    <template #default="scope">
+                        <el-button type="primary" size="small">编辑</el-button>
+                        <el-button type="danger" size="small">重置密码</el-button>
                     </template>
                 </el-table-column>
             </template>
@@ -35,11 +35,38 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+
 import PGTable from "@/components/PGTable.vue";
+
+import { getUsers } from "@/request/user";
+import { RespCodeOK } from "@/request/request";
 
 const users = ref([])
 const searchInput = ref("")
+
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
+onMounted(() => {
+    getUsers({
+        page: currentPage.value,
+        size: pageSize.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            currentPage.value = resp.page
+            pageSize.value = resp.size
+            users.value = resp.data
+        } else {
+            ElMessage.error("failed to get users info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get users info:" + err.msg)
+    })
+})
 
 </script>
 
