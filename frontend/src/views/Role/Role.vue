@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <PGTable :data="roles" title="角色列表" :showSelect="true">
+        <PGTable :data="roles" title="角色列表" :showSelect="true" :total="total" :currentPage="currentPage">
             <template v-slot:action>
                 <el-button type="primary">添加</el-button>
             </template>
@@ -33,10 +33,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+
 import PGTable from "@/components/PGTable.vue";
 
+import { getRolesPaged } from "@/request/role";
+import { RespCodeOK } from "@/request/request";
+
 const roles = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
+
+onMounted(() => {
+    getRolesPaged({
+        page: currentPage.value,
+        size: pageSize.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            currentPage.value = resp.page
+            pageSize.value = resp.size
+            roles.value = resp.data
+        } else {
+            ElMessage.error("failed to get role info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get role info:" + err.msg)
+    })
+})
 
 </script>
 
