@@ -11,7 +11,7 @@ import { ElMessage } from 'element-plus';
 import { departMachinesOverview } from "@/request/overview";
 import { RespCodeOK } from "@/request/request";
 
-const chart = ref<any>();
+let chart:any = null;
 const option = ref({
     title: {
         text: '各部门机器数量',
@@ -80,7 +80,7 @@ const option = ref({
 })
 
 onMounted(() => {
-    chart.value = echarts.init(document.getElementById("department-chart"))
+    chart = echarts.init(document.getElementById("department-chart"))
 
     departMachinesOverview().then((resp: any) => {
         if (resp.code === RespCodeOK) {
@@ -92,15 +92,20 @@ onMounted(() => {
                 option.value.series[2].data.push(item.AgentStatus.free);
             });
 
-            chart.value.setOption(option.value)
+            chart.setOption(option.value)
         } else {
             ElMessage.error("failed to get department machines overview info: " + resp.msg)
         }
     }).catch((err: any) => {
         ElMessage.error("failed to get department machines overview info:" + err.msg)
     })
+
+    window.addEventListener("resize", resize);
 })
 
+function resize() {
+    chart.resize()
+}
 </script>
 
 <style lang="scss"></style>
