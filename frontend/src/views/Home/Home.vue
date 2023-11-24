@@ -19,7 +19,7 @@
                             </el-icon>
                             <span> hello {{ user.name }}!</span>
                             <el-icon>
-                                <Expand />
+                                <Expand @click="handleLogout" />
                             </el-icon>
                         </div>
                     </div>
@@ -39,13 +39,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watchEffect } from "vue";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 import BreadCrumb from "./components/BreadCrumb.vue";
 import Sidebar from "./components/Sidebar.vue";
 
-import { updateSidebarItems } from "@/router/index";
+import { directTo, updateSidebarItems } from "@/router/index";
 import { platformVersion } from "@/request/basic"
+import { logout } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 import { type User, userStore } from "@/stores/user";
 
@@ -81,6 +82,31 @@ onMounted(() => {
 watchEffect(() => {
     user.value = userStore().user
 })
+
+function handleLogout() {
+    ElMessageBox.confirm('此操作将注销登录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(() => {
+        logout().then(() => {
+            doLogout()
+            ElMessage.success("logout success")
+        }).catch((err) => {
+            ElMessage.error("logout error: " + err)
+        })
+        console.log("confirm")
+    }).catch(() => {
+        console.log("catch")
+    })
+}
+
+
+function doLogout() {
+    userStore().$reset()
+    directTo('/login')
+}
+
 </script>
 
 
