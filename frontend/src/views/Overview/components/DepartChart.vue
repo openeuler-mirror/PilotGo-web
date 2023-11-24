@@ -100,7 +100,7 @@ onMounted(() => {
         ElMessage.error("failed to get department machines overview info:" + err.msg)
     })
 
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", resize, {passive: true});
 })
 
 function resize() {

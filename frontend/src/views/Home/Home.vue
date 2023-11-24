@@ -17,7 +17,12 @@
                             <el-icon>
                                 <User />
                             </el-icon>
-                            <span> hello {{ user.name }}!</span>
+                            <el-popover placement="bottom" trigger="click">
+                                <template #reference>
+                                    <span> hello {{ user.name }}!</span>
+                                </template>
+                                <el-button>修改密码</el-button>
+                            </el-popover>
                             <el-icon>
                                 <Expand @click="handleLogout" />
                             </el-icon>
@@ -112,6 +117,11 @@ function doLogout() {
 
 
 <style lang="scss">
+.el-popover.el-popper {
+    min-width: 100px;
+    width: auto !important;
+}
+
 .el-aside {
     height: 100%;
     display: flex;
