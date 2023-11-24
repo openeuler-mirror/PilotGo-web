@@ -95,15 +95,16 @@ function handleLogout() {
         }).catch((err) => {
             ElMessage.error("logout error: " + err)
         })
-        console.log("confirm")
     }).catch(() => {
-        console.log("catch")
+        // cancel logout
     })
 }
 
+import { removeToken } from "@/module/cookie";
 
 function doLogout() {
     userStore().$reset()
+    removeToken()
     directTo('/login')
 }
 
