@@ -9,6 +9,14 @@ export function loginByEmail(data: any) {
   });
 }
 
+// 用户登出
+export function logout() {
+  return request({
+    url: '/user/logout',
+    method: 'get',
+  })
+}
+
 // 获取全部用户信息
 export function getUsers(data: any) {
   return request({
