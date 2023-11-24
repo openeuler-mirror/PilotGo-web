@@ -13,9 +13,9 @@ export interface User {
 export const userStore = defineStore('user', () => {
     const user = ref<User>({})
 
-    // function clearUser() {
-    //     userStore.$reset()
-    // }
+    function $reset() {
+        user.value = {}
+    }
 
-    return { user }
+    return { user, $reset }
 })
