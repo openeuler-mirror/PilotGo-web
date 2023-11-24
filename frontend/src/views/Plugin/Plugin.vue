@@ -21,7 +21,7 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template #default="scope">
-                        <el-button size="mini" type="primary" plain name="default_all">
+                        <el-button size="small" type="primary" plain name="default_all">
                             {{ scope.row.enabled === 1 ? '禁用' : '启用' }}
                         </el-button>
                     </template>
