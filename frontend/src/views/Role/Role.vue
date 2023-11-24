@@ -14,16 +14,20 @@
                 <el-table-column label="权限">
                     <template #default="scope">
                         <el-button name="default_all" size="small">查看</el-button>
-                        <el-button name="default_all" size="mini">查看</el-button>
-                        <el-button name="role_modify" size="mini">变更</el-button>
+                        <el-button name="default_all" size="small">查看</el-button>
+                        <el-button name="role_modify" size="small">变更</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template #default="scope">
-                        <el-button :disabled="[1].includes(scope.row.id)" name="role_update" size="mini">编辑</el-button>
-                        <el-popconfirm title="确定删除此角色?" cancel-button-type="default" confirm-button-type="danger">
-                            <el-button :disabled="[1].includes(scope.row.id)" slot="reference" name="role_delete"
-                                size="small"> 删除 </el-button>
+                        <el-button :disabled="[1].includes(scope.row.id)" name="role_update" size="small">编辑</el-button>
+                        <el-popconfirm title="确定删除此角色?">
+                            <template #reference>
+                                <el-button :disabled="[1].includes(scope.row.id)" slot="reference" name="role_delete"
+                                    size="small">
+                                    删除
+                                </el-button>
+                            </template>
                         </el-popconfirm>
                     </template>
                 </el-table-column>
