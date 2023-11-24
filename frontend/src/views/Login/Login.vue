@@ -31,13 +31,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { ElMessage } from 'element-plus';
-import Cookies from 'js-cookie';
+
 import { directTo } from '@/router/index';
 import { loginByEmail } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
-import { CookieAuthToken } from "@/global/defines";
+import { setToken } from "@/module/cookie";
 import { checkEmail } from "./logic";
-import { userStore} from "@/stores/user";
+import { userStore } from "@/stores/user";
 
 const loginFormRef = ref()
 const loginData = ref({
@@ -77,7 +77,7 @@ function submitLogin() {
             loginByEmail(data).then((resp: any) => {
                 if (resp.code == RespCodeOK) {
                     // update cookie
-                    Cookies.set(CookieAuthToken, resp.data.token)
+                    setToken(resp.data.token)
 
                     // store user info
                     userStore().user = {
