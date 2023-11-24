@@ -110,7 +110,6 @@ onMounted(() => {
                 label: resp.data.label,
                 pid: resp.data.pid
             }]
-            console.log(department.value)
         } else {
             ElMessage.error("failed to get department info: " + resp.msg)
         }
