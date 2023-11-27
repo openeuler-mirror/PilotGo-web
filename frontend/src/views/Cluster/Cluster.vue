@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree :data="department">
+            <PGTree>
                 <template v-slot:header>
                     <p>部门</p>
                 </template>
@@ -79,7 +79,6 @@ import { RespCodeOK } from "@/request/request";
 
 
 // 部门树
-const department = ref([{}])
 const departmentID = ref(1)
 
 // 机器列表
@@ -107,18 +106,6 @@ onMounted(() => {
         }
     }).catch((err: any) => {
         ElMessage.error("failed to get machines overview info:" + err.msg)
-    })
-
-    getSubDepartment({
-        DepartID: departmentID.value,
-    }).then((resp: any) => {
-        if (resp.code === RespCodeOK) {
-            department.value = [resp.data]
-        } else {
-            ElMessage.error("failed to get department info: " + resp.msg)
-        }
-    }).catch((err: any) => {
-        ElMessage.error("failed to get department info:" + err.msg)
     })
 })
 
