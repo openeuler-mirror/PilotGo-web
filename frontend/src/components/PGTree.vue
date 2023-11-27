@@ -3,14 +3,18 @@
         <div class="header">
             <slot name="header"></slot>
         </div>
-        <el-tree :data="data" :props="defaultProps"></el-tree>
+        <el-tree :data="department" :props="defaultProps"></el-tree>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { onMounted, ref } from "vue";
+import { ElMessage } from 'element-plus';
+
+import { getSubDepartment } from "@/request/cluster";
+import { RespCodeOK } from "@/request/request";
 
 const props = defineProps({
-    data: Array,
     defaultProps: {
         type: Object,
         default: {
@@ -20,6 +24,23 @@ const props = defineProps({
     },
 })
 
+// 部门树
+const department = ref([{}])
+const departmentID = ref(1)
+
+onMounted(() => {
+    getSubDepartment({
+        DepartID: departmentID.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            department.value = [resp.data]
+        } else {
+            ElMessage.error("failed to get department info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get department info:" + err.msg)
+    })
+})
 </script>
 
 <style lang="scss" scoped>
