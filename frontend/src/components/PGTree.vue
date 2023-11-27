@@ -1,8 +1,10 @@
 <template>
-    <div class="header">
-        <slot name="header"></slot>
+    <div>
+        <div class="header">
+            <slot name="header"></slot>
+        </div>
+        <el-tree :data="data" :props="defaultProps"></el-tree>
     </div>
-    <el-tree :data="data" :props="defaultProps"></el-tree>
 </template>
 
 <script lang="ts" setup>
