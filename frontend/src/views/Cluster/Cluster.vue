@@ -19,7 +19,7 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>
-                                    <auth-button auth="dept_change" :show="true">
+                                    <auth-button auth="dept_change" :show="true" @click="showChangeDepartDialog = true">
                                         变更部门
                                     </auth-button>
                                 </el-dropdown-item>
@@ -56,6 +56,11 @@
                 </template>
             </PGTable>
         </div>
+
+        <el-dialog title="主机部门变更" v-model="showChangeDepartDialog">
+            <change-depart>
+            </change-depart>
+        </el-dialog>
     </div>
 </template>
 
@@ -67,6 +72,7 @@ import AuthButton from "@/components/AuthButton.vue";
 import PGTable from "@/components/PGTable.vue";
 import PGTree from "@/components/PGTree.vue";
 import StateDot from "@/components/StateDot.vue";
+import ChangeDepart from "./components/ChangeDepart.vue";
 
 import { getDepartMachines, getSubDepartment } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
@@ -82,6 +88,8 @@ const machines = ref([])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
+
+const showChangeDepartDialog = ref(false)
 
 onMounted(() => {
     getDepartMachines({
