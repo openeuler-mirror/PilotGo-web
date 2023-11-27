@@ -25,10 +25,30 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
+
 import PGTree from "@/components/PGTree.vue";
 
+import { getSubDepartment } from "@/request/cluster";
+import { RespCodeOK } from "@/request/request";
+
 const department = ref<any[]>([])
+const departmentID = ref(1)
+
+onMounted(() => {
+    getSubDepartment({
+        DepartID: departmentID.value,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            department.value = [resp.data]
+        } else {
+            ElMessage.error("failed to get department info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get department info:" + err.msg)
+    })
+})
 
 </script>
 
