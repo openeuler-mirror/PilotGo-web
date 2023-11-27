@@ -17,3 +17,11 @@ export function getBatchDetail(data: any) {
         params: data
     })
 }
+
+export function deleteBatch(data: any) {
+    return request({
+        url: '/batchmanager/deletebatch',
+        method: 'post',
+        data,
+    })
+}
