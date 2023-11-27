@@ -10,10 +10,14 @@ import { computed } from 'vue';
 const props = defineProps({
     auth: {
         type: String,
+    },
+    // 是否在未授权情况下显示按钮
+    show: {
+        type:Boolean,
+        default: false,
     }
 })
 
-// 控制是否在未授权情况下显示按钮
 const showBtn = computed(() => {
     // TODO: 
     return true
@@ -21,7 +25,7 @@ const showBtn = computed(() => {
 // 控制是否使能按钮
 const disabled = computed(() => {
     // TODO: 
-    return true
+    return false
 })
 
 </script>
