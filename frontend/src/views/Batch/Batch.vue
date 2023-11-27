@@ -11,7 +11,7 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <auth-button auth="batch_delete">
+                                <auth-button auth="batch_delete" @click="batchDelete">
                                     删除
                                 </auth-button>
                             </el-dropdown-item>
@@ -51,7 +51,7 @@
 import { ref, onMounted } from "vue";
 import AuthButton from "@/components/AuthButton.vue";
 import PGTable from "@/components/PGTable.vue";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 import { RespCodeOK } from "@/request/request";
 import { getBatches } from '@/request/batch';
@@ -76,6 +76,24 @@ onMounted(() => {
         ElMessage.error("failed to get batch info:" + err.msg)
     })
 })
+
+function batchDelete() {
+    ElMessageBox.confirm(
+        '确定要删除该批次？',
+        '正在删除批次',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+        })
+        .then(() => {
+            ElMessage({
+                type: 'success',
+                message: '批次删除成功',
+            })
+        })
+        .catch(() => { })
+}
 
 </script>
 
