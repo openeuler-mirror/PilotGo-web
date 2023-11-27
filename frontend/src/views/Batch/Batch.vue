@@ -11,9 +11,9 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <el-button>
+                                <auth-button auth="batch_delete">
                                     删除
-                                </el-button>
+                                </auth-button>
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
@@ -32,17 +32,14 @@
                 <el-table-column prop="DepartName" label="部门">
                 </el-table-column>
                 <el-table-column prop="CreatedAt" label="创建时间" sortable>
-                    <template #default="scope">
-                        <!-- <span>{{ scope.row.CreatedAt | dateFormat }}</span> -->
-                    </template>
                 </el-table-column>
                 <el-table-column prop="description" label="备注">
                 </el-table-column>
                 <el-table-column prop="operation" label="操作">
                     <template #default="scope">
-                        <el-button name="batch_update" size="small">
+                        <auth-button auth="batch_update">
                             编辑
-                        </el-button>
+                        </auth-button>
                     </template>
                 </el-table-column>
             </template>
@@ -52,6 +49,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
+import AuthButton from "@/components/AuthButton.vue";
 import PGTable from "@/components/PGTable.vue";
 import { ElMessage } from 'element-plus';
 
