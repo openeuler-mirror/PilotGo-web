@@ -1,6 +1,7 @@
 <template>
     <div class="container">
-        <PGTable :data="batches" title="批次列表" :showSelect="true" :total="total" :currentPage="currentPage">
+        <PGTable :data="batches" title="批次列表" :showSelect="true" :total="total" :currentPage="currentPage"
+            v-model:selectedData="selectedBatches">
             <template v-slot:action>
                 <el-dropdown>
                     <el-button type="primary">
@@ -48,13 +49,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, toRaw } from "vue";
 import AuthButton from "@/components/AuthButton.vue";
 import PGTable from "@/components/PGTable.vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import { RespCodeOK } from "@/request/request";
-import { getBatches } from '@/request/batch';
+import { getBatches, deleteBatch } from '@/request/batch';
 
 const batches = ref([])
 const currentPage = ref(1)
@@ -77,6 +78,8 @@ onMounted(() => {
     })
 })
 
+const selectedBatches = ref<any[]>()
+
 function batchDelete() {
     ElMessageBox.confirm(
         '确定要删除该批次？',
@@ -87,12 +90,26 @@ function batchDelete() {
             type: 'warning',
         })
         .then(() => {
-            ElMessage({
-                type: 'success',
-                message: '批次删除成功',
+            // TODO: fix proxy object problem
+            let params:number[] = [];
+            (toRaw(selectedBatches.value) as any[]).forEach((item) => {
+                params.push(item.ID)
+                console.log(item)
+            });
+
+            deleteBatch({BatchID:params}).then((resp: any) => {
+                if (resp.code === RespCodeOK) {
+                    ElMessage.success('批次删除成功')
+                } else {
+                    ElMessage.error("failed to delete batch: " + resp.msg)
+                }
+            }).catch((err) => {
+                ElMessage.error("failed to delete batch: " + err.msg)
             })
         })
-        .catch(() => { })
+        .catch(() => {
+            // 取消删除批次
+        })
 }
 
 </script>

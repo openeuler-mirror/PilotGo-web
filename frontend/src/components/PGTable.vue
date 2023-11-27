@@ -22,6 +22,7 @@
 </template>
 
 <script lang="ts" setup>
+import { toRaw } from "vue";
 
 const props = defineProps({
     title: String,
@@ -32,7 +33,7 @@ const props = defineProps({
     },
     data: Array,
     selectedData: {
-        type: Array as any,
+        type: Array,
         default: [],
     },
 
@@ -54,8 +55,15 @@ const props = defineProps({
     }
 })
 
-const onSelectionChange = (val: []) => {
-    props.selectedData.value = val
+const emit = defineEmits(['update:selectedData'])
+
+const onSelectionChange = (val: any[]) => {
+    let d:any[] = []
+    val.forEach((item:any)=> {
+        d.push(toRaw(item))
+    })
+
+    emit('update:selectedData', d)
 }
 
 </script>
