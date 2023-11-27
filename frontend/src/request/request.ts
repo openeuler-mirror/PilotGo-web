@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-
+import { directTo } from "@/router/index"
 
 // 公共定义
 export const RespCodeOK = 200
@@ -30,7 +30,14 @@ instance.interceptors.response.use(
   },
   (error) => {
     // 处理响应错误
+    if (error.response.status === 401) {
+      // 登录过期
+      // TODO: 其他清理工作
+      directTo('/login')
+      return Promise.reject(error);
+    }
     if (error.response.data) {
+      // 存在data，后端正常处理
       return error.response.data;
     }
     return {
