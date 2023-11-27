@@ -10,14 +10,14 @@
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item>
-                            <el-button>
+                            <auth-button auth="rpm_install" :show="true">
                                 rpm下发
-                            </el-button>
+                            </auth-button>
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <el-button>
+                            <auth-button auth="rpm_uninstall" :show="true">
                                 rpm卸载
-                            </el-button>
+                            </auth-button>
                         </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -58,7 +58,7 @@ import { RespCodeOK } from "@/request/request";
 const route = useRoute()
 
 // 机器列表
-const batchID =ref(route.params.id)
+const batchID = ref(route.params.id)
 const showSelect = ref(true)
 const machines = ref([])
 const currentPage = ref(1)
