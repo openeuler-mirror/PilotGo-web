@@ -104,12 +104,7 @@ onMounted(() => {
         DepartID: departmentID.value,
     }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
-            // TODO: get subdepartment info
-            department.value = [{
-                id: resp.data.id,
-                label: resp.data.label,
-                pid: resp.data.pid
-            }]
+            department.value = [resp.data]
         } else {
             ElMessage.error("failed to get department info: " + resp.msg)
         }
