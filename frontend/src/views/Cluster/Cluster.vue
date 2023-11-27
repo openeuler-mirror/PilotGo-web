@@ -19,14 +19,14 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>
-                                    <el-button>
+                                    <auth-button auth="dept_change" :show="true">
                                         变更部门
-                                    </el-button>
+                                    </auth-button>
                                 </el-dropdown-item>
                                 <el-dropdown-item>
-                                    <el-button>
+                                    <auth-button auth="mac_change" :show="true">
                                         删除
-                                    </el-button>
+                                    </auth-button>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
@@ -63,6 +63,7 @@
 import { ref, onMounted } from "vue";
 import { ElMessage } from 'element-plus';
 
+import AuthButton from "@/components/AuthButton.vue";
 import PGTable from "@/components/PGTable.vue";
 import PGTree from "@/components/PGTree.vue";
 import StateDot from "@/components/StateDot.vue";
