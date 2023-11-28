@@ -8,12 +8,12 @@
             </PGTree>
         </div>
         <div class="creater">
-            <el-form label-width="100px">
+            <el-form :model="branchForm" :rules="branchFormRule" label-width="100px">
                 <el-form-item label="批次名称:" prop="batchName">
-                    <el-input class="ipInput" type="text" autocomplete="off"></el-input>
+                    <el-input class="ipInput" type="text" v-model="branchForm.batchName" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="描述:" prop="description">
-                    <el-input class="ipInput" type="text" autocomplete="off"></el-input>
+                    <el-input class="ipInput" type="text" v-model="branchForm.description" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <el-transfer class="transfer" filterable filter-placeholder="请输入关键字" :titles="['备选项', '已选项']"
@@ -36,6 +36,19 @@ import { ElMessage } from 'element-plus';
 import PGTree from "@/components/PGTree.vue";
 
 onMounted(() => {
+})
+
+const branchForm = ref({
+    batchName: "",
+    description: ""
+})
+
+const branchFormRule = ref({
+    batchName: [{
+        required: true,
+        message: "请填写批次名称",
+        trigger: "blur"
+    }]
 })
 
 import { getDepartMachines } from "@/request/cluster";
