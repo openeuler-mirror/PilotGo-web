@@ -58,8 +58,8 @@ const props = defineProps({
 const emit = defineEmits(['update:selectedData'])
 
 const onSelectionChange = (val: any[]) => {
-    let d:any[] = []
-    val.forEach((item:any)=> {
+    let d: any[] = []
+    val.forEach((item: any) => {
         d.push(toRaw(item))
     })
 
@@ -101,6 +101,13 @@ const onSelectionChange = (val: any[]) => {
         width: 100%;
         height: 40px;
 
+        :deep(.el-pagination) {
+            justify-content: flex-end;
+
+            .el-pagination__sizes {
+                flex: 1,
+            }
+        }
     }
 }
 </style>
