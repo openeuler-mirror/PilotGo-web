@@ -25,3 +25,12 @@ export function deleteBatch(data: any) {
         data,
     })
 }
+
+// 创建批次
+export function createBatch(data:any) {
+    return request({
+      url: 'macList/createbatch',
+      method: 'post',
+      data
+    })
+  }
