@@ -34,8 +34,8 @@
                 </template>
                 <template v-slot:content>
                     <el-table-column label="ip">
-                        <template v-slot="data">
-                            <span title="查看机器详情">
+                        <template #default="data">
+                            <span title="查看机器详情" @click="machineDetail(data.row)">
                                 {{ data.row.ip }}
                             </span>
                         </template>
@@ -74,8 +74,11 @@ import PGTree from "@/components/PGTree.vue";
 import StateDot from "@/components/StateDot.vue";
 import ChangeDepart from "./components/ChangeDepart.vue";
 
-import { getDepartMachines, getSubDepartment } from "@/request/cluster";
+import {directTo} from "@/router/index"
+
+import { getDepartMachines } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
+
 
 
 // 部门树
@@ -108,6 +111,10 @@ onMounted(() => {
         ElMessage.error("failed to get machines overview info:" + err.msg)
     })
 })
+
+function machineDetail(info:any) {
+    directTo("/cluster/machine/"+info.uuid)
+}
 
 </script>
 
