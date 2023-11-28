@@ -13,7 +13,9 @@
             <el-tab-pane name="network" label="网络配置">
                 <Network />
             </el-tab-pane>
-            <el-tab-pane name="systl" label="内核参数"> 内核参数 </el-tab-pane>
+            <el-tab-pane name="systl" label="内核参数">
+                <Sysctl />
+            </el-tab-pane>
             <el-tab-pane name="npm" label="软件包"> 软件包 </el-tab-pane>
             <el-tab-pane name="terminal" label="远程终端"> 远程终端 </el-tab-pane>
         </el-tabs>
@@ -27,6 +29,7 @@ import Base from "./Base.vue";
 import User from "./User.vue";
 import Service from "./Service.vue";
 import Network from "./Network.vue";
+import Sysctl from "./Sysctl.vue";
 
 const activePane = ref("base")
 

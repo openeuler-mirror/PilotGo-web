@@ -12,7 +12,7 @@
         </div>
         <div class="info">
             <p class="title">用户信息详情：</p>
-            <el-descriptions :column="3" size="medium" border>
+            <el-descriptions :column="3" border>
                 <el-descriptions-item label="用户名"> Username </el-descriptions-item>
                 <el-descriptions-item label="用户ID"> UserId </el-descriptions-item>
                 <el-descriptions-item label="用户组ID"> GroupId </el-descriptions-item>
