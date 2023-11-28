@@ -16,9 +16,13 @@
                     <el-input class="ipInput" type="text" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
-            <el-transfer filterable filter-placeholder="请输入关键字" :titles="['备选项', '已选项']" style="width:100%">
-                <el-button class="transfer-footer" slot="left-footer" type="primary" plain size="small">重置</el-button>
-                <el-button class="transfer-footer" slot="right-footer" type="primary" plain size="small">创建</el-button>
+            <el-transfer class="transfer" filterable filter-placeholder="请输入关键字" :titles="['备选项', '已选项']">
+                <template #left-footer>
+                    <el-button class="" type="primary">重置</el-button>
+                </template>
+                <template #right-footer>
+                    <el-button type="primary">创建</el-button>
+                </template>
             </el-transfer>
         </div>
     </div>
@@ -49,6 +53,27 @@ onMounted(() => {
     .creater {
         width: 80%;
         height: 100%;
+
+        .transfer {
+            width: 100%;
+            height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            :deep(.el-transfer-panel) {
+                width: 40%;
+                height: 100%;
+
+                .el-transfer-panel__body {
+                    height: 80%;
+                }
+
+                .el-transfer-panel__footer {
+                    text-align: center;
+                }
+            }
+        }
     }
 }
 </style>
