@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree>
+            <PGTree :onNodeClicked="onNodeClicked">
                 <template v-slot:header>
                     <p>部门</p>
                 </template>
@@ -16,9 +16,10 @@
                     <el-input class="ipInput" type="text" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
-            <el-transfer class="transfer" filterable filter-placeholder="请输入关键字" :titles="['备选项', '已选项']">
+            <el-transfer class="transfer" filterable filter-placeholder="请输入关键字" :titles="['备选项', '已选项']"
+                :data="nodeMachines" v-model="selectedMachines">
                 <template #left-footer>
-                    <el-button class="" type="primary">重置</el-button>
+                    <el-button type="primary">重置</el-button>
                 </template>
                 <template #right-footer>
                     <el-button type="primary">创建</el-button>
@@ -29,12 +30,45 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, toRaw, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
 
 import PGTree from "@/components/PGTree.vue";
 
 onMounted(() => {
 })
+
+import { getDepartMachines } from "@/request/cluster";
+import { RespCodeOK } from "@/request/request";
+
+const nodeMachines = ref<any[]>([])
+const selectedMachines = ref<any[]>()
+
+
+function onNodeClicked(node: any) {
+    let nodeInfo = toRaw(node)
+    console.log("node clicked", nodeInfo)
+
+    getDepartMachines({
+        DepartId: nodeInfo.id,
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            nodeMachines.value = []
+            console.log("machines:", resp.data)
+            resp.data.forEach((item: any) => {
+                nodeMachines.value.push({
+                    key: item.uuid,
+                    label: item.ip,
+                    disabled: false,
+                })
+            });
+        } else {
+            ElMessage.error("failed to get department machines: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get department machines:" + err.msg)
+    })
+}
 
 </script>
 
