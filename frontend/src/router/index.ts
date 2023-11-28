@@ -54,7 +54,27 @@ let sidebarRoutes = [
                 },
                 { name: '机器列表' },
               ],
-              icon: ''
+              icon: '',
+            }
+          },
+          {
+            path: '/cluster/machine/:detail',
+            name: 'MacDetail',
+            component: () => import('../views/Cluster/MachineDetail/Index.vue'),
+            meta: {
+              header_title: "机器详情",
+              panel: "/cluster/macList",
+              breadcrumb: [
+                {
+                  name: '系统', path: '/cluster', children: [
+                    { name: 'createBatch', menuName: '创建批次' },
+                  ]
+                },
+                { name: '机器列表', path: '/cluster/' },
+                { name: '机器详情' }
+              ],
+              icon: '',
+              ignore: true,
             }
           },
           {
