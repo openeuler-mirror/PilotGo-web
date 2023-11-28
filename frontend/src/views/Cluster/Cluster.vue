@@ -76,7 +76,7 @@ import ChangeDepart from "./components/ChangeDepart.vue";
 
 import {directTo} from "@/router/index"
 
-import { getDepartMachines } from "@/request/cluster";
+import { getPagedDepartMachines } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 
@@ -94,7 +94,7 @@ const total = ref(0)
 const showChangeDepartDialog = ref(false)
 
 onMounted(() => {
-    getDepartMachines({
+    getPagedDepartMachines({
         page: currentPage.value,
         size: pageSize.value,
         DepartId: departmentID.value,
