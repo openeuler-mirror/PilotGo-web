@@ -3,7 +3,8 @@
         <div class="header">
             <slot name="header"></slot>
         </div>
-        <el-tree :data="department" :props="defaultProps"></el-tree>
+        <el-tree :data="department" :props="defaultProps" :show-checkbox="selectable" @node-click="onNodeClicked"
+            :allow-drag="allowDrag" :draggable="dragable"></el-tree>
     </div>
 </template>
 
@@ -22,6 +23,20 @@ const props = defineProps({
             label: 'label',
         }
     },
+
+    // 是否可选择节点
+    selectable: {
+        type: Boolean,
+        default: false,
+    },
+    // 是否可拖拽
+    dragable: {
+        type: Boolean,
+        default: false,
+    },
+    onNodeClicked: {
+        type: Function
+    }
 })
 
 // 部门树
@@ -41,6 +56,10 @@ onMounted(() => {
         ElMessage.error("failed to get department info:" + err.msg)
     })
 })
+
+function allowDrag() {
+    return props.dragable
+}
 </script>
 
 <style lang="scss" scoped>
