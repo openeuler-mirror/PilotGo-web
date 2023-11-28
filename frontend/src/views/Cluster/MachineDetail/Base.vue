@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <el-descriptions :column="2" size="medium" border>
+        <el-descriptions :column="2" border>
             <el-descriptions-item label="机器IP"> IP </el-descriptions-item>
             <el-descriptions-item label="所属部门"> dept </el-descriptions-item>
             <el-descriptions-item label="监控状态"> status </el-descriptions-item>

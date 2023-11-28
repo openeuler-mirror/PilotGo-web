@@ -11,7 +11,7 @@
         <div class="info">
             <div class="detail" v-if="display">
                 <p class="title">服务详情：</p>
-                <el-descriptions :column="2" size="medium" border>
+                <el-descriptions :column="2" border>
                     <el-descriptions-item label="服务名"> Name </el-descriptions-item>
                     <el-descriptions-item label="状态"> Active </el-descriptions-item>
                     <el-descriptions-item label="模块是否加载"> LOAD </el-descriptions-item>
@@ -20,7 +20,7 @@
             </div>
             <div class="result" v-else>
                 <p class="title">执行结果：</p>
-                <el-descriptions :column="2" size="medium" border>
+                <el-descriptions :column="2" border>
                     <el-descriptions-item label="软件包名">serviceName </el-descriptions-item>
                     <el-descriptions-item label="执行动作">action </el-descriptions-item>
                     <el-descriptions-item label="结果">
