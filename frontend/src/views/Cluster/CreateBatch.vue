@@ -22,7 +22,7 @@
                     <el-button type="primary">重置</el-button>
                 </template>
                 <template #right-footer>
-                    <el-button type="primary">创建</el-button>
+                    <el-button type="primary" @click="onCreateBatch">创建</el-button>
                 </template>
             </el-transfer>
         </div>
@@ -52,11 +52,12 @@ const branchFormRule = ref({
 })
 
 import { getDepartMachines } from "@/request/cluster";
+import { createBatch } from "@/request/batch";
 import { RespCodeOK } from "@/request/request";
 
 const nodeMachines = ref<any[]>([])
-const selectedMachines = ref<any[]>()
-
+const selectedMachines = ref<any[]>([])
+const selectedDeparts = ref<any[]>([])
 
 function onNodeClicked(node: any) {
     let nodeInfo = toRaw(node)
@@ -70,7 +71,7 @@ function onNodeClicked(node: any) {
             console.log("machines:", resp.data)
             resp.data.forEach((item: any) => {
                 nodeMachines.value.push({
-                    key: item.uuid,
+                    key: item.id,
                     label: item.ip,
                     disabled: false,
                 })
@@ -80,6 +81,25 @@ function onNodeClicked(node: any) {
         }
     }).catch((err: any) => {
         ElMessage.error("failed to get department machines:" + err.msg)
+    })
+}
+
+function onCreateBatch() {
+    createBatch({
+        Name:branchForm.value.batchName,
+        Description: branchForm.value.description,
+        Machines:selectedMachines.value,
+        // TODO:
+        Manager:"admin@123.com",
+        DepartID:[],
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            ElMessage.success("创建批次成功")
+        } else {
+            ElMessage.error("failed to create batch: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to create batch:" + err.msg)
     })
 }
 

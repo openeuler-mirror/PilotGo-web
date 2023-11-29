@@ -50,6 +50,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
+import AuthButton from "@/components/AuthButton.vue";
 import StateDot from "@/components/StateDot.vue";
 
 import { getBatchDetail } from "@/request/batch";
