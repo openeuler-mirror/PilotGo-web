@@ -10,7 +10,7 @@
             </el-form-item>
             <el-form-item label="部门:" prop="departName">
                 <el-input class="ipInput" controls-position="right" v-model="form.departName" autocomplete="off"></el-input>
-                <PGTree>
+                <PGTree style="width: 98%;">
                 </PGTree>
             </el-form-item>
             <el-form-item label="用户角色:" prop="role">
@@ -33,8 +33,9 @@
         </div>
     </div>
 </template>
+
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 import PGTree from "@/components/PGTree.vue";
 
@@ -49,9 +50,9 @@ const roles = ref([
         value: '3',
         label: '普通用户',
     }
-])
-const form = ref<any>({})
-
+]);
+const form = ref<any>({});
 
 </script>
+
 <style lang="scss" scoped></style>
