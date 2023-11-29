@@ -58,7 +58,7 @@ let sidebarRoutes = [
             }
           },
           {
-            path: '/cluster/machine/:detail',
+            path: '/cluster/machine/:uuid',
             name: 'MacDetail',
             component: () => import('../views/Cluster/MachineDetail/Index.vue'),
             meta: {
