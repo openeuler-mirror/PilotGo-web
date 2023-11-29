@@ -27,11 +27,10 @@ export function getUsers(data: any) {
 }
 
 // 按邮箱查找用户
-export function searchUser(data: any, paged: any) {
+export function searchUser(data: any) {
   return request({
     url: '/user/userSearch',
     method: 'post',
-    params: paged,
     data,
   });
 }

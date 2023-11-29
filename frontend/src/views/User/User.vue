@@ -3,8 +3,8 @@
         <PGTable :data="users" title="用户列表" :showSelect="true">
             <template v-slot:action>
                 <div class="search">
-                    <el-input v-model="searchInput" placeholder="请输入邮箱名进行搜索..." style="width: 300px;" />
-                    <el-button type="primary">搜索</el-button>
+                    <el-input v-model.trim="searchInput" placeholder="请输入邮箱名进行搜索..." style="width: 300px;" />
+                    <el-button type="primary" @click="onSearchUser">搜索</el-button>
                     <el-divider direction="vertical" style="height: 2.5em;" />
                     <el-button type="primary" style="margin-left: 0px;">添加</el-button>
                     <el-button type="primary">删除</el-button>
@@ -40,11 +40,11 @@ import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
 
-import { getUsers } from "@/request/user";
+import { getUsers, searchUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 
 const users = ref([])
-const searchInput = ref("")
+
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -68,6 +68,24 @@ onMounted(() => {
     })
 })
 
+const searchInput = ref("")
+
+function onSearchUser() {
+    searchUser({
+        email: searchInput.value
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            total.value = resp.total
+            currentPage.value = resp.page
+            pageSize.value = resp.size
+            users.value = resp.data
+        } else {
+            ElMessage.error("failed to search users:" + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to search users:" + err.msg)
+    })
+}
 </script>
 
 <style lang="scss" scoped>
