@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <el-tabs v-model="activePane">
+        <el-tabs class="tab" v-model="activePane">
             <el-tab-pane name="base" label="机器信息">
                 <Base />
             </el-tab-pane>
@@ -42,4 +42,24 @@ const activePane = ref("base")
 
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.content {
+    width: 100%;
+    height: 100%;
+
+    .tab {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+
+        :deep(.el-tabs__content) {
+            flex: 1;
+
+            .el-tab-pane {
+                height: 100%;
+            }
+        }
+    }
+}
+</style>
