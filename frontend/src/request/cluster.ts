@@ -26,3 +26,12 @@ export function getSubDepartment(data: any) {
         params: data
     })
 }
+
+// 获取机器overview信息
+export function getMachineOverview(data: any) {
+    return request({
+        url: 'api/agent_overview',
+        method: 'get',
+        params: data
+    })
+}
