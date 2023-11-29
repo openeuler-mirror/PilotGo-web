@@ -6,7 +6,7 @@
                     <el-input v-model.trim="searchInput" placeholder="请输入邮箱名进行搜索..." style="width: 300px;" />
                     <el-button type="primary" @click="onSearchUser">搜索</el-button>
                     <el-divider direction="vertical" style="height: 2.5em;" />
-                    <el-button type="primary" style="margin-left: 0px;">添加</el-button>
+                    <el-button type="primary" style="margin-left: 0px;" @click="onAddUser">添加</el-button>
                     <el-button type="primary">删除</el-button>
                     <el-button type="primary">导出</el-button>
                     <el-button type="primary">批量导入</el-button>
@@ -31,6 +31,10 @@
                 </el-table-column>
             </template>
         </PGTable>
+
+        <el-dialog :title="title" v-model="display" width="560px">
+            <AddUser ></AddUser>
+        </el-dialog>
     </div>
 </template>
 
@@ -39,6 +43,7 @@ import { ref, onMounted } from "vue";
 import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
+import AddUser from "./components/AddUser.vue";
 
 import { getUsers, searchUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
@@ -67,6 +72,14 @@ onMounted(() => {
         ElMessage.error("failed to get users info:" + err.msg)
     })
 })
+
+const display = ref(false)
+const title = ref("")
+
+function onAddUser(){
+    title.value = "添加用户"
+    display.value = true
+}
 
 const searchInput = ref("")
 
