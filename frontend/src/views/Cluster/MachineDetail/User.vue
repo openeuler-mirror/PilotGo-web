@@ -29,4 +29,47 @@ import { ref } from "vue";
 const userName = ref("")
 
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .users {
+      width: 100%;
+      height: 20%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .current {
+        width: 20%;
+        height: 100%;
+        font-weight: bold;
+        color: rgb(92, 85, 85);
+        border: 1px solid rgb(236, 235, 255);
+        background: rgb(236, 235, 255);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        svg {
+          width: 36%;
+          height: 100%;
+        }
+      }
+      .search {
+        width: 70%;
+      }
+    }
+    .info {
+      width: 100%;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      .title {
+        width: 30%;
+        margin: 2% 0;
+      }
+    }
+ }
+ </style>

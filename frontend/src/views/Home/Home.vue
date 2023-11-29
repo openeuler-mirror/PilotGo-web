@@ -116,7 +116,7 @@ function doLogout() {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .el-popover.el-popper {
     min-width: 100px;
     width: auto !important;
