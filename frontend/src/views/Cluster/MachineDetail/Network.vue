@@ -14,9 +14,31 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus';
+
+import { getNetworkInfo } from "@/request/cluster";
+import { RespCodeOK } from "@/request/request";
+
+const route = useRoute()
+
+// 机器UUID
+const machineID = ref(route.params.uuid)
 
 const net = ref<any>({})
+
+onMounted(() => {
+    getNetworkInfo({ uuid: machineID.value }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            net.value = resp.data
+        } else {
+            ElMessage.error("failed to get machine network info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machine network info:" + err.msg)
+    })
+})
 
 </script>
 <style lang="scss" scoped></style>
