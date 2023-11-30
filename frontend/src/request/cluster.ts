@@ -71,3 +71,12 @@ export function getServiceList(data: any) {
         params: data
     })
 }
+
+// 关闭一项服务
+export function stopService(data: any) {
+    return request({
+        url: 'agent/service_stop',
+        method: 'post',
+        data
+    })
+}
