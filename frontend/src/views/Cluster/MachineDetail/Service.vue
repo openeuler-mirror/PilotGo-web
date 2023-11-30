@@ -44,4 +44,61 @@ const display = ref(true)
 const result = ref("")
 
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  .services {
+    width: 98%;
+  }
+
+  .info {
+    width: 98%;
+    flex: 1;
+
+    .detail {
+      width: 100%;
+      height: 100%;
+
+      .title {
+        width: 30%;
+        margin: 2% 0;
+      }
+    }
+
+    .result {
+      width: 100%;
+      height: 100%;
+
+      .title {
+        width: 30%;
+        margin: 2% 0;
+      }
+
+      .progress {
+        display: inline-block;
+        width: 74%;
+        margin-left: 2%;
+        border: 1px solid rgba(11, 35, 117, .5);
+        background: #fff;
+        border-radius: 10px;
+        text-align: left;
+
+        span {
+          display: inline-block;
+          text-align: center;
+          color: #fff;
+          width: 100%;
+          border: 1px solid #fff;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}
+</style>
