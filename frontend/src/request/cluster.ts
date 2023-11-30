@@ -80,3 +80,12 @@ export function stopService(data: any) {
         data
     })
 }
+
+// 开启一项服务
+export function startService(data: any) {
+    return request({
+        url: 'agent/service_start',
+        method: 'post',
+        data
+    })
+}
