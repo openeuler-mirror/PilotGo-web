@@ -98,3 +98,12 @@ export function restartService(data: any) {
         data
     })
 }
+
+// 获取网络信息
+export function getNetworkInfo(data: any) {
+    return request({
+        url: 'api/net',
+        method: 'get',
+        params: data
+    })
+}
