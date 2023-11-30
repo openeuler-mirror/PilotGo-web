@@ -89,3 +89,12 @@ export function startService(data: any) {
         data
     })
 }
+
+// 重启一项服务
+export function restartService(data: any) {
+    return request({
+        url: 'agent/service_restart',
+        method: 'post',
+        data
+    })
+}
