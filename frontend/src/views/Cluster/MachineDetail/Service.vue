@@ -1,11 +1,10 @@
 <template>
     <div class="content">
         <div class="services">
-            <el-autocomplete style="width:50%" class="inline-input" v-model="searchName"
+            <el-autocomplete style="width:50%; margin-right:10px" class="inline-input" v-model="searchName"
                 :fetch-suggestions="querySuggestions" @select="onSelectService" placeholder="请输入服务名称"></el-autocomplete>
-            <el-button plain type="primary">搜索</el-button>
-            <el-button plain type="primary">启动</el-button>
-            <el-button plain type="primary">停止</el-button>
+            <el-button plain type="primary" >启动</el-button>
+            <el-button plain type="primary" @click="onStopService">停止</el-button>
             <el-button plain type="primary">重启</el-button>
         </div>
         <div class="info">
@@ -40,7 +39,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus';
 
-import { getServiceList } from "@/request/cluster";
+import { getServiceList, stopService } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const route = useRoute()
@@ -67,8 +66,6 @@ onMounted(() => {
     })
 })
 
-const searchName = ref("")
-
 function querySuggestions(query: string, callback: Function) {
     let result: any[] = []
 
@@ -85,12 +82,34 @@ function querySuggestions(query: string, callback: Function) {
 function onSelectService(name: any) {
     allService.value.forEach((item: any) => {
         if (item.Name === name.value) {
+            display.value = true
             serviceInfo.value = item
         }
     })
 }
 
+const searchName = ref("")
+
+function onStopService() {
+    stopService({
+        // TODO: api remove user params
+        service: searchName.value,
+        uuid: machineID.value
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            display.value = false
+            result.value = "成功"
+            ElMessage.success("stop service success")
+        } else {
+            ElMessage.error("failed to get machine service info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machine service info:" + err.msg)
+    })
+}
+
 </script>
+
 <style lang="scss" scoped>
 .content {
     width: 100%;
