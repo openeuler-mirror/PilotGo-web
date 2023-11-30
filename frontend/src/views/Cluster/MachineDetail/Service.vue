@@ -5,7 +5,7 @@
                 :fetch-suggestions="querySuggestions" @select="onSelectService" placeholder="请输入服务名称"></el-autocomplete>
             <el-button plain type="primary" @click="onStartService">启动</el-button>
             <el-button plain type="primary" @click="onStopService">停止</el-button>
-            <el-button plain type="primary">重启</el-button>
+            <el-button plain type="primary" @click="onRestartService">重启</el-button>
         </div>
         <div class="info">
             <div class="detail" v-if="display">
@@ -39,7 +39,7 @@ import { ref, onMounted } from "vue";
 import { useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus';
 
-import { getServiceList, stopService, startService } from "@/request/cluster";
+import { getServiceList, stopService, startService, restartService } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const route = useRoute()
@@ -109,12 +109,12 @@ function onStopService() {
         } else {
             display.value = false
             result.value = "失败"
-            ElMessage.error("failed to get machine service info: " + resp.msg)
+            ElMessage.error("failed to stop machine service info: " + resp.msg)
         }
     }).catch((err: any) => {
         display.value = false
         result.value = "失败"
-        ElMessage.error("failed to get machine service info:" + err.msg)
+        ElMessage.error("failed to stop machine service info:" + err.msg)
     })
 }
 
@@ -127,18 +127,42 @@ function onStartService() {
         if (resp.code === RespCodeOK) {
             display.value = false
             result.value = "成功"
-            ElMessage.success("stop service success")
+            ElMessage.success("start service success")
 
             updateServiceList()
         } else {
             display.value = false
             result.value = "失败"
-            ElMessage.error("failed to get machine service info: " + resp.msg)
+            ElMessage.error("failed to start machine service: " + resp.msg)
         }
     }).catch((err: any) => {
         display.value = false
         result.value = "失败"
-        ElMessage.error("failed to get machine service info:" + err.msg)
+        ElMessage.error("failed to start machine service:" + err.msg)
+    })
+}
+
+function onRestartService() {
+    restartService({
+        // TODO: api remove user params
+        service: searchName.value,
+        uuid: machineID.value
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            display.value = false
+            result.value = "成功"
+            ElMessage.success("restart service success")
+
+            updateServiceList()
+        } else {
+            display.value = false
+            result.value = "失败"
+            ElMessage.error("failed to restart machine service: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        display.value = false
+        result.value = "失败"
+        ElMessage.error("failed to restart machine service:" + err.msg)
     })
 }
 
