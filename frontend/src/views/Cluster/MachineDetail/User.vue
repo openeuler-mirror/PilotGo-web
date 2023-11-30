@@ -2,10 +2,11 @@
   <div class="content">
     <div class="users">
       <div class="current">
-        当前用户： {{currentUser.Username}}
+        当前用户： {{ currentUser.Username }}
       </div>
       <div class="search">
-        <el-autocomplete style="width:50%" class="inline-input" v-model="userName" placeholder="请输入用户名"></el-autocomplete>
+        <el-autocomplete style="width:50%" class="inline-input" v-model="userName" placeholder="请输入用户名"
+          :fetch-suggestions="querySearch" @select="onSelectUser"></el-autocomplete>
         <el-button plain type="primary">搜索</el-button>
       </div>
     </div>
@@ -37,20 +38,21 @@ const machineID = ref(route.params.uuid)
 
 
 const userName = ref("")
+const allUser = ref<any[]>([])
 const currentUser = ref<any>({})
 const userInfo = ref<any>({})
 
 onMounted(() => {
   getMachineAllUser({ uuid: machineID.value }).then((resp: any) => {
     if (resp.code === RespCodeOK) {
-      let users = resp.data.user_all
+      allUser.value = resp.data.user_all
 
       // 嵌套调用，避免两者请求不同步
       getCurrentUser({ uuid: machineID.value }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
           currentUser.value = resp.data.user_info
 
-          userInfo.value = users.filter((item:any) => item.Username === currentUser.value.Username)[0];
+          userInfo.value = allUser.value.filter((item: any) => item.Username === currentUser.value.Username)[0];
         } else {
           ElMessage.error("failed to get current machine user info: " + resp.msg)
         }
@@ -65,6 +67,25 @@ onMounted(() => {
     ElMessage.error("failed to get machine users info:" + err.msg)
   })
 })
+
+function querySearch(query: string, callback: Function) {
+  let result: any[] = []
+
+  allUser.value.forEach((item: any) => {
+    if (item.Username.indexOf(query) === 0) {
+      result.push({ "value": item.Username })
+    }
+  })
+  callback(result)
+}
+
+function onSelectUser(name: any) {
+  allUser.value.forEach((item: any) => {
+    if (item.Username === name.value) {
+      userInfo.value = item
+    }
+  })
+}
 
 </script>
 <style lang="scss" scoped>
