@@ -35,3 +35,12 @@ export function getMachineOverview(data: any) {
         params: data
     })
 }
+
+// 获取所有服务
+export function getserviceList(data: any) {
+    return request({
+        url: 'api/service_list',
+        method: 'get',
+        params: data
+    })
+}
