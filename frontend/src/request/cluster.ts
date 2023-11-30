@@ -44,3 +44,21 @@ export function getserviceList(data: any) {
         params: data
     })
 }
+
+// 获取当前机器登录user
+export function getCurrentUser(data: any) {
+    return request({
+        url: 'api/user_info',
+        method: 'get',
+        params: data
+    })
+}
+
+// 获取机器上所有user
+export function getMachineAllUser(data: any) {
+    return request({
+        url: 'api/user_all',
+        method: 'get',
+        params: data
+    })
+}
