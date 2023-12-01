@@ -126,10 +126,19 @@ export function getRepos(data: any) {
     })
 }
 
-// rpm列表
+// 获取所有已安装的package
 export function getInstalledPackages(data: any) {
     return request({
         url: 'api/rpm_all',
+        method: 'get',
+        params: data
+    })
+}
+
+// 获取单个packge的详情
+export function getPackageDetail(data: any) {
+    return request({
+        url: 'api/rpm_info',
         method: 'get',
         params: data
     })
