@@ -143,3 +143,12 @@ export function getPackageDetail(data: any) {
         params: data
     })
 }
+
+// 安装软件包
+export function installPackage(data: any) {
+    return request({
+        url: 'agent/rpm_install',
+        method: 'post',
+        data
+    })
+}

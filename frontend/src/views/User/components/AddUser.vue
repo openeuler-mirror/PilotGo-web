@@ -2,7 +2,7 @@
     <div>
         <el-form :model="form" ref="form" label-width="100px">
             <el-form-item label="用户名:" prop="username">
-                <el-input class="ipInput" type="text" size="medium" v-model="form.username" autocomplete="off"></el-input>
+                <el-input class="ipInput" type="text" v-model="form.username" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码:" prop="password">
                 <el-input type="password" class="ipInput" controls-position="right" v-model="form.password"
