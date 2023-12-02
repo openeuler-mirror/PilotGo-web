@@ -1,9 +1,9 @@
 <template>
     <div class="content">
         <div class="repo">
-            <el-table :data="totalRepo">
-                <el-table-column prop="File" label="文件"></el-table-column>
-                <el-table-column prop="Enabled" label="enabled"></el-table-column>
+            <el-table :data="allRepos">
+                <el-table-column prop="File" label="文件" width="400px"></el-table-column>
+                <el-table-column prop="Enabled" label="enabled" width="100px"></el-table-column>
                 <el-table-column prop="URL" label="repo地址"></el-table-column>
             </el-table>
         </div>
@@ -44,16 +44,56 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from 'vue-router'
+import { ElMessage } from 'element-plus';
 
 import AuthButton from "@/components/AuthButton.vue";
 
+import { getRepos } from "@/request/cluster";
+import { RespCodeOK } from "@/request/request";
+
+const route = useRoute()
+
+// 机器UUID
+const machineID = ref(route.params.uuid)
+
+const allRepos = ref<any>([])
+
 const display = ref(false)
 const packageName = ref("")
-const totalRepo = ref([])
 const rpmInfo = ref<any>({})
 const action = ref("")
 const result = ref("")
+
+
+onMounted(() => {
+    getRepos({ uuid: machineID.value }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            allRepos.value = resp.data
+
+            allRepos.value = [];
+            let data = resp.data
+            for (let i = 0; i < data.length; i++) {
+                let url = ""
+                if (data[i].BaseURL !== "") {
+                    url = data[i].BaseURL
+                } else if (data[i].MirrorList !== "") {
+                    url = data[i].MirrorList
+                } else if (data[i].MetaLink !== "") {
+                    url = data[i].MetaLink
+                }
+                allRepos.value.push({ File: data[i].File, ID: data[i].Name, URL: url, Enabled: data[i].Enabled ? "是" : "否" });
+            }
+        } else {
+            ElMessage.error("failed to get machine repo info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machine repo info:" + err.msg)
+    })
+})
+
+
 
 </script>
 
