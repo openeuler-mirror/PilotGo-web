@@ -8,10 +8,9 @@
             </el-table>
         </div>
         <div class="packages">
-            <el-autocomplete style="width:30%" class="inline-input" v-model="packageName" @select="onPackageSelected"
-                :fetch-suggestions="querySuggestions" placeholder="请输入内容"></el-autocomplete>
-            <auth-button name="default_all">搜索</auth-button>
-            <auth-button auth="showOperate" name="rpm_install">安装</auth-button>
+            <el-autocomplete style="width:30%; margin-right: 10px;" class="inline-input" v-model="packageName"
+                @select="onPackageSelected" :fetch-suggestions="querySuggestions" placeholder="请输入内容"></el-autocomplete>
+            <auth-button auth="showOperate" name="rpm_install" @click="onInstallPackage">安装</auth-button>
             <auth-button auth="showOperate" name="rpm_uninstall">卸载</auth-button>
         </div>
         <div class="info">
@@ -50,7 +49,7 @@ import { ElMessage } from 'element-plus';
 
 import AuthButton from "@/components/AuthButton.vue";
 
-import { getRepos, getInstalledPackages, getPackageDetail } from "@/request/cluster";
+import { getRepos, getInstalledPackages, getPackageDetail, installPackage } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const route = useRoute()
@@ -64,10 +63,6 @@ const allPackages = ref<any>([])
 const display = ref(true)
 const packageName = ref("")
 const packageInfo = ref<any>({})
-
-const action = ref("")
-const result = ref("")
-
 
 onMounted(() => {
     getRepos({ uuid: machineID.value }).then((resp: any) => {
@@ -94,6 +89,10 @@ onMounted(() => {
         ElMessage.error("failed to get machine repo info:" + err.msg)
     })
 
+    updateInstalledPackage()
+})
+
+function updateInstalledPackage() {
     getInstalledPackages({ uuid: machineID.value }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
             allPackages.value = resp.data.rpm_all
@@ -103,7 +102,7 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get machine installed packages info:" + err.msg)
     })
-})
+}
 
 function querySuggestions(query: string, callback: Function) {
     let result: any[] = []
@@ -118,8 +117,10 @@ function querySuggestions(query: string, callback: Function) {
 }
 
 function onPackageSelected() {
-    getPackageDetail({ uuid: machineID.value,
-    rpm: packageName.value}).then((resp: any) => {
+    getPackageDetail({
+        uuid: machineID.value,
+        rpm: packageName.value
+    }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
             packageInfo.value = resp.data.rpm_info
 
@@ -132,6 +133,30 @@ function onPackageSelected() {
     })
 }
 
+const action = ref("")
+const result = ref("")
+
+function onInstallPackage() {
+    action.value = "软件包安装"
+    display.value = false
+
+    installPackage({
+        // TODO: remove api params
+        uuid: [machineID.value],
+        rpm: packageName.value
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            packageInfo.value = resp.data.rpm_info
+
+            result.value = "成功"
+            updateInstalledPackage()
+        } else {
+            ElMessage.error("failed to get machine package detail info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machine package detail info:" + err.msg)
+    })
+}
 
 </script>
 
