@@ -116,3 +116,12 @@ export function getSysctlInfo(data: any) {
         params: data
     })
 }
+
+// 获取所有repo源
+export function getRepos(data: any) {
+    return request({
+        url: 'api/repos',
+        method: 'get',
+        params: data
+    })
+}
