@@ -125,3 +125,12 @@ export function getRepos(data: any) {
         params: data
     })
 }
+
+// rpm列表
+export function getInstalledPackages(data: any) {
+    return request({
+        url: 'api/rpm_all',
+        method: 'get',
+        params: data
+    })
+}
