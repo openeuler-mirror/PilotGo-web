@@ -8,7 +8,7 @@
             </el-table>
         </div>
         <div class="packages">
-            <el-autocomplete style="width:30%" class="inline-input" v-model="packageName"
+            <el-autocomplete style="width:30%" class="inline-input" v-model="packageName" @select="onPackageSelected"
                 :fetch-suggestions="querySuggestions" placeholder="请输入内容"></el-autocomplete>
             <auth-button name="default_all">搜索</auth-button>
             <auth-button auth="showOperate" name="rpm_install">安装</auth-button>
@@ -18,11 +18,11 @@
             <div class="detail" v-if="display">
                 <p class="title">软件包详情：</p>
                 <el-descriptions :column="3" border>
-                    <el-descriptions-item label="软件包名">{{ rpmInfo.Name }}</el-descriptions-item>
-                    <el-descriptions-item label="Version">{{ rpmInfo.Version }}</el-descriptions-item>
-                    <el-descriptions-item label="Release">{{ rpmInfo.Release }}</el-descriptions-item>
-                    <el-descriptions-item label="Architecture">{{ rpmInfo.Architecture }}</el-descriptions-item>
-                    <el-descriptions-item label="说明">{{ rpmInfo.Summary }}</el-descriptions-item>
+                    <el-descriptions-item label="软件包名">{{ packageInfo.Name }}</el-descriptions-item>
+                    <el-descriptions-item label="Version">{{ packageInfo.Version }}</el-descriptions-item>
+                    <el-descriptions-item label="Release">{{ packageInfo.Release }}</el-descriptions-item>
+                    <el-descriptions-item label="Architecture">{{ packageInfo.Architecture }}</el-descriptions-item>
+                    <el-descriptions-item label="说明">{{ packageInfo.Summary }}</el-descriptions-item>
                 </el-descriptions>
             </div>
             <div class="result" v-else>
@@ -50,7 +50,7 @@ import { ElMessage } from 'element-plus';
 
 import AuthButton from "@/components/AuthButton.vue";
 
-import { getRepos, getInstalledPackages } from "@/request/cluster";
+import { getRepos, getInstalledPackages, getPackageDetail } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const route = useRoute()
@@ -61,9 +61,9 @@ const machineID = ref(route.params.uuid)
 const allRepos = ref<any>([])
 const allPackages = ref<any>([])
 
-const display = ref(false)
+const display = ref(true)
 const packageName = ref("")
-const rpmInfo = ref<any>({})
+const packageInfo = ref<any>({})
 
 const action = ref("")
 const result = ref("")
@@ -101,7 +101,7 @@ onMounted(() => {
             ElMessage.error("failed to get machine installed packages info: " + resp.msg)
         }
     }).catch((err: any) => {
-        ElMessage.error("failed to get installed packages info:" + err.msg)
+        ElMessage.error("failed to get machine installed packages info:" + err.msg)
     })
 })
 
@@ -115,6 +115,21 @@ function querySuggestions(query: string, callback: Function) {
         }
     })
     callback(result)
+}
+
+function onPackageSelected() {
+    getPackageDetail({ uuid: machineID.value,
+    rpm: packageName.value}).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            packageInfo.value = resp.data.rpm_info
+
+            display.value = true
+        } else {
+            ElMessage.error("failed to get machine package detail info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get machine package detail info:" + err.msg)
+    })
 }
 
 
