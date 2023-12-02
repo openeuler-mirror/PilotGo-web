@@ -9,7 +9,7 @@
         </div>
         <div class="packages">
             <el-autocomplete style="width:30%" class="inline-input" v-model="packageName"
-                placeholder="请输入内容"></el-autocomplete>
+                :fetch-suggestions="querySuggestions" placeholder="请输入内容"></el-autocomplete>
             <auth-button name="default_all">搜索</auth-button>
             <auth-button auth="showOperate" name="rpm_install">安装</auth-button>
             <auth-button auth="showOperate" name="rpm_uninstall">卸载</auth-button>
@@ -50,7 +50,7 @@ import { ElMessage } from 'element-plus';
 
 import AuthButton from "@/components/AuthButton.vue";
 
-import { getRepos } from "@/request/cluster";
+import { getRepos, getInstalledPackages } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const route = useRoute()
@@ -59,10 +59,12 @@ const route = useRoute()
 const machineID = ref(route.params.uuid)
 
 const allRepos = ref<any>([])
+const allPackages = ref<any>([])
 
 const display = ref(false)
 const packageName = ref("")
 const rpmInfo = ref<any>({})
+
 const action = ref("")
 const result = ref("")
 
@@ -91,8 +93,29 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get machine repo info:" + err.msg)
     })
+
+    getInstalledPackages({ uuid: machineID.value }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            allPackages.value = resp.data.rpm_all
+        } else {
+            ElMessage.error("failed to get machine installed packages info: " + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to get installed packages info:" + err.msg)
+    })
 })
 
+function querySuggestions(query: string, callback: Function) {
+    let result: any[] = []
+    allPackages.value.forEach((name: string) => {
+        if (name.indexOf(query) === 0) {
+            result.push({
+                "value": name,
+            })
+        }
+    })
+    callback(result)
+}
 
 
 </script>
