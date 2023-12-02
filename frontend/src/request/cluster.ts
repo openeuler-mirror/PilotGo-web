@@ -107,3 +107,12 @@ export function getNetworkInfo(data: any) {
         params: data
     })
 }
+
+// 获取内核信息
+export function getSysctlInfo(data: any) {
+    return request({
+        url: 'api/sysctl_info',
+        method: 'get',
+        params: data
+    })
+}
