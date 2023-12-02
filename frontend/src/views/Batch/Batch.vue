@@ -63,6 +63,10 @@ const pageSize = ref(10)
 const total = ref(0)
 
 onMounted(() => {
+    updateBatchInfo()
+})
+
+function updateBatchInfo() {
     getBatches({
         page: currentPage.value,
         size: pageSize.value,
@@ -76,7 +80,7 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get batch info:" + err.msg)
     })
-})
+}
 
 const selectedBatches = ref<any[]>()
 
@@ -100,6 +104,8 @@ function batchDelete() {
             deleteBatch({BatchID:params}).then((resp: any) => {
                 if (resp.code === RespCodeOK) {
                     ElMessage.success('批次删除成功')
+
+                    updateBatchInfo()
                 } else {
                     ElMessage.error("failed to delete batch: " + resp.msg)
                 }
