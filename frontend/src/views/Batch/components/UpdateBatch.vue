@@ -1,5 +1,5 @@
 <template>
-    <el-form :model="formData" :rules="rules" label-width="100px">
+    <el-form ref="updateBatchFormRef" :model="formData" :rules="rules" label-width="100px">
         <el-form-item label="批次名称" prop="name">
             <el-input class="ipInput" type="text" v-model="formData.name" autocomplete="off"></el-input>
         </el-form-item>
@@ -8,13 +8,16 @@
         </el-form-item>
     </el-form>
     <div class="dialog-footer">
-        <el-button>取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" @click="onUpdateBatch">确 定</el-button>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, defineProps } from "vue";
+import { ElMessage } from 'element-plus';
+
+import { RespCodeOK } from "@/request/request";
+import { updateBatch } from "@/request/batch";
 
 const rules = {
     name: [{
@@ -24,7 +27,37 @@ const rules = {
     }],
 }
 
-const formData = ref<any>({})
+const props = defineProps({
+    batchID: Number,
+})
+
+const updateBatchFormRef = ref()
+const formData = ref({
+    name: "",
+    description: ""
+})
+
+function onUpdateBatch() {
+    updateBatchFormRef.value.validate((valid: boolean) => {
+        if (valid) {
+            updateBatch({
+                BatchID: props.batchID,
+                BatchName: formData.value.name,
+                Description: formData.value.description,
+            }).then((resp: any) => {
+                if (resp.code == RespCodeOK) {
+                    ElMessage.success("update batch info success")
+                } else {
+                    ElMessage.error("failed to update batch info:" + resp.msg)
+                }
+            }).catch((error) => {
+                ElMessage.error("failed to update batch info:" + error)
+            })
+        } else {
+            ElMessage.error("数据填写错误")
+        }
+    })
+}
 
 </script>
 
