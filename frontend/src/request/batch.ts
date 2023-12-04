@@ -18,6 +18,7 @@ export function getBatchDetail(data: any) {
     })
 }
 
+// 删除批次
 export function deleteBatch(data: any) {
     return request({
         url: '/batchmanager/deletebatch',
@@ -27,10 +28,19 @@ export function deleteBatch(data: any) {
 }
 
 // 创建批次
-export function createBatch(data:any) {
+export function createBatch(data: any) {
     return request({
-      url: 'macList/createbatch',
-      method: 'post',
-      data
+        url: 'macList/createbatch',
+        method: 'post',
+        data
     })
-  }
+}
+
+// 编辑批次信息
+export function updateBatch(data: any) {
+    return request({
+        url: 'batchmanager/updatebatch',
+        method: 'post',
+        data
+    })
+}
