@@ -38,24 +38,37 @@
                 </el-table-column>
                 <el-table-column prop="operation" label="操作">
                     <template #default="scope">
-                        <auth-button auth="batch_update">
+                        <auth-button auth="batch_update" @click="onEditBatch(scope.row.ID)">
                             编辑
                         </auth-button>
                     </template>
                 </el-table-column>
             </template>
         </PGTable>
+
+        <el-dialog title="编辑批次" v-model="showChangeBatchDialog">
+            <UpdateBatch :batchID="updateBatchID" />
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, toRaw } from "vue";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import AuthButton from "@/components/AuthButton.vue";
 import PGTable from "@/components/PGTable.vue";
-import { ElMessage, ElMessageBox } from 'element-plus';
+import UpdateBatch from "./components/UpdateBatch.vue";
 
 import { RespCodeOK } from "@/request/request";
 import { getBatches, deleteBatch } from '@/request/batch';
+
+const showChangeBatchDialog = ref(false)
+const updateBatchID = ref(0)
+
+function onEditBatch(id: number) {
+    updateBatchID.value = id
+    showChangeBatchDialog.value = true
+}
 
 const batches = ref([])
 const currentPage = ref(1)
@@ -95,13 +108,13 @@ function batchDelete() {
         })
         .then(() => {
             // TODO: fix proxy object problem
-            let params:number[] = [];
+            let params: number[] = [];
             (toRaw(selectedBatches.value) as any[]).forEach((item) => {
                 params.push(item.ID)
                 console.log(item)
             });
 
-            deleteBatch({BatchID:params}).then((resp: any) => {
+            deleteBatch({ BatchID: params }).then((resp: any) => {
                 if (resp.code === RespCodeOK) {
                     ElMessage.success('批次删除成功')
 
