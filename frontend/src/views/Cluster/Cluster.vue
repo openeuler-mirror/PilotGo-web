@@ -58,8 +58,7 @@
         </div>
 
         <el-dialog title="主机部门变更" v-model="showChangeDepartDialog">
-            <change-depart>
-            </change-depart>
+            <change-depart />
         </el-dialog>
     </div>
 </template>
@@ -74,7 +73,7 @@ import PGTree from "@/components/PGTree.vue";
 import StateDot from "@/components/StateDot.vue";
 import ChangeDepart from "./components/ChangeDepart.vue";
 
-import {directTo} from "@/router/index"
+import { directTo } from "@/router/index"
 
 import { getPagedDepartMachines } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
@@ -112,8 +111,8 @@ onMounted(() => {
     })
 })
 
-function machineDetail(info:any) {
-    directTo("/cluster/machine/"+info.uuid)
+function machineDetail(info: any) {
+    directTo("/cluster/machine/" + info.uuid)
 }
 
 </script>

@@ -33,7 +33,7 @@
         </PGTable>
 
         <el-dialog :title="title" v-model="display" width="560px">
-            <AddUser ></AddUser>
+            <AddUser />
         </el-dialog>
     </div>
 </template>
@@ -76,7 +76,7 @@ onMounted(() => {
 const display = ref(false)
 const title = ref("")
 
-function onAddUser(){
+function onAddUser() {
     title.value = "添加用户"
     display.value = true
 }
