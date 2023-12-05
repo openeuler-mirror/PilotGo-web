@@ -47,7 +47,7 @@
         </PGTable>
 
         <el-dialog title="编辑批次" v-model="showChangeBatchDialog">
-            <UpdateBatch :batchID="updateBatchID" />
+            <UpdateBatch :batchID="updateBatchID" @batchUpdated="updateBatchInfo" @close="showChangeBatchDialog = false" />
         </el-dialog>
     </div>
 </template>
@@ -116,9 +116,8 @@ function batchDelete() {
 
             deleteBatch({ BatchID: params }).then((resp: any) => {
                 if (resp.code === RespCodeOK) {
-                    ElMessage.success('批次删除成功')
-
                     updateBatchInfo()
+                    ElMessage.success('批次删除成功')
                 } else {
                     ElMessage.error("failed to delete batch: " + resp.msg)
                 }

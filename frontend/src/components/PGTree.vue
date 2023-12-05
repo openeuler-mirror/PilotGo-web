@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="header">
+        <div class="header" v-if="showHeader">
             <slot name="header"></slot>
         </div>
         <el-tree :data="department" :props="defaultProps" :show-checkbox="selectable" @node-click="onNodeClicked"
@@ -24,6 +24,11 @@ const props = defineProps({
         }
     },
 
+    // 是否显示header
+    showHeader: {
+        type: Boolean,
+        default: true,
+    },
     // 是否可选择节点
     selectable: {
         type: Boolean,
