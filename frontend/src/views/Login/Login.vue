@@ -36,7 +36,7 @@ import { directTo } from '@/router/index';
 import { loginByEmail } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 import { setToken } from "@/module/cookie";
-import { checkEmail } from "./logic";
+import { checkAccount } from "./logic";
 import { userStore } from "@/stores/user";
 
 const loginFormRef = ref()
@@ -53,7 +53,7 @@ const rules = {
             trigger: "blur"
         },
         {
-            validator: checkEmail,
+            validator: checkAccount,
             message: "请输入正确的邮箱格式",
             trigger: "blur"
         }
