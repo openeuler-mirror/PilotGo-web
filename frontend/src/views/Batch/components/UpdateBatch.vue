@@ -13,11 +13,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
 import { ElMessage } from 'element-plus';
 
 import { RespCodeOK } from "@/request/request";
 import { updateBatch } from "@/request/batch";
+
+const emits = defineEmits(["batchUpdated", "close"])
 
 const rules = {
     name: [{
@@ -46,6 +48,8 @@ function onUpdateBatch() {
                 Description: formData.value.description,
             }).then((resp: any) => {
                 if (resp.code == RespCodeOK) {
+                    emits('batchUpdated')
+                    emits('close')
                     ElMessage.success("update batch info success")
                 } else {
                     ElMessage.error("failed to update batch info:" + resp.msg)
