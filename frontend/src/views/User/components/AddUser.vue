@@ -144,7 +144,7 @@ function onAddUser() {
                     ElMessage.success(res.msg);
                     formRef.value.resetFields();
                 } else {
-                    ElMessage.error(res.msg);
+                    ElMessage.error("添加用户失败:", res.msg);
                 }
             }).catch((err: any) => {
                 ElMessage.error("添加用户失败:", err.msg);
