@@ -43,3 +43,12 @@ export function addUser(data: any) {
         data
     })
 }
+
+// 更新用户信息
+export function updateUser(data: any) {
+    return request({
+        url: '/user/update',
+        method: 'post',
+        data
+    })
+}
