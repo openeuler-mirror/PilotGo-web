@@ -52,7 +52,7 @@ const rules = {
         {
             validator: checkPhone,
             message: "请输入正确的手机号格式",
-            trigger: "change",
+            trigger: "blur",
         }],
     email: [
         {
@@ -63,7 +63,7 @@ const rules = {
         {
             validator: checkEmail,
             message: "请输入正确的邮箱格式",
-            trigger: "change",
+            trigger: "blur",
         }],
 }
 
