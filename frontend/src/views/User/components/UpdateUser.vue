@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-form :model="form" ref="formRef" label-width="100px">
+        <el-form :model="form" ref="formRef" :rules="rules" label-width="100px">
             <el-form-item label="用户名:" prop="username">
-                <el-input class="ipInput" type="text" size="medium" :disabled="disabled" v-model="form.username"
+                <el-input class="ipInput" type="text" :disabled="disabled" v-model="form.username"
                     autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="部门:" prop="departName">
@@ -31,6 +31,40 @@ import { ref } from "vue";
 
 import PGTree from "@/components/PGTree.vue";
 
+import { checkEmail, checkPhone } from "./logic";
+
+const rules = {
+    username: [
+        {
+            required: true,
+            message: "请输入用户名",
+            trigger: "blur"
+        }],
+    departName: [{
+        required: true,
+        message: "请选择部门",
+        trigger: "blur"
+    }],
+    phone: [
+        {
+            validator: checkPhone,
+            message: "请输入正确的手机号格式",
+            trigger: "change",
+        }],
+    email: [
+        {
+            required: true,
+            message: "请输入邮箱",
+            trigger: "blur",
+        },
+        {
+            validator: checkEmail,
+            message: "请输入正确的邮箱格式",
+            trigger: "change",
+        }],
+}
+
+
 const disabled = ref(true)
 
 const formRef = ref()
@@ -44,6 +78,8 @@ const form = ref<any>({
     departPid: "",
     role: "",
 });
+
+
 
 </script>
 
