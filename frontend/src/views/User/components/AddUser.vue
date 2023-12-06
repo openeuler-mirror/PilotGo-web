@@ -1,8 +1,8 @@
 <template>
     <div>
-        <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+        <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
             <el-form-item label="用户名:" prop="username">
-                <el-input class="ipInput" type="text" v-model="form.username" autocomplete="off"></el-input>
+                <el-input class="ipInput" type="text" v-model="form.userName" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="密码:" prop="password">
                 <el-input type="password" class="ipInput" controls-position="right" v-model="form.password"
@@ -10,7 +10,7 @@
             </el-form-item>
             <el-form-item label="部门:" prop="departName">
                 <el-input class="ipInput" controls-position="right" v-model="form.departName" autocomplete="off"></el-input>
-                <PGTree style="width: 98%;" :showHeader="false">
+                <PGTree style="width: 98%;" :showHeader="false" :onNodeClicked="onDepartSelected">
                 </PGTree>
             </el-form-item>
             <el-form-item label="用户角色:" prop="role">
@@ -28,7 +28,7 @@
         </el-form>
 
         <div class="dialog-footer">
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" @click="onAddUser">确 定</el-button>
         </div>
     </div>
 </template>
@@ -42,9 +42,10 @@ import PGTree from "@/components/PGTree.vue";
 import { checkEmail, checkPhone } from "./logic";
 import { RespCodeOK } from "@/request/request";
 import { getRoles } from '@/request/role';
+import { addUser } from '@/request/user';
 
 const rules = {
-    username: [
+    userName: [
         {
             required: true,
             message: "请输入用户名",
@@ -103,7 +104,56 @@ onMounted(() => {
     updateRoles()
 })
 
-const form = ref<any>({});
+const formRef = ref()
+const form = ref<any>({
+    userName: "",
+    password: "",
+    phone: "",
+    email: "",
+    departName: "",
+    departId: "",
+    departPid: "",
+    role: "",
+});
+
+function onDepartSelected(data: any) {
+    if (data) {
+        form.value.departName = data.label;
+        form.value.departId = data.id;
+        form.value.departPid = data.pid;
+    }
+}
+
+function onAddUser() {
+    let params = {
+        userName: form.value.userName,
+        password: form.value.password,
+        phone: form.value.phone,
+        email: form.value.email,
+        departName: form.value.departName,
+        departId: form.value.departId,
+        departPid: form.value.departPid,
+        roleid: form.value.role.toString(),
+    }
+    formRef.value.validate((valid: boolean) => {
+        if (valid) {
+            addUser(params).then((res: any) => {
+                if (res.data.code === 200) {
+                    // this.$emit("click","success");
+                    ElMessage.success(res.msg);
+                    formRef.value.resetFields();
+                } else {
+                    ElMessage.error(res.msg);
+                }
+            }).catch((err: any) => {
+                ElMessage.error("添加用户失败:", err.msg);
+            });
+        } else {
+            ElMessage.error("内容填写错误");
+        }
+    });
+}
+
 
 </script>
 
