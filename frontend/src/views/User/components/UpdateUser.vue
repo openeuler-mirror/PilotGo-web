@@ -2,7 +2,7 @@
     <div>
         <el-form :model="form" ref="formRef" :rules="rules" label-width="100px">
             <el-form-item label="用户名:" prop="username">
-                <el-input class="ipInput" type="text" :disabled="disabled" v-model="form.username"
+                <el-input class="ipInput" type="text" :disabled="disabled" v-model="form.userName"
                     autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="部门:" prop="departName">
@@ -27,14 +27,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 import PGTree from "@/components/PGTree.vue";
 
 import { checkEmail, checkPhone } from "./logic";
 
 const rules = {
-    username: [
+    userName: [
         {
             required: true,
             message: "请输入用户名",
@@ -64,21 +64,38 @@ const rules = {
         }],
 }
 
+const props = defineProps({
+    user: {
+        type: Object,
+        default: {},
+    }
+})
 
 const disabled = ref(true)
 
 const formRef = ref()
 const form = ref<any>({
     userName: "",
-    password: "",
     phone: "",
     email: "",
     departName: "",
     departId: "",
     departPid: "",
-    role: "",
 });
 
+
+onMounted(() => {
+    setUserInfo()
+})
+
+function setUserInfo() {
+    form.value.userName = props.user.username
+    form.value.phone = props.user.phone
+    form.value.email = props.user.email
+    form.value.departName = props.user.departName
+    form.value.departId = props.user.departid
+    form.value.departPid = props.user.departPId
+}
 
 
 </script>
