@@ -34,7 +34,7 @@
 
         <el-dialog :title="title" v-model="display" width="560px">
             <AddUser v-if="displayDialog === 'AddUser'"/>
-            <UpdateUser v-if="displayDialog === 'UpdateUser'" />
+            <UpdateUser v-if="displayDialog === 'UpdateUser'" :user="editedUser" />
         </el-dialog>
     </div>
 </template>
@@ -84,7 +84,9 @@ function onAddUser() {
     display.value = true
 }
 
+const editedUser = ref<any>({})
 function onUpdateUser(data:any) {
+    editedUser.value = data
     title.value = "编辑用户"
     displayDialog.value = "UpdateUser"
     display.value = true
