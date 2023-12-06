@@ -33,8 +33,8 @@
         </PGTable>
 
         <el-dialog :title="title" v-model="display" width="560px">
-            <AddUser v-if="displayDialog === 'AddUser'"/>
-            <UpdateUser v-if="displayDialog === 'UpdateUser'" :user="editedUser" />
+            <AddUser v-if="displayDialog === 'AddUser'" @userUpdated="updateUsers" @close="display = false"/>
+            <UpdateUser v-if="displayDialog === 'UpdateUser'" :user="editedUser"  @userUpdated="updateUsers" @close="display = false"/>
         </el-dialog>
     </div>
 </template>
@@ -57,6 +57,10 @@ const pageSize = ref(10)
 const total = ref(0)
 
 onMounted(() => {
+    updateUsers()
+})
+
+function updateUsers() {
     getUsers({
         page: currentPage.value,
         size: pageSize.value,
@@ -72,7 +76,7 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get users info:" + err.msg)
     })
-})
+}
 
 const display = ref(false)
 const displayDialog = ref("")

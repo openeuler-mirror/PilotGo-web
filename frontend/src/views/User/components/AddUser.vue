@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineEmits} from "vue";
 import { ElMessage } from 'element-plus';
 
 import PGTree from "@/components/PGTree.vue";
@@ -85,6 +85,8 @@ const rules = {
             trigger: "change",
         }],
 }
+
+const emits = defineEmits(["userUpdated", "close"])
 
 const roles = ref<any[]>();
 
@@ -139,8 +141,9 @@ function onAddUser() {
     formRef.value.validate((valid: boolean) => {
         if (valid) {
             addUser(params).then((res: any) => {
-                if (res.data.code === 200) {
-                    // this.$emit("click","success");
+                if (res.code === RespCodeOK) {
+                    emits('userUpdated')
+                    emits('close')
                     ElMessage.success(res.msg);
                     formRef.value.resetFields();
                 } else {
