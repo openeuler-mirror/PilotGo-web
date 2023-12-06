@@ -25,7 +25,7 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right" class="operate">
                     <template #default="scope">
-                        <el-button type="primary" size="small">编辑</el-button>
+                        <el-button type="primary" size="small" @click="onUpdateUser(scope.row)">编辑</el-button>
                         <el-button type="danger" size="small">重置密码</el-button>
                     </template>
                 </el-table-column>
@@ -33,7 +33,8 @@
         </PGTable>
 
         <el-dialog :title="title" v-model="display" width="560px">
-            <AddUser />
+            <AddUser v-if="displayDialog === 'AddUser'"/>
+            <UpdateUser v-if="displayDialog === 'UpdateUser'" />
         </el-dialog>
     </div>
 </template>
@@ -44,12 +45,12 @@ import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
 import AddUser from "./components/AddUser.vue";
+import UpdateUser from "./components/UpdateUser.vue";
 
 import { getUsers, searchUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 
 const users = ref([])
-
 
 const currentPage = ref(1)
 const pageSize = ref(10)
@@ -74,10 +75,18 @@ onMounted(() => {
 })
 
 const display = ref(false)
+const displayDialog = ref("")
 const title = ref("")
 
 function onAddUser() {
     title.value = "添加用户"
+    displayDialog.value = "AddUser"
+    display.value = true
+}
+
+function onUpdateUser(data:any) {
+    title.value = "编辑用户"
+    displayDialog.value = "UpdateUser"
     display.value = true
 }
 
