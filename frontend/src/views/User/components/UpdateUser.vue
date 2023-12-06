@@ -8,7 +8,7 @@
             <el-form-item label="部门:" prop="departName">
                 <el-input class="ipInput" controls-position="right" :disabled="disabled" v-model="form.departName"
                     autocomplete="off"></el-input>
-                <PGTree style="width: 98%;" :showHeader="false" :showEdit="false" ref="tree">
+                <PGTree style="width: 98%;" :showHeader="false" :showEdit="false" :onNodeClicked="onDepartSelected">
                 </PGTree>
             </el-form-item>
             <el-form-item label="手机号:" prop="phone">
@@ -21,16 +21,19 @@
         </el-form>
 
         <div class="dialog-footer">
-            <el-button type="primary">确 定</el-button>
+            <el-button type="primary" @click="onUpdateUser">确 定</el-button>
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from "vue";
+import { ElMessage } from 'element-plus';
 
 import PGTree from "@/components/PGTree.vue";
 
+import { RespCodeOK } from "@/request/request";
+import { updateUser } from '@/request/user';
 import { checkEmail, checkPhone } from "./logic";
 
 const rules = {
@@ -95,6 +98,39 @@ function setUserInfo() {
     form.value.departName = props.user.departName
     form.value.departId = props.user.departid
     form.value.departPid = props.user.departPId
+}
+
+function onDepartSelected(data: any) {
+    if (data) {
+        form.value.departName = data.label;
+        form.value.departId = data.id;
+        form.value.departPid = data.pid;
+    }
+}
+function onUpdateUser() {
+    formRef.value.validate((valid: boolean) => {
+        if (valid) {
+            updateUser({
+                username: form.value.userName,
+                phone: form.value.phone,
+                email: form.value.email,
+                departName: form.value.departName,
+                departId: form.value.departId,
+                departPid: form.value.departPid,
+            }).then((res: any) => {
+                if (res.data.code === RespCodeOK) {
+                    ElMessage.success(res.msg);
+                    formRef.value.resetFields();
+                } else {
+                    ElMessage.error("修改用户信息失败:", res.msg);
+                }
+            }).catch((err: any) => {
+                ElMessage.error("修改用户信息失败", err.msg);
+            });
+        } else {
+            ElMessage.error("内容填写错误");
+        }
+    });
 }
 
 
