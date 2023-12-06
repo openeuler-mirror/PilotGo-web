@@ -52,3 +52,12 @@ export function updateUser(data: any) {
         data
     })
 }
+
+// 重置用户密码
+export function resetUserPasswd(data: any) {
+    return request({
+        url: '/user/reset',
+        method: 'post',
+        data
+    })
+}
