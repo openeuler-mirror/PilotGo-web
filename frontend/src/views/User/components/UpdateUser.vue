@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, defineEmits } from "vue";
 import { ElMessage } from 'element-plus';
 
 import PGTree from "@/components/PGTree.vue";
@@ -67,6 +67,7 @@ const rules = {
         }],
 }
 
+const emits = defineEmits(["userUpdated", "close"])
 const props = defineProps({
     user: {
         type: Object,
@@ -118,7 +119,9 @@ function onUpdateUser() {
                 departId: form.value.departId,
                 departPid: form.value.departPid,
             }).then((res: any) => {
-                if (res.data.code === RespCodeOK) {
+                if (res.code === RespCodeOK) {
+                    emits('userUpdated')
+                    emits('close')
                     ElMessage.success(res.msg);
                     formRef.value.resetFields();
                 } else {
