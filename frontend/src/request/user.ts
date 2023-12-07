@@ -61,3 +61,12 @@ export function resetUserPasswd(data: any) {
         data
     })
 }
+
+// 删除用户
+export function deleteUser(data: any) {
+    return request({
+        url: '/user/delete',
+        method: 'post',
+        data
+    })
+}
