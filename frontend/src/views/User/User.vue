@@ -1,13 +1,18 @@
 <template>
     <div class="container">
-        <PGTable :data="users" title="用户列表" :showSelect="true">
+        <PGTable :data="users" title="用户列表" :showSelect="true" v-model:selectedData="selectedUsers">
             <template v-slot:action>
                 <div class="search">
                     <el-input v-model.trim="searchInput" placeholder="请输入邮箱名进行搜索..." style="width: 300px;" />
                     <el-button type="primary" @click="onSearchUser">搜索</el-button>
                     <el-divider direction="vertical" style="height: 2.5em;" />
                     <el-button type="primary" style="margin-left: 0px;" @click="onAddUser">添加</el-button>
-                    <el-button type="primary">删除</el-button>
+                    <el-popconfirm title="确定删除此用户？" confirm-button-text="确定" cancel-button-text="取消"
+                        @confirm="onDeleteUser">
+                        <template #reference>
+                            <el-button type="primary">删除</el-button>
+                        </template>
+                    </el-popconfirm>
                     <el-button type="primary">导出</el-button>
                     <el-button type="primary">批量导入</el-button>
                 </div>
@@ -48,7 +53,7 @@ import PGTable from "@/components/PGTable.vue";
 import AddUser from "./components/AddUser.vue";
 import UpdateUser from "./components/UpdateUser.vue";
 
-import { getUsers, searchUser, resetUserPasswd } from "@/request/user";
+import { getUsers, searchUser, resetUserPasswd, deleteUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 
 const users = ref([])
@@ -87,6 +92,28 @@ function onAddUser() {
     title.value = "添加用户"
     displayDialog.value = "AddUser"
     display.value = true
+}
+
+const selectedUsers = ref<any[]>([])
+function onDeleteUser() {
+    let params: string[] = []
+    selectedUsers.value.forEach((item:any)=>{
+        params.push(item.email);
+    })
+    console.log("delete user:", params)
+
+    deleteUser({
+        delDatas: params
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            updateUsers()
+            ElMessage.success("success to delete users:" + resp.msg)
+        } else {
+            ElMessage.error("failed to delete users:" + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to delete users:" + err.msg)
+    })
 }
 
 const editedUser = ref<any>({})
