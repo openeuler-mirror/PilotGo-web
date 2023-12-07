@@ -26,15 +26,16 @@
                 <el-table-column label="操作" fixed="right" class="operate">
                     <template #default="scope">
                         <el-button type="primary" size="small" @click="onUpdateUser(scope.row)">编辑</el-button>
-                        <el-button type="danger" size="small">重置密码</el-button>
+                        <el-button type="danger" size="small" @click="onResetUserPasswd(scope.row)">重置密码</el-button>
                     </template>
                 </el-table-column>
             </template>
         </PGTable>
 
         <el-dialog :title="title" v-model="display" width="560px">
-            <AddUser v-if="displayDialog === 'AddUser'" @userUpdated="updateUsers" @close="display = false"/>
-            <UpdateUser v-if="displayDialog === 'UpdateUser'" :user="editedUser"  @userUpdated="updateUsers" @close="display = false"/>
+            <AddUser v-if="displayDialog === 'AddUser'" @userUpdated="updateUsers" @close="display = false" />
+            <UpdateUser v-if="displayDialog === 'UpdateUser'" :user="editedUser" @userUpdated="updateUsers"
+                @close="display = false" />
         </el-dialog>
     </div>
 </template>
@@ -47,7 +48,7 @@ import PGTable from "@/components/PGTable.vue";
 import AddUser from "./components/AddUser.vue";
 import UpdateUser from "./components/UpdateUser.vue";
 
-import { getUsers, searchUser } from "@/request/user";
+import { getUsers, searchUser, resetUserPasswd } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 
 const users = ref([])
@@ -89,8 +90,8 @@ function onAddUser() {
 }
 
 const editedUser = ref<any>({})
-function onUpdateUser(data:any) {
-    editedUser.value = data
+function onUpdateUser(user: any) {
+    editedUser.value = user
     title.value = "编辑用户"
     displayDialog.value = "UpdateUser"
     display.value = true
@@ -112,6 +113,20 @@ function onSearchUser() {
         }
     }).catch((err: any) => {
         ElMessage.error("failed to search users:" + err.msg)
+    })
+}
+
+function onResetUserPasswd(user: any) {
+    resetUserPasswd({
+        email: user.email
+    }).then((resp: any) => {
+        if (resp.code === RespCodeOK) {
+            ElMessage.success("reset user password success:" + resp.msg)
+        } else {
+            ElMessage.error("failed to reset user password:" + resp.msg)
+        }
+    }).catch((err: any) => {
+        ElMessage.error("failed to reset user password" + err.msg)
     })
 }
 </script>
