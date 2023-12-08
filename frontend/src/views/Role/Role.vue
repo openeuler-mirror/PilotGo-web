@@ -13,8 +13,10 @@
                 </el-table-column>
                 <el-table-column label="权限">
                     <template #default="scope">
-                        <el-button name="default_all" type="primary" size="small" @click="showRoleDetail">查看</el-button>
-                        <el-button name="role_modify" type="primary" size="small" @click="onEditRoleDetail">变更</el-button>
+                        <el-button name="default_all" type="primary" size="small"
+                            @click="showRoleDetail(scope.row)">查看</el-button>
+                        <el-button name="role_modify" type="primary" size="small"
+                            @click="onEditRoleDetail(scope.row)">变更</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
@@ -40,7 +42,7 @@
         </el-dialog>
 
         <el-drawer :title="roleDetailTitle" v-model="showDetail" direction="rtl">
-            <RoleDetail :showEdit="showDetailEdit" />
+            <RoleDetail :showEdit="showDetailEdit" :role="editedRole" />
         </el-drawer>
     </div>
 </template>
@@ -84,12 +86,14 @@ const roleDetailTitle = ref("权限详情")
 const showDetail = ref(false)
 const showDetailEdit = ref(false)
 
-function showRoleDetail() {
+function showRoleDetail(role: any) {
     showDetailEdit.value = false
     showDetail.value = true
 }
 
-function onEditRoleDetail() {
+const editedRole = ref("")
+function onEditRoleDetail(role: any) {
+    editedRole.value = role.role
     showDetailEdit.value = true
     showDetail.value = true
 }
