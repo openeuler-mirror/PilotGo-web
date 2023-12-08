@@ -16,3 +16,12 @@ export function getRoles() {
         method: 'get',
     })
 }
+
+// 修改角色权限
+export function changeRolePermission(data: any) {
+    return request({
+        url: '/user/roleChange',
+        method: 'post',
+        data
+    })
+}
