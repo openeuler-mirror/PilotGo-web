@@ -13,18 +13,18 @@
                 </el-table-column>
                 <el-table-column label="权限">
                     <template #default="scope">
-                        <el-button name="default_all" size="small">查看</el-button>
-                        <el-button name="default_all" size="small">查看</el-button>
-                        <el-button name="role_modify" size="small">变更</el-button>
+                        <el-button name="default_all" type="primary" size="small" @click="showRoleDetail">查看</el-button>
+                        <el-button name="role_modify" type="primary" size="small">变更</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template #default="scope">
-                        <el-button :disabled="[1].includes(scope.row.id)" name="role_update" size="small">编辑</el-button>
+                        <el-button :disabled="[1].includes(scope.row.id)" name="role_update" size="small"
+                            type="primary">编辑</el-button>
                         <el-popconfirm title="确定删除此角色?">
                             <template #reference>
                                 <el-button :disabled="[1].includes(scope.row.id)" slot="reference" name="role_delete"
-                                    size="small">
+                                    type="danger" size="small">
                                     删除
                                 </el-button>
                             </template>
@@ -33,6 +33,10 @@
                 </el-table-column>
             </template>
         </PGTable>
+
+        <el-drawer :title="title" v-model="showDetail" direction="rtl">
+            <RoleDetail />
+        </el-drawer>
     </div>
 </template>
 
@@ -41,6 +45,7 @@ import { ref, onMounted } from "vue";
 import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
+import RoleDetail from "./components/RoleDetail.vue";
 
 import { getRolesPaged } from "@/request/role";
 import { RespCodeOK } from "@/request/request";
@@ -67,6 +72,14 @@ onMounted(() => {
         ElMessage.error("failed to get role info:" + err.msg)
     })
 })
+
+
+const title = ref("权限详情")
+const showDetail = ref(false)
+
+function showRoleDetail() {
+    showDetail.value = true
+}
 
 </script>
 
