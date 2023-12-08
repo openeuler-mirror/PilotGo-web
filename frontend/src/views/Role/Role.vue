@@ -2,7 +2,7 @@
     <div class="container">
         <PGTable :data="roles" title="角色列表" :showSelect="true" :total="total" :currentPage="currentPage">
             <template v-slot:action>
-                <el-button type="primary">添加</el-button>
+                <el-button type="primary" @click="onAddRole">添加</el-button>
             </template>
             <template v-slot:content>
                 <el-table-column prop="ID" label="角色ID" sortable>
@@ -14,13 +14,13 @@
                 <el-table-column label="权限">
                     <template #default="scope">
                         <el-button name="default_all" type="primary" size="small" @click="showRoleDetail">查看</el-button>
-                        <el-button name="role_modify" type="primary" size="small">变更</el-button>
+                        <el-button name="role_modify" type="primary" size="small" @click="onEditRoleDetail">变更</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template #default="scope">
-                        <el-button :disabled="[1].includes(scope.row.id)" name="role_update" size="small"
-                            type="primary">编辑</el-button>
+                        <el-button :disabled="[1].includes(scope.row.id)" name="role_update" size="small" type="primary"
+                            @click="onEditRoleInfo">编辑</el-button>
                         <el-popconfirm title="确定删除此角色?">
                             <template #reference>
                                 <el-button :disabled="[1].includes(scope.row.id)" slot="reference" name="role_delete"
@@ -34,8 +34,13 @@
             </template>
         </PGTable>
 
-        <el-drawer :title="title" v-model="showDetail" direction="rtl">
-            <RoleDetail />
+        <el-dialog :title="roleOperateTitle" v-model="showRoleOperate">
+            <UpdateRole v-if="operate === 'UpdateRole'" />
+            <AddRole v-if="operate === 'AddRole'" />
+        </el-dialog>
+
+        <el-drawer :title="roleDetailTitle" v-model="showDetail" direction="rtl">
+            <RoleDetail :showEdit="showDetailEdit" />
         </el-drawer>
     </div>
 </template>
@@ -46,6 +51,8 @@ import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
 import RoleDetail from "./components/RoleDetail.vue";
+import AddRole from "./components/AddRole.vue";
+import UpdateRole from "./components/UpdateRole.vue";
 
 import { getRolesPaged } from "@/request/role";
 import { RespCodeOK } from "@/request/request";
@@ -73,12 +80,34 @@ onMounted(() => {
     })
 })
 
-
-const title = ref("权限详情")
+const roleDetailTitle = ref("权限详情")
 const showDetail = ref(false)
+const showDetailEdit = ref(false)
 
 function showRoleDetail() {
+    showDetailEdit.value = false
     showDetail.value = true
+}
+
+function onEditRoleDetail() {
+    showDetailEdit.value = true
+    showDetail.value = true
+}
+
+const roleOperateTitle = ref("编辑角色")
+const showRoleOperate = ref(false)
+const operate = ref("")
+
+function onEditRoleInfo() {
+    roleOperateTitle.value = "编辑角色"
+    showRoleOperate.value = true
+    operate.value = "UpdateRole"
+}
+
+function onAddRole() {
+    roleOperateTitle.value = "添加角色"
+    showRoleOperate.value = true
+    operate.value = "AddRole"
 }
 
 </script>
