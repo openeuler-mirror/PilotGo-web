@@ -17,11 +17,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { ElMessage } from 'element-plus';
 
 import { RespCodeOK } from "@/request/request";
 import { addRole } from "@/request/role";
+
+const emits = defineEmits(["rolesUpdated", "close"])
 
 const rules = {
     rolename: [
@@ -50,6 +52,7 @@ function onAddRole() {
                 .then((resp: any) => {
                     if (resp.code === RespCodeOK) {
                         // TODO: update role list
+                        emits("rolesUpdated")
                         ElMessage.success(resp.msg);
                     } else {
                         ElMessage.error(resp.msg);
@@ -58,6 +61,7 @@ function onAddRole() {
                 .catch((err: any) => {
                     ElMessage.error("添加失败,请检查输入内容", err.msg);
                 });
+            emits("close")
         } else {
             ElMessage.error("请检查输入内容");
         }

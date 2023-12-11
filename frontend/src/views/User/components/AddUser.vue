@@ -143,7 +143,6 @@ function onAddUser() {
             addUser(params).then((res: any) => {
                 if (res.code === RespCodeOK) {
                     emits('userUpdated')
-                    emits('close')
                     ElMessage.success(res.msg);
                     formRef.value.resetFields();
                 } else {
@@ -152,6 +151,7 @@ function onAddUser() {
             }).catch((err: any) => {
                 ElMessage.error("添加用户失败:", err.msg);
             });
+            emits('close')
         } else {
             ElMessage.error("内容填写错误");
         }

@@ -121,7 +121,6 @@ function onUpdateUser() {
             }).then((res: any) => {
                 if (res.code === RespCodeOK) {
                     emits('userUpdated')
-                    emits('close')
                     ElMessage.success(res.msg);
                     formRef.value.resetFields();
                 } else {
@@ -130,6 +129,7 @@ function onUpdateUser() {
             }).catch((err: any) => {
                 ElMessage.error("修改用户信息失败", err.msg);
             });
+            emits('close')
         } else {
             ElMessage.error("内容填写错误");
         }
