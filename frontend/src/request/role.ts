@@ -43,3 +43,12 @@ export function addRole(data: any) {
         data
     })
 }
+
+// 更新角色信息
+export function updateRole(data: any) {
+    return request({
+        url: '/user/updateRole',
+        method: 'post',
+        data
+    })
+}
