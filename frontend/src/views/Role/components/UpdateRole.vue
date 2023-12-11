@@ -1,10 +1,30 @@
 <template>
     <div>
-        <p>update role</p>
+        <el-form :model="form" ref="formRef" label-width="100px">
+            <el-form-item label="角色名:" prop="rolename">
+                <el-input class="ipInput" type="text" size="medium" v-model="form.rolename" autocomplete="off"
+                    :disabled="true"></el-input>
+            </el-form-item>
+            <el-form-item label="描述:" prop="description">
+                <el-input class="ipInput" controls-position="right" v-model="form.description"
+                    autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+
+        <div class="dialog-footer">
+            <el-button type="primary">确 定</el-button>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+
+const formRef = ref()
+const form = ref({
+    rolename: "",
+    description: ""
+})
 
 </script>
 
