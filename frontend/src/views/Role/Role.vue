@@ -124,6 +124,7 @@ function onDeleteRole(role: any) {
         role: role.role
     }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
+            ElMessage.success("删除角色成功:" + resp.msg)
             updateRoles()
         } else {
             ElMessage.error("failed to delete role:" + resp.msg)
