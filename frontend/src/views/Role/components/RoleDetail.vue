@@ -24,8 +24,8 @@ const treeRef = ref()
 
 const props = defineProps({
     role: {
-        type: String,
-        default: "",
+        type: Object,
+        default: {},
     },
     showEdit: {
         type: Boolean,
@@ -53,14 +53,14 @@ function onChangePermission() {
     });
 
     changeRolePermission({
-        role: props.role,
+        role: props.role.role,
         buttonId: buttons,
         menus: menus,
     }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
             // TODO:
 
-            ElMessage.success("change role permission success", resp.msg)
+            ElMessage.success("change role permission success:"+ resp.msg)
         } else {
             ElMessage.error("failed to change role permission:" + resp.msg)
         }
