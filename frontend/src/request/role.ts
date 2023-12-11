@@ -25,3 +25,12 @@ export function changeRolePermission(data: any) {
         data
     })
 }
+
+// 删除角色
+export function deleteRole(data: any) {
+    return request({
+        url: '/user/delRole',
+        method: 'post',
+        data
+    })
+}
