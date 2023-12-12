@@ -4,7 +4,24 @@
             <slot name="header"></slot>
         </div>
         <el-tree :data="department" :props="defaultProps" :show-checkbox="selectable" @node-click="onNodeClicked"
-            :allow-drag="allowDrag" :draggable="dragable"></el-tree>
+            :allow-drag="allowDrag" :draggable="dragable">
+            <template #default="{ node, data }">
+                <span class="custom-tree-node">
+                    <span>{{ node.label }}</span>
+                    <span v-if="editable">
+                        <el-icon>
+                            <Plus />
+                        </el-icon>
+                        <el-icon>
+                            <EditPen />{{ console.log(node) }}
+                        </el-icon>
+                        <el-icon v-if="data.id !== 1">
+                            <Delete />
+                        </el-icon>
+                    </span>
+                </span>
+            </template>
+        </el-tree>
     </div>
 </template>
 
@@ -36,6 +53,11 @@ const props = defineProps({
     },
     // 是否可拖拽
     dragable: {
+        type: Boolean,
+        default: false,
+    },
+    // 是否可编辑
+    editable:{
         type: Boolean,
         default: false,
     },
@@ -78,5 +100,12 @@ function allowDrag() {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 </style>
