@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-tree ref="treeRef" :data="authData" :show-checkbox="showEdit" node-key="menuName" default-expand-all
+        <el-tree ref="treeRef" :data="authData" show-checkbox node-key="menuName" default-expand-all
             :check-strictly="strictly" :default-expanded-keys="[2, 3]" :default-checked-keys="checkedKeys"
             @check-change="onCheckChanged">
         </el-tree>
