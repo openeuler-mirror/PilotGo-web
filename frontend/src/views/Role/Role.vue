@@ -37,12 +37,12 @@
         </PGTable>
 
         <el-dialog :title="roleOperateTitle" v-model="showRoleOperate">
-            <UpdateRole v-if="operate === 'UpdateRole'" :role="editedRole" />
+            <UpdateRole v-if="operate === 'UpdateRole'" :role="selectedRole" />
             <AddRole v-if="operate === 'AddRole'" @rolesUpdated="updateRoles" @close="showRoleOperate = false"/>
         </el-dialog>
 
         <el-drawer :title="roleDetailTitle" v-model="showPermission" direction="rtl">
-            <RoleDetail :showEdit="showPermissionEdit" :role="editedRole" />
+            <RoleDetail :showEdit="showPermissionEdit" :role="selectedRole" />
         </el-drawer>
     </div>
 </template>
@@ -91,14 +91,15 @@ const showPermission = ref(false)
 const showPermissionEdit = ref(false)
 
 function showRoleDetail(role: any) {
+    selectedRole.value = role
     roleDetailTitle.value = "权限详情"
-    showPermissionEdit.value = false
+    showPermissionEdit.value = true
     showPermission.value = true
 }
 
-const editedRole = ref({})
+const selectedRole = ref({})
 function onEditRolePermission(role: any) {
-    editedRole.value = role
+    selectedRole.value = role
     roleDetailTitle.value = "编辑权限"
     showPermissionEdit.value = true
     showPermission.value = true
@@ -109,7 +110,7 @@ const showRoleOperate = ref(false)
 const operate = ref("")
 
 function onEditRoleInfo(role:any) {
-    editedRole.value = role
+    selectedRole.value = role
     roleOperateTitle.value = "编辑角色"
     showRoleOperate.value = true
     operate.value = "UpdateRole"
