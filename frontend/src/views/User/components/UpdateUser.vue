@@ -8,7 +8,7 @@
             <el-form-item label="部门:" prop="departName">
                 <el-input class="ipInput" controls-position="right" :disabled="disabled" v-model="form.departName"
                     autocomplete="off"></el-input>
-                <PGTree style="width: 98%;" :showHeader="false" :showEdit="false" :onNodeClicked="onDepartSelected">
+                <PGTree style="width: 98%;" :showHeader="false" :showEdit="false" @onNodeClicked="onDepartSelected">
                 </PGTree>
             </el-form-item>
             <el-form-item label="手机号:" prop="phone">

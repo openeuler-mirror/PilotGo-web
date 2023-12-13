@@ -10,7 +10,7 @@
             </el-form-item>
             <el-form-item label="部门:" prop="departName">
                 <el-input class="ipInput" controls-position="right" v-model="form.departName" autocomplete="off"></el-input>
-                <PGTree style="width: 98%;" :showHeader="false" :onNodeClicked="onDepartSelected">
+                <PGTree style="width: 98%;" :showHeader="false" @onNodeClicked="onDepartSelected">
                 </PGTree>
             </el-form-item>
             <el-form-item label="用户角色:" prop="role">

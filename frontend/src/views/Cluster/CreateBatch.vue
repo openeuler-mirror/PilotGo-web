@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree :onNodeClicked="onNodeClicked">
+            <PGTree @onNodeClicked="onNodeClicked">
                 <template v-slot:header>
                     <p>部门</p>
                 </template>
@@ -61,7 +61,6 @@ const selectedDeparts = ref<any[]>([])
 
 function onNodeClicked(node: any) {
     let nodeInfo = toRaw(node)
-    console.log("node clicked", nodeInfo)
 
     getDepartMachines({
         DepartId: nodeInfo.id,
