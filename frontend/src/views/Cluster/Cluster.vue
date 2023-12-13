@@ -75,17 +75,15 @@ import ChangeDepart from "./components/ChangeDepart.vue";
 
 import { directTo } from "@/router/index"
 
-import { getPagedDepartMachines } from "@/request/cluster";
+import { getPagedDepartMachines, getMachineTags } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
-
-
 
 // 部门树
 const departmentID = ref(1)
 
 // 机器列表
 const showSelect = ref(true)
-const machines = ref([])
+const machines = ref<any>([])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
@@ -107,6 +105,30 @@ function updateDepartmentMachines(departID: number) {
             currentPage.value = resp.page
             pageSize.value = resp.size
             machines.value = resp.data
+
+            // 获取机器节点的tags标签
+            let uuids = []
+            for (let i in resp.data) {
+                uuids.push(resp.data[i].uuid)
+            }
+            // let result = resp
+            getMachineTags({ "uuids": uuids }).then((resp:any) => {
+                if (resp.code != 200) {
+                    ElMessage.error("failed to get machine tags: " + resp.msg)
+                }
+
+                for (let n in resp.data) {
+                    for (let i in machines.value) {
+                        if (resp.data[n].machineuuid === machines.value[i].uuid) {
+                            if (!("tags" in machines.value[i])) {
+                                machines.value[i].tags = [resp.data[n]]
+                            } else {
+                                machines.value[i].tags.push(resp.data[n])
+                            }
+                        }
+                    }
+                }
+            })
         } else {
             ElMessage.error("failed to get machines overview info: " + resp.msg)
         }
