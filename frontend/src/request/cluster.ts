@@ -161,3 +161,12 @@ export function installPackage(data: any) {
         data
     })
 }
+
+// 获取给定主机列表的tag标签
+export function getMachineTags(data:any) {
+    return request({
+        url: 'macList/gettags',
+        method: 'post',
+        data
+    })
+}
