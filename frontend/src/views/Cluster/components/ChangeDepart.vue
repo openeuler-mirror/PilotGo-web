@@ -12,17 +12,22 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <PGTree class="tree" @onNodeClicked="onDepartmentClicked">
-                <template v-slot:header>
-                    <p>部门</p>
-                </template>
-            </PGTree>
+            <el-form class="form" :model="form" :rules="rules" ref="formRef">
+                <el-form-item label="新部门:" prop="currentDepartment">
+                    <el-input class="department" controls-position="right" v-model="form.currentDepartment" :disabled="true"
+                        autocomplete="off"></el-input>
+                </el-form-item>
+                <PGTree class="tree" @onNodeClicked="onDepartmentClicked">
+                    <template v-slot:header>
+                        <p>部门</p>
+                    </template>
+                </PGTree>
+            </el-form>
         </div>
         <div class="footer">
             <el-button>取 消</el-button>
             <el-button type="primary" @click="onChangeDepartment">确 定</el-button>
         </div>
-
     </div>
 </template>
 
@@ -42,8 +47,23 @@ const props = defineProps({
     }
 })
 
+const rules = {
+    currentDepartment: [
+        {
+            required: true,
+            message: "请选择新部门",
+            trigger: "blur"
+        }
+    ],
+}
+const formRef = ref()
+const form = ref({
+    currentDepartment: ""
+})
+
 const selectedDepartment = ref<any>({})
 function onDepartmentClicked(depart: any) {
+    form.value.currentDepartment = depart.label
     selectedDepartment.value = depart
 }
 
@@ -53,18 +73,24 @@ function onChangeDepartment() {
         macIds.push(item.id)
     })
 
-    changeDepartment({
-        "machineid": macIds.toString(),
-        "departid": selectedDepartment.value.id,
-    }).then((resp: any) => {
-        if (resp.code === RespCodeOK) {
-            ElMessage.success("更换部门成功:" + resp.msg);
+    formRef.value.validate((valid: boolean) => {
+        if (valid) {
+            changeDepartment({
+                "machineid": macIds.toString(),
+                "departid": selectedDepartment.value.id,
+            }).then((resp: any) => {
+                if (resp.code === RespCodeOK) {
+                    ElMessage.success("更换部门成功:" + resp.msg);
+                } else {
+                    ElMessage.error("更换部门失败:" + resp.msg);
+                }
+            }).catch((err: any) => {
+                ElMessage.error("更换部门失败" + err.msg);
+            })
         } else {
-            ElMessage.error("更换部门失败:" + resp.msg);
+            ElMessage.error("部门信息选择错误");
         }
-    }).catch((err: any) => {
-        ElMessage.error("更换部门失败" + err.msg);
-    });
+    })
 }
 
 
@@ -79,11 +105,16 @@ function onChangeDepartment() {
         height: 500px;
         width: 100%;
         display: flex;
-    }
 
-    .tree {
-        width: 50%;
-        margin-left: 5px;
+        .form {
+            width: 50%;
+            height: 100%;
+
+            .tree {
+                width: 100%;
+                margin-left: 5px;
+            }
+        }
     }
 
     .footer {
