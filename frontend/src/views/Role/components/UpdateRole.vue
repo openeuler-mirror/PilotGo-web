@@ -53,7 +53,6 @@ function onUpdateRole() {
     formRef.value.validate((valid: boolean) => {
         if (valid) {
             updateRole(params).then((resp: any) => {
-                console.log(resp)
                 if (resp.code === RespCodeOK) {
                     ElMessage.success("success to update role info:"+ resp.msg);
                 } else {

@@ -12,11 +12,11 @@
                         <el-icon>
                             <Plus />
                         </el-icon>
-                        <el-icon v-if="data.id !== 1">
+                        <el-icon v-if="data.id !== 1" @click.stop="deleteNode(node, data)">
                             <Delete />
                         </el-icon>
                         <el-icon @click.stop="renameNode(node, data)">
-                            <EditPen />{{ console.log(node) }}
+                            <EditPen />
                         </el-icon>
                     </span>
                 </span>
@@ -29,7 +29,7 @@
 import { onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 
-import { getSubDepartment, updateDepartment } from "@/request/cluster";
+import { getSubDepartment, updateDepartment, deleteDepartment } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const emits = defineEmits(["onNodeClicked"])
@@ -113,7 +113,30 @@ function renameNode(node: any, data: any) {
             ElMessage.error('修改失败:' + err.msg)
         })
     }).catch((err: any) => {
-        console.log(err)
+        // cancel rename
+    });
+}
+
+function deleteNode(node: any, data: any) {
+    ElMessageBox.confirm('确定删除该节点？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+     }).then(() => {
+        deleteDepartment({ 'DepartID': data.id }).then((resp: any) => {
+            if (resp.code === 200) {
+                ElMessage.success('修改成功');
+                node.parent.loaded = false;
+                node.parent.expand();
+                updateDepartmentInfo();
+            } else {
+                ElMessage.error(resp.msg)
+            }
+        }).catch((err: any) => {
+            ElMessage.error('修改失败:' + err.msg)
+        })
+    }).catch((err: any) => {
+        // cancel delete
     });
 }
 </script>

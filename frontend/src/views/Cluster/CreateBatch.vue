@@ -67,7 +67,6 @@ function onNodeClicked(node: any) {
     }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
             nodeMachines.value = []
-            console.log("machines:", resp.data)
             resp.data.forEach((item: any) => {
                 nodeMachines.value.push({
                     key: item.id,
