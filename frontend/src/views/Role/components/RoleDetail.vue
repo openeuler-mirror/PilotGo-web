@@ -79,7 +79,6 @@ function onCheckChanged(data: any, checked: boolean) {
                 let childrens = authData[i].children
                 for (let n = 0; n < childrens.length; n++) {
                     if (childrens[n].id == data.id) {
-                        console.log("found")
                         checkedMenu = authData[i]
                     }
                 }
