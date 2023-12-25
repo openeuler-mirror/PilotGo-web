@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree :editable="true">
+            <PGTree :editable="true" @onNodeClicked="onNodeClicked">
                 <template v-slot:header>
                     <p>部门</p>
                 </template>
@@ -93,10 +93,14 @@ const total = ref(0)
 const showChangeDepartDialog = ref(false)
 
 onMounted(() => {
+    updateDepartmentMachines(departmentID.value)
+})
+
+function updateDepartmentMachines(departID: number) {
     getPagedDepartMachines({
         page: currentPage.value,
         size: pageSize.value,
-        DepartId: departmentID.value,
+        DepartId: departID,
     }).then((resp: any) => {
         if (resp.code === RespCodeOK) {
             total.value = resp.total
@@ -109,11 +113,17 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get machines overview info:" + err.msg)
     })
-})
+}
 
 function machineDetail(info: any) {
     directTo("/cluster/machine/" + info.uuid)
 }
+
+function onNodeClicked(depart: any) {
+    updateDepartmentMachines(depart.id)
+}
+
+
 
 </script>
 
