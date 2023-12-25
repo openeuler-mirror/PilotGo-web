@@ -1,14 +1,15 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree :editable="true" @onNodeClicked="onNodeClicked">
+            <PGTree :editable="true" @onNodeClicked="onDepartmentClicked">
                 <template v-slot:header>
                     <p>部门</p>
                 </template>
             </PGTree>
         </div>
         <div class="cluster">
-            <PGTable :data="machines" title="机器列表" :showSelect="showSelect" :total="total" :currentPage="currentPage">
+            <PGTable :data="machines" title="机器列表" :showSelect="showSelect" :total="total" :currentPage="currentPage"
+            v-model:selectedData="selectedMachines">
                 <template v-slot:action>
                     <el-dropdown>
                         <el-button type="primary">
@@ -57,8 +58,8 @@
             </PGTable>
         </div>
 
-        <el-dialog title="主机部门变更" v-model="showChangeDepartDialog">
-            <change-depart />
+        <el-dialog title="主机部门变更" v-model="showChangeDepartDialog" destroy-on-close>
+            <change-depart :machines="selectedMachines"/>
         </el-dialog>
     </div>
 </template>
@@ -141,9 +142,11 @@ function machineDetail(info: any) {
     directTo("/cluster/machine/" + info.uuid)
 }
 
-function onNodeClicked(depart: any) {
+function onDepartmentClicked(depart: any) {
     updateDepartmentMachines(depart.id)
 }
+
+const selectedMachines = ref([])
 
 
 
