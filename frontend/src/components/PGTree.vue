@@ -12,11 +12,11 @@
                         <el-icon>
                             <Plus />
                         </el-icon>
-                        <el-icon>
-                            <EditPen />{{ console.log(node) }}
-                        </el-icon>
                         <el-icon v-if="data.id !== 1">
                             <Delete />
+                        </el-icon>
+                        <el-icon @click.stop="renameNode(node, data)">
+                            <EditPen />{{ console.log(node) }}
                         </el-icon>
                     </span>
                 </span>
@@ -27,9 +27,9 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
-import { getSubDepartment } from "@/request/cluster";
+import { getSubDepartment, updateDepartment } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const props = defineProps({
@@ -57,7 +57,7 @@ const props = defineProps({
         default: false,
     },
     // 是否可编辑
-    editable:{
+    editable: {
         type: Boolean,
         default: false,
     },
@@ -71,6 +71,10 @@ const department = ref([{}])
 const departmentID = ref(1)
 
 onMounted(() => {
+    updateDepartmentInfo()
+})
+
+function updateDepartmentInfo() {
     getSubDepartment({
         DepartID: departmentID.value,
     }).then((resp: any) => {
@@ -82,10 +86,32 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get department info:" + err.msg)
     })
-})
+}
 
 function allowDrag() {
     return props.dragable
+}
+
+function renameNode(node: any, data: any) {
+    ElMessageBox.prompt('输入节点名字', '编辑节点', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+    }).then(({ value }) => {
+        updateDepartment({ 'DepartID': data.id, 'DepartName': value }).then((resp:any) => {
+            if (resp.code === 200) {
+                ElMessage.success('修改成功');
+                node.parent.loaded = false;
+                node.parent.expand();
+                updateDepartmentInfo();
+            } else {
+                ElMessage.error(resp.msg)
+            }
+        }).catch((err: any) => {
+            ElMessage.error('修改失败:' + err.msg)
+        })
+    }).catch((err:any) => {
+        console.log(err)
+    });
 }
 </script>
 
