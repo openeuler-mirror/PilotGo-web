@@ -54,6 +54,15 @@ export function addDepartment(data: any) {
     })
 }
 
+// 更换机器所属部门
+export function changeDepartment(data: any) {
+    return request({
+        url: 'macList/modifydepart',
+        method: 'post',
+        data
+    })
+}
+
 // 获取机器overview信息
 export function getMachineOverview(data: any) {
     return request({
