@@ -16,13 +16,13 @@
                         <el-button name="default_all" type="primary" size="small"
                             @click="showRoleDetail(scope.row)">查看</el-button>
                         <el-button name="role_modify" type="primary" size="small" v-if="!(scope.row.role === 'admin')"
-                            @click="onEditRoleDetail(scope.row)">变更</el-button>
+                            @click="onEditRolePermission(scope.row)">变更</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template #default="scope">
                         <el-button :disabled="(scope.row.role === 'admin')" name="role_update" size="small" type="primary"
-                            @click="onEditRoleInfo">编辑</el-button>
+                            @click="onEditRoleInfo(scope.row)">编辑</el-button>
                         <el-popconfirm title="确定删除此角色?" @confirm="onDeleteRole(scope.row)">
                             <template #reference>
                                 <el-button :disabled="(scope.row.role === 'admin')" slot="reference" name="role_delete"
@@ -37,12 +37,12 @@
         </PGTable>
 
         <el-dialog :title="roleOperateTitle" v-model="showRoleOperate">
-            <UpdateRole v-if="operate === 'UpdateRole'" />
+            <UpdateRole v-if="operate === 'UpdateRole'" :role="editedRole" />
             <AddRole v-if="operate === 'AddRole'" @rolesUpdated="updateRoles" @close="showRoleOperate = false"/>
         </el-dialog>
 
-        <el-drawer :title="roleDetailTitle" v-model="showDetail" direction="rtl">
-            <RoleDetail :showEdit="showDetailEdit" :role="editedRole" />
+        <el-drawer :title="roleDetailTitle" v-model="showPermission" direction="rtl">
+            <RoleDetail :showEdit="showPermissionEdit" :role="editedRole" />
         </el-drawer>
     </div>
 </template>
@@ -87,26 +87,29 @@ function updateRoles() {
 }
 
 const roleDetailTitle = ref("权限详情")
-const showDetail = ref(false)
-const showDetailEdit = ref(false)
+const showPermission = ref(false)
+const showPermissionEdit = ref(false)
 
 function showRoleDetail(role: any) {
-    showDetailEdit.value = false
-    showDetail.value = true
+    roleDetailTitle.value = "权限详情"
+    showPermissionEdit.value = false
+    showPermission.value = true
 }
 
-const editedRole = ref("")
-function onEditRoleDetail(role: any) {
-    editedRole.value = role.role
-    showDetailEdit.value = true
-    showDetail.value = true
+const editedRole = ref({})
+function onEditRolePermission(role: any) {
+    editedRole.value = role
+    roleDetailTitle.value = "编辑权限"
+    showPermissionEdit.value = true
+    showPermission.value = true
 }
 
 const roleOperateTitle = ref("编辑角色")
 const showRoleOperate = ref(false)
 const operate = ref("")
 
-function onEditRoleInfo() {
+function onEditRoleInfo(role:any) {
+    editedRole.value = role
     roleOperateTitle.value = "编辑角色"
     showRoleOperate.value = true
     operate.value = "UpdateRole"
