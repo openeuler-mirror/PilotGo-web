@@ -38,7 +38,7 @@
 
         <el-dialog :title="roleOperateTitle" v-model="showRoleOperate">
             <UpdateRole v-if="operate === 'UpdateRole'" />
-            <AddRole v-if="operate === 'AddRole'" />
+            <AddRole v-if="operate === 'AddRole'" @rolesUpdated="updateRoles" @close="showRoleOperate = false"/>
         </el-dialog>
 
         <el-drawer :title="roleDetailTitle" v-model="showDetail" direction="rtl">

@@ -49,7 +49,6 @@ function onUpdateBatch() {
             }).then((resp: any) => {
                 if (resp.code == RespCodeOK) {
                     emits('batchUpdated')
-                    emits('close')
                     ElMessage.success("update batch info success")
                 } else {
                     ElMessage.error("failed to update batch info:" + resp.msg)
@@ -57,6 +56,7 @@ function onUpdateBatch() {
             }).catch((error) => {
                 ElMessage.error("failed to update batch info:" + error)
             })
+            emits('close')
         } else {
             ElMessage.error("数据填写错误")
         }
