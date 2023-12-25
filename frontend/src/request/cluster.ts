@@ -36,6 +36,24 @@ export function updateDepartment(data: any) {
     })
 }
 
+// 删除部门节点
+export function deleteDepartment(data: any) {
+    return request({
+        url: 'macList/deletedepartdata',
+        method: 'post',
+        data
+    })
+}
+
+// 添加部门节点
+export function addDepartment(data: any) {
+    return request({
+        url: 'macList/adddepart',
+        method: 'post',
+        data
+    })
+}
+
 // 获取机器overview信息
 export function getMachineOverview(data: any) {
     return request({
@@ -166,15 +184,6 @@ export function installPackage(data: any) {
 export function getMachineTags(data: any) {
     return request({
         url: 'macList/gettags',
-        method: 'post',
-        data
-    })
-}
-
-// 删除部门节点
-export function deleteDepartment(data: any) {
-    return request({
-        url: 'macList/deletedepartdata',
         method: 'post',
         data
     })
