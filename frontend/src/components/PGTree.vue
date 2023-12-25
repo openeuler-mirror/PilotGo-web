@@ -9,7 +9,7 @@
                 <span class="custom-tree-node">
                     <span>{{ node.label }}</span>
                     <span v-if="editable">
-                        <el-icon>
+                        <el-icon @click.stop="addNode(node, data)">
                             <Plus />
                         </el-icon>
                         <el-icon v-if="data.id !== 1" @click.stop="deleteNode(node, data)">
@@ -29,7 +29,7 @@
 import { onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 
-import { getSubDepartment, updateDepartment, deleteDepartment } from "@/request/cluster";
+import { getSubDepartment, updateDepartment, deleteDepartment, addDepartment } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
 
 const emits = defineEmits(["onNodeClicked"])
@@ -65,7 +65,7 @@ const props = defineProps({
     }
 })
 
-function onNodeClicked(node:any, selfSelected:boolean, childrenSelected: boolean) {
+function onNodeClicked(node: any, selfSelected: boolean, childrenSelected: boolean) {
     emits("onNodeClicked", node)
 }
 
@@ -96,15 +96,13 @@ function allowDrag() {
 }
 
 function renameNode(node: any, data: any) {
-    ElMessageBox.prompt('输入节点名字', '编辑节点', {
+    ElMessageBox.prompt('请输入节点名字', '编辑部门', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
     }).then(({ value }) => {
         updateDepartment({ 'DepartID': data.id, 'DepartName': value }).then((resp: any) => {
             if (resp.code === 200) {
                 ElMessage.success('修改成功');
-                node.parent.loaded = false;
-                node.parent.expand();
                 updateDepartmentInfo();
             } else {
                 ElMessage.error(resp.msg)
@@ -118,27 +116,46 @@ function renameNode(node: any, data: any) {
 }
 
 function deleteNode(node: any, data: any) {
-    ElMessageBox.confirm('确定删除该节点？', '提示', {
+    ElMessageBox.confirm('确定删除该部门？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-     }).then(() => {
+    }).then(() => {
         deleteDepartment({ 'DepartID': data.id }).then((resp: any) => {
             if (resp.code === 200) {
-                ElMessage.success('修改成功');
-                node.parent.loaded = false;
-                node.parent.expand();
+                ElMessage.success('删除成功');
                 updateDepartmentInfo();
             } else {
                 ElMessage.error(resp.msg)
             }
         }).catch((err: any) => {
-            ElMessage.error('修改失败:' + err.msg)
+            ElMessage.error('删除失败:' + err.msg)
         })
     }).catch((err: any) => {
         // cancel delete
     });
 }
+
+function addNode(node: any, data: any) {
+    ElMessageBox.prompt('请输入节点名字', '添加部门', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+    }).then(({ value }) => {
+        addDepartment({ 'PID': data.id, 'Depart': value }).then((resp: any) => {
+            if (resp.code === 200) {
+                ElMessage.success('添加成功');
+                updateDepartmentInfo();
+            } else {
+                ElMessage.error(resp.msg)
+            }
+        }).catch((err: any) => {
+            ElMessage.error('添加失败:' + err.msg)
+        })
+    }).catch((err: any) => {
+        // cancel add
+    });
+}
+
 </script>
 
 <style lang="scss" scoped>
