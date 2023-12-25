@@ -41,7 +41,8 @@
             <AddRole v-if="operate === 'AddRole'" @rolesUpdated="updateRoles" @close="showRoleOperate = false"/>
         </el-dialog>
 
-        <el-drawer :title="roleDetailTitle" v-model="showPermission" direction="rtl">
+        <el-drawer :title="roleDetailTitle" v-model="showPermissionDrawler" direction="rtl"
+        :destroy-on-close="true">
             <RoleDetail :showEdit="showPermissionEdit" :role="selectedRole" />
         </el-drawer>
     </div>
@@ -87,22 +88,22 @@ function updateRoles() {
 }
 
 const roleDetailTitle = ref("权限详情")
-const showPermission = ref(false)
+const showPermissionDrawler = ref(false)
 const showPermissionEdit = ref(false)
+const selectedRole = ref({})
 
 function showRoleDetail(role: any) {
     selectedRole.value = role
     roleDetailTitle.value = "权限详情"
-    showPermissionEdit.value = true
-    showPermission.value = true
+    showPermissionEdit.value = false
+    showPermissionDrawler.value = true
 }
 
-const selectedRole = ref({})
 function onEditRolePermission(role: any) {
     selectedRole.value = role
     roleDetailTitle.value = "编辑权限"
     showPermissionEdit.value = true
-    showPermission.value = true
+    showPermissionDrawler.value = true
 }
 
 const roleOperateTitle = ref("编辑角色")
