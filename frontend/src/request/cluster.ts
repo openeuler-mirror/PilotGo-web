@@ -27,6 +27,15 @@ export function getSubDepartment(data: any) {
     })
 }
 
+// 编辑部门节点
+export function updateDepartment(data: any) {
+    return request({
+        url: 'macList/updatedepart',
+        method: 'post',
+        data
+    })
+}
+
 // 获取机器overview信息
 export function getMachineOverview(data: any) {
     return request({
