@@ -100,7 +100,6 @@ function onDeleteUser() {
     selectedUsers.value.forEach((item:any)=>{
         params.push(item.email);
     })
-    console.log("delete user:", params)
 
     deleteUser({
         delDatas: params

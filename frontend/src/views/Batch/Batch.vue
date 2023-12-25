@@ -111,7 +111,6 @@ function batchDelete() {
             let params: number[] = [];
             (toRaw(selectedBatches.value) as any[]).forEach((item) => {
                 params.push(item.ID)
-                console.log(item)
             });
 
             deleteBatch({ BatchID: params }).then((resp: any) => {
