@@ -163,9 +163,18 @@ export function installPackage(data: any) {
 }
 
 // 获取给定主机列表的tag标签
-export function getMachineTags(data:any) {
+export function getMachineTags(data: any) {
     return request({
         url: 'macList/gettags',
+        method: 'post',
+        data
+    })
+}
+
+// 删除部门节点
+export function deleteDepartment(data: any) {
+    return request({
+        url: 'macList/deletedepartdata',
         method: 'post',
         data
     })
