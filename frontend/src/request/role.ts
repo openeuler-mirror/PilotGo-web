@@ -34,3 +34,12 @@ export function deleteRole(data: any) {
         data
     })
 }
+
+// 添加角色
+export function addRole(data: any) {
+    return request({
+        url: '/user/addRole',
+        method: 'post',
+        data
+    })
+}
