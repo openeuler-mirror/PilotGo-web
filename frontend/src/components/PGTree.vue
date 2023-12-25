@@ -4,7 +4,7 @@
             <slot name="header"></slot>
         </div>
         <el-tree :data="department" :props="defaultProps" :show-checkbox="selectable" @node-click="onNodeClicked"
-            :allow-drag="allowDrag" :draggable="dragable">
+            default-expand-all :expand-on-click-node="false" :allow-drag="allowDrag" :draggable="dragable">
             <template #default="{ node, data }">
                 <span class="custom-tree-node">
                     <span>{{ node.label }}</span>
@@ -31,6 +31,8 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 
 import { getSubDepartment, updateDepartment } from "@/request/cluster";
 import { RespCodeOK } from "@/request/request";
+
+const emits = defineEmits(["onNodeClicked"])
 
 const props = defineProps({
     defaultProps: {
@@ -60,11 +62,12 @@ const props = defineProps({
     editable: {
         type: Boolean,
         default: false,
-    },
-    onNodeClicked: {
-        type: Function
     }
 })
+
+function onNodeClicked(node:any, selfSelected:boolean, childrenSelected: boolean) {
+    emits("onNodeClicked", node)
+}
 
 // 部门树
 const department = ref([{}])
@@ -97,7 +100,7 @@ function renameNode(node: any, data: any) {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
     }).then(({ value }) => {
-        updateDepartment({ 'DepartID': data.id, 'DepartName': value }).then((resp:any) => {
+        updateDepartment({ 'DepartID': data.id, 'DepartName': value }).then((resp: any) => {
             if (resp.code === 200) {
                 ElMessage.success('修改成功');
                 node.parent.loaded = false;
@@ -109,7 +112,7 @@ function renameNode(node: any, data: any) {
         }).catch((err: any) => {
             ElMessage.error('修改失败:' + err.msg)
         })
-    }).catch((err:any) => {
+    }).catch((err: any) => {
         console.log(err)
     });
 }
