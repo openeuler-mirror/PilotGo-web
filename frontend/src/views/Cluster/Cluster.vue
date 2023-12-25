@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="department">
-            <PGTree>
+            <PGTree :editable="true">
                 <template v-slot:header>
                     <p>部门</p>
                 </template>
