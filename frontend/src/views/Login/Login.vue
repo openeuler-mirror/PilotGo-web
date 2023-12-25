@@ -55,7 +55,7 @@ const rules = {
         {
             validator: checkAccount,
             message: "请输入正确的邮箱格式",
-            trigger: "blur"
+            trigger: "change"
         }
     ],
     password: [
