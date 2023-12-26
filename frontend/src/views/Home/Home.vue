@@ -12,7 +12,10 @@
             <el-container>
                 <el-header style="height:10%">
                     <div class="title">
-                        <bread-crumb class="breadcrumb"></bread-crumb>
+                        <div class="route" style="">
+                            <bread-crumb class="breadcrumb"></bread-crumb>
+                            <TagView class="tagview"></TagView>
+                        </div>
                         <div class="user">
                             <el-icon>
                                 <User />
@@ -47,6 +50,7 @@ import { ref, onMounted, watchEffect } from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import BreadCrumb from "./components/BreadCrumb.vue";
+import TagView from "./components/TagView.vue";
 import Sidebar from "./components/Sidebar.vue";
 
 import { directTo, updateSidebarItems } from "@/router/index";
@@ -146,17 +150,33 @@ function doLogout() {
 
 .el-container {
     .title {
-        height: 50%;
+        height: 100%;
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
-        .breadcrumb {
+        .route {
+            display: flex;
+            flex-direction: column;
             height: 100%;
+            width: 100%;
 
-            .el-breadcrumb {
-                width: 100%;
-                height: 100%;
+            .breadcrumb {
+                height: 50%;
+                display: flex;
+                align-items: center;
+
+                .el-breadcrumb {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+
+            .tagview {
+                height: 50%;
                 display: flex;
                 align-items: center;
             }

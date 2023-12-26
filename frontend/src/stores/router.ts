@@ -10,6 +10,7 @@ export interface Menu {
   subMenus: Menu[] | null
 }
 
+// 存储的router信息用于sidebar动态生成
 export const routerStore = defineStore('router', () => {
     const menus = ref<Menu[]>([])
 

@@ -45,7 +45,12 @@
                     </el-table-column>
                     <el-table-column prop="cpu" label="cpu">
                     </el-table-column>
-                    <el-table-column label="状态">
+                    <el-table-column label="运行状态">
+                        <template #default="scope">
+                            <state-dot :state="scope.row.state"></state-dot>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="维护状态">
                         <template #default="scope">
                             <state-dot :state="scope.row.state"></state-dot>
                         </template>
