@@ -4,10 +4,8 @@
             <router-link ref="tag" :key="tag.path" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullpath }"
                 class="tags-view-item">
                 {{ tag.title }}
-
-                <!-- <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" /> -->
                 <el-icon>
-                    <Delete />
+                    <Delete @click.prevent.stop="closeSelectedTag(tag)" />
                 </el-icon>
             </router-link>
         </div>
@@ -15,14 +13,15 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from "vue";
+import { onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import { tagviewStore, type Taginfo } from '@/stores/tagview';
+import { directTo } from "@/router";
 
 const route = useRoute()
 
-watch(() => route.path, () => {
+watch(() => { console.log("new route", route); return route.path }, () => {
     // 避免添加重复tagview
     for (let i = 0; i < tagviewStore().taginfos.length; i++) {
         if (tagviewStore().taginfos[i].path === route.path) {
@@ -37,6 +36,47 @@ watch(() => route.path, () => {
         meta: route.meta,
     })
 })
+
+onMounted(() => {
+    tagviewStore().taginfos.push({
+        path: route.path,
+        title: route.name as string,
+        fullpath: route.fullPath,
+        query: route.query,
+        meta: route.meta,
+    })
+})
+
+function closeSelectedTag(tag: Taginfo) {
+    let taginfos = tagviewStore().taginfos
+
+    // 保留唯一一个overview tagview
+    if (taginfos.length === 1 && taginfos[0].path === "/overview") {
+        return
+    }
+
+    for (let i = 0; i < taginfos.length; i++) {
+        if (taginfos[i].path === tag.path) {
+            taginfos.splice(i, 1)
+            tagviewStore().taginfos = taginfos
+
+            // 所有的tagview关闭之后，跳转到overview
+            if (taginfos.length === 0) {
+                directTo({ path: '/overview' })
+                return
+            }
+
+            if (i === 0) {
+                directTo({ path: taginfos[0].path })
+                return
+            } else {
+                directTo({ path: taginfos[i - 1].path })
+                return
+            }
+        }
+    }
+}
+
 </script>
 
 <style lang="scss" scoped>
