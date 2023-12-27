@@ -59,7 +59,7 @@
 </template>
   
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { ElMessage } from 'element-plus';
 import DepartChart from "./components/DepartChart.vue";
 
@@ -68,6 +68,10 @@ import { machinesOverview } from "@/request/overview";
 import { RespCodeOK } from "@/request/request";
 
 const user = ref<User>({})
+
+watchEffect(() => {
+    user.value = userStore().user
+})
 
 let tooltips = ref([
     {
