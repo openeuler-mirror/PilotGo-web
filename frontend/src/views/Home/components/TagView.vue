@@ -21,7 +21,7 @@ import { directTo } from "@/router";
 
 const route = useRoute()
 
-watch(() => { console.log("new route", route); return route.path }, () => {
+watch(() => route.path, () => {
     // 避免添加重复tagview
     for (let i = 0; i < tagviewStore().taginfos.length; i++) {
         if (tagviewStore().taginfos[i].path === route.path) {

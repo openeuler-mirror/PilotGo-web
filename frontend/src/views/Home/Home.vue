@@ -22,7 +22,7 @@
                             </el-icon>
                             <el-popover placement="bottom" trigger="click">
                                 <template #reference>
-                                    <span> hello {{ user.name }}!</span>
+                                    <span>hello {{ user.name }}!</span>
                                 </template>
                                 <el-button>修改密码</el-button>
                             </el-popover>
@@ -55,7 +55,7 @@ import Sidebar from "./components/Sidebar.vue";
 
 import { directTo, updateSidebarItems } from "@/router/index";
 import { platformVersion } from "@/request/basic"
-import { logout } from "@/request/user";
+import { logout, getCurrentUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 import { type User, userStore } from "@/stores/user";
 
@@ -70,8 +70,7 @@ const version = ref<VersionInfo>({})
 
 onMounted(() => {
     updateSidebarItems();
-
-    user.value = userStore().user
+    updateUserInfo();
 
     platformVersion().then((resp: any) => {
         if (resp.code == RespCodeOK) {
@@ -91,6 +90,20 @@ onMounted(() => {
 watchEffect(() => {
     user.value = userStore().user
 })
+
+function updateUserInfo() {
+    getCurrentUser().then((resp: any) => {
+        if (resp.code == RespCodeOK) {
+            userStore().user = {
+                name: resp.data.name,
+            }
+        } else {
+            ElMessage.error("failed to login:" + resp.msg)
+        }
+    }).catch((err) => {
+        ElMessage.error("get platform version failed:" + err)
+    })
+}
 
 function handleLogout() {
     ElMessageBox.confirm('此操作将注销登录, 是否继续?', '提示', {
@@ -157,6 +170,7 @@ function doLogout() {
         align-items: center;
 
         .route {
+            flex:1;
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -196,6 +210,7 @@ function doLogout() {
 
             span {
                 height: 100%;
+                width: 100%;
                 font-size: 20px;
                 display: flex;
                 align-items: center;
