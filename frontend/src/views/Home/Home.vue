@@ -54,6 +54,7 @@ import TagView from "./components/TagView.vue";
 import Sidebar from "./components/Sidebar.vue";
 
 import { directTo, updateSidebarItems } from "@/router/index";
+import { updatePermisson } from "@/module/permission";
 import { platformVersion } from "@/request/basic"
 import { logout, getCurrentUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
@@ -71,6 +72,7 @@ const version = ref<VersionInfo>({})
 onMounted(() => {
     updateSidebarItems();
     updateUserInfo();
+    updatePermisson();
 
     platformVersion().then((resp: any) => {
         if (resp.code == RespCodeOK) {
@@ -170,7 +172,7 @@ function doLogout() {
         align-items: center;
 
         .route {
-            flex:1;
+            flex: 1;
             display: flex;
             flex-direction: column;
             height: 100%;

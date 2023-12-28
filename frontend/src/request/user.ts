@@ -78,3 +78,11 @@ export function getCurrentUser() {
         method: 'get'
     })
 }
+
+// 获取用户权限
+export function getPermission() {
+    return request({
+        url: '/user/permission',
+        method: 'post',
+    })
+}

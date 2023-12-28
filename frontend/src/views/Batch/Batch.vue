@@ -12,7 +12,7 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item>
-                                <auth-button auth="batch_delete" @click="batchDelete">
+                                <auth-button auth="button/batch_delete" @click="batchDelete">
                                     删除
                                 </auth-button>
                             </el-dropdown-item>
@@ -38,7 +38,7 @@
                 </el-table-column>
                 <el-table-column prop="operation" label="操作">
                     <template #default="scope">
-                        <auth-button auth="batch_update" @click="onEditBatch(scope.row.ID)">
+                        <auth-button auth="button/batch_update" @click="onEditBatch(scope.row.ID)">
                             编辑
                         </auth-button>
                     </template>
