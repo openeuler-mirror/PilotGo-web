@@ -5,11 +5,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted, watchEffect } from 'vue';
+import { hasPermisson } from '@/module/permission';
 
 const props = defineProps({
     auth: {
         type: String,
+        default: '',
     },
     // 是否在未授权情况下显示按钮
     show: {
@@ -18,14 +20,22 @@ const props = defineProps({
     }
 })
 
+const hasAuth = ref(false)
+onMounted(() => {
+    hasAuth.value = hasPermisson(props.auth)
+})
+
+watchEffect(() => {
+    hasAuth.value = hasPermisson(props.auth)
+})
+
+
 const showBtn = computed(() => {
-    // TODO: 
-    return true
+    return hasAuth.value || (!hasAuth.value && props.show)
 })
 // 控制是否使能按钮
 const disabled = computed(() => {
-    // TODO: 
-    return false
+    return !hasAuth.value
 })
 
 </script>
