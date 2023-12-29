@@ -35,7 +35,7 @@
             </el-table-column>
             <el-table-column label="状态">
                 <template #default="scope">
-                    <state-dot :state="scope.row.state"></state-dot>
+                    <state-dot :runstatus="scope.row.runstatus" :maintstatus="scope.row.maintstatus"></state-dot>
                 </template>
             </el-table-column>
             <el-table-column prop="sysinfo" label="系统">

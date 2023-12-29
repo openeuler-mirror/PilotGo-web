@@ -9,7 +9,7 @@
         </div>
         <div class="cluster">
             <PGTable :data="machines" title="机器列表" :showSelect="showSelect" :total="total" :currentPage="currentPage"
-            v-model:selectedData="selectedMachines">
+                v-model:selectedData="selectedMachines">
                 <template v-slot:action>
                     <el-dropdown>
                         <el-button type="primary">
@@ -45,14 +45,9 @@
                     </el-table-column>
                     <el-table-column prop="cpu" label="cpu">
                     </el-table-column>
-                    <el-table-column label="运行状态">
+                    <el-table-column label="状态">
                         <template #default="scope">
-                            <state-dot :state="scope.row.state"></state-dot>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="维护状态">
-                        <template #default="scope">
-                            <state-dot :state="scope.row.state"></state-dot>
+                            <state-dot :runstatus="scope.row.runstatus" :maintstatus="scope.row.maintstatus"></state-dot>
                         </template>
                     </el-table-column>
                     <el-table-column prop="tags" label="标签">
@@ -64,7 +59,7 @@
         </div>
 
         <el-dialog title="主机部门变更" v-model="showChangeDepartDialog" destroy-on-close>
-            <change-depart :machines="selectedMachines"/>
+            <change-depart :machines="selectedMachines" />
         </el-dialog>
     </div>
 </template>
@@ -118,7 +113,7 @@ function updateDepartmentMachines(departID: number) {
                 uuids.push(resp.data[i].uuid)
             }
             // let result = resp
-            getMachineTags({ "uuids": uuids }).then((resp:any) => {
+            getMachineTags({ "uuids": uuids }).then((resp: any) => {
                 if (resp.code != 200) {
                     ElMessage.error("failed to get machine tags: " + resp.msg)
                 }
