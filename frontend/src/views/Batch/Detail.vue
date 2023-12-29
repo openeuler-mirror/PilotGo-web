@@ -10,12 +10,12 @@
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item>
-                            <auth-button auth="rpm_install" :show="true">
+                            <auth-button auth="button/rpm_install" :show="true">
                                 rpm下发
                             </auth-button>
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <auth-button auth="rpm_uninstall" :show="true">
+                            <auth-button auth="button/rpm_uninstall" :show="true">
                                 rpm卸载
                             </auth-button>
                         </el-dropdown-item>
