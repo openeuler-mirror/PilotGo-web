@@ -20,12 +20,12 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item>
-                                    <auth-button auth="dept_change" :show="true" @click="showChangeDepartDialog = true">
+                                    <auth-button auth="button/dept_change" :show="true" @click="showChangeDepartDialog = true">
                                         变更部门
                                     </auth-button>
                                 </el-dropdown-item>
                                 <el-dropdown-item>
-                                    <auth-button auth="mac_change" :show="true">
+                                    <auth-button auth="button/mac_change" :show="true">
                                         删除
                                     </auth-button>
                                 </el-dropdown-item>

@@ -10,8 +10,8 @@
         <div class="packages">
             <el-autocomplete style="width:30%; margin-right: 10px;" class="inline-input" v-model="packageName"
                 @select="onPackageSelected" :fetch-suggestions="querySuggestions" placeholder="请输入内容"></el-autocomplete>
-            <auth-button auth="showOperate" name="rpm_install" @click="onInstallPackage">安装</auth-button>
-            <auth-button auth="showOperate" name="rpm_uninstall">卸载</auth-button>
+            <auth-button auth="button/showOperate" name="rpm_install" @click="onInstallPackage">安装</auth-button>
+            <auth-button auth="button/showOperate" name="rpm_uninstall">卸载</auth-button>
         </div>
         <div class="info">
             <div class="detail" v-if="display">
