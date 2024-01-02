@@ -8,3 +8,11 @@ export function getPluginsPaged(data: any) {
         params: data,
     })
 }
+
+// 获取插件列表
+export function getPlugins() {
+    return request({
+        url: '/plugins',
+        method: 'get',
+    })
+}

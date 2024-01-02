@@ -33,7 +33,18 @@
                     </div>
                 </el-header>
                 <el-main style="padding: 5px;">
-                    <router-view />
+                    <router-view v-slot="{ Component }" v-if="!route.path.startsWith('/plugin-')">
+                        <keep-alive>
+                            <component :is="Component">{{ console.log("router-view component:", Component) }}</component>
+                        </keep-alive>
+                        <!-- 插件页面 -->
+                    </router-view>
+                    <div v-for="item in iframeComponents" style="height:100%; width:100%" v-if="route.path.startsWith('/plugin-')">
+                        <component :key="item.name" :is="item.name" :url="item.url" :plugin_type="item.plugin_type"
+                            :name="item.name" :path="item.path" v-if="route.path === item.path"
+                            style="height:100%; width:100%">
+                        </component>
+                    </div>
                 </el-main>
                 <div class="footer">
                     <p> <a href="https://gitee.com/openeuler/PilotGo" target="_blank">PilotGo</a> version: {{ version.commit
@@ -46,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, onMounted, watch, watchEffect } from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import BreadCrumb from "./components/BreadCrumb.vue";
@@ -60,6 +71,10 @@ import { logout, getCurrentUser } from "@/request/user";
 import { RespCodeOK } from "@/request/request";
 import { type User, userStore } from "@/stores/user";
 
+import { iframeComponents, updatePlugins } from "@/views/Plugin/plugin";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 const user = ref<User>({})
 
 interface VersionInfo {
@@ -69,7 +84,9 @@ interface VersionInfo {
 }
 const version = ref<VersionInfo>({})
 
+
 onMounted(() => {
+    updatePlugins();
     updateSidebarItems();
     updateUserInfo();
     updatePermisson();
@@ -91,6 +108,11 @@ onMounted(() => {
 
 watchEffect(() => {
     user.value = userStore().user
+})
+
+watch(() => iframeComponents.value, () => {
+    console.log("iframeComponents changed", iframeComponents.value);
+    updateSidebarItems();
 })
 
 function updateUserInfo() {
