@@ -1,9 +1,8 @@
 <template>
     <div class="container">
-        <PGTable :data="plugins" title="插件列表" :showSelect="true" :total="total" :currentPage="currentPage">
+        <PGTable :data="plugins" title="插件列表" :total="total" :currentPage="currentPage">
             <template v-slot:action>
-                <el-button type="primary">添加插件</el-button>
-                <el-button type="primary">移除</el-button>
+                <el-button type="primary" @click="displayDialog = true">添加插件</el-button>
             </template>
             <template v-slot:content>
                 <el-table-column prop="name" label="名称" width="150">
@@ -21,14 +20,19 @@
                 </el-table-column>
                 <el-table-column label="操作" fixed="right">
                     <template #default="scope">
-                        <el-button size="small" type="primary" plain name="default_all">
+                        <el-button type="primary" plain name="default_all"
+                            @click="togglePluginState(scope.row)">
                             {{ scope.row.enabled === 1 ? '禁用' : '启用' }}
                         </el-button>
+                        <el-button type="danger"  @click="onDeletePlugin(scope.row)">移除</el-button>
                     </template>
                 </el-table-column>
             </template>
         </PGTable>
-    </div>
+        <el-dialog title="添加插件" v-model="displayDialog" width="560px">
+            <AddPlugin @pluginUpdated="updatePluginList" @close="displayDialog = false" />
+        </el-dialog>
+</div>
 </template>
 
 <script lang="ts" setup>
@@ -36,9 +40,13 @@ import { ref, onMounted } from "vue";
 import { ElMessage } from 'element-plus';
 
 import PGTable from "@/components/PGTable.vue";
+import AddPlugin from "./components/AddPlugin.vue";
 
-import { getPluginsPaged } from "@/request/plugin";
+import {  updatePlugins } from "@/views/Plugin/plugin";
+import { getPluginsPaged, togglePlugin, deletePlugins } from "@/request/plugin";
 import { RespCodeOK } from "@/request/request";
+
+const displayDialog = ref(false)
 
 const plugins = ref([])
 const currentPage = ref(1)
@@ -46,6 +54,10 @@ const pageSize = ref(10)
 const total = ref(0)
 
 onMounted(() => {
+    updatePluginList()
+})
+
+function updatePluginList() {
     getPluginsPaged({
         page: currentPage.value,
         size: pageSize.value,
@@ -61,7 +73,54 @@ onMounted(() => {
     }).catch((err: any) => {
         ElMessage.error("failed to get plugins:" + err.msg)
     })
-})
+}
+
+function togglePluginState(item: any) {
+    let targetEnabled = item.enabled === 1 ? 0 : 1
+    togglePlugin({ uuid: item.uuid, enable: targetEnabled }).then((res:any) => {
+        if (res.code === RespCodeOK) {
+            ElMessage.success(res.msg);
+            // 更新插件列表
+            updatePluginList();
+            // 更新页面插件路由、sidebar等
+            updatePlugins();
+            // 删除插件tagview
+            if (targetEnabled === 0) {
+                clearTagview(item);
+            }
+        } else {
+            ElMessage.error(res.msg);
+        }
+    })
+}
+
+function onDeletePlugin(item: any) {
+    deletePlugins({ UUID: item.uuid}).then((res:any) => {
+        if (res.code === RespCodeOK) {
+            ElMessage.success(res.msg);
+            // 更新插件列表
+            updatePluginList();
+            // 更新页面插件路由、sidebar等
+            updatePlugins();
+            // 删除插件tagview
+            clearTagview(item);
+        } else {
+            ElMessage.error(res.msg);
+        }
+    })
+}
+
+import { tagviewStore} from '@/stores/tagview';
+function clearTagview(item:any) {
+    for (let i = 0; i < tagviewStore().taginfos.length; i++) {
+        if (tagviewStore().taginfos[i].path === "/plugin-"+item.name) {
+            tagviewStore().taginfos.splice(i, 1)
+        }
+    }
+}
+
+
+
 
 </script>
 
