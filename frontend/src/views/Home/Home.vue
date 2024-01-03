@@ -35,7 +35,7 @@
                 <el-main style="padding: 5px;">
                     <router-view v-slot="{ Component }" v-if="!route.path.startsWith('/plugin-')">
                         <keep-alive>
-                            <component :is="Component">{{ console.log("router-view component:", Component) }}</component>
+                            <component :is="Component"></component>
                         </keep-alive>
                         <!-- 插件页面 -->
                     </router-view>
@@ -111,7 +111,6 @@ watchEffect(() => {
 })
 
 watch(() => iframeComponents.value, () => {
-    console.log("iframeComponents changed", iframeComponents.value);
     updateSidebarItems();
 })
 
