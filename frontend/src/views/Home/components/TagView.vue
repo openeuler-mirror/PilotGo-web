@@ -30,7 +30,7 @@ watch(() => route.path, () => {
     }
     tagviewStore().taginfos.push({
         path: route.path,
-        title: route.name as string,
+        title: route.meta.title as string,
         fullpath: route.fullPath,
         query: route.query,
         meta: route.meta,
@@ -40,7 +40,7 @@ watch(() => route.path, () => {
 onMounted(() => {
     tagviewStore().taginfos.push({
         path: route.path,
-        title: route.name as string,
+        title: route.meta.title as string,
         fullpath: route.fullPath,
         query: route.query,
         meta: route.meta,

@@ -18,7 +18,6 @@ const props = defineProps({
 })
 
 onMounted(() => {
-    console.log("iframe props:", props)
 })
 </script>
 

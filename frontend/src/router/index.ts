@@ -24,8 +24,7 @@ let sidebarRoutes = [
                 name: 'overview',
                 component: () => import('@/views/Overview/Overview.vue'),
                 meta: {
-                    title: 'overview',
-                    header_title: '概览',
+                    title: '概览',
                     panel: 'overview',
                     icon: 'HomeFilled',
                     breadcrumb: [{ name: '概览' }],
@@ -33,7 +32,7 @@ let sidebarRoutes = [
             },
             {
                 path: '/cluster',
-                meta: { title: 'cluster', header_title: "系统", panel: "cluster", icon: 'Platform' },
+                meta: { title: "系统", panel: "cluster", icon: 'Platform' },
                 children: [
                     {
                         path: '',
@@ -44,7 +43,7 @@ let sidebarRoutes = [
                         name: 'macList',
                         component: () => import('../views/Cluster/Cluster.vue'),
                         meta: {
-                            header_title: "机器列表",
+                            title: "机器列表",
                             panel: "/cluster/macList",
                             breadcrumb: [
                                 {
@@ -62,7 +61,7 @@ let sidebarRoutes = [
                         name: 'MacDetail',
                         component: () => import('../views/Cluster/MachineDetail/Index.vue'),
                         meta: {
-                            header_title: "机器详情",
+                            title: "机器详情",
                             panel: "/cluster/macList",
                             breadcrumb: [
                                 {
@@ -82,7 +81,7 @@ let sidebarRoutes = [
                         name: 'createBatch',
                         component: () => import('../views/Cluster/CreateBatch.vue'),
                         meta: {
-                            header_title: "创建批次",
+                            title: "创建批次",
                             panel: "/cluster/createBatch",
                             breadcrumb: [
                                 {
@@ -100,7 +99,7 @@ let sidebarRoutes = [
             {
                 path: '/batch',
                 meta: {
-                    title: 'batch', header_title: "批次", panel: "batch", icon: 'DocumentCopy',
+                    title: "批次", panel: "batch", icon: 'DocumentCopy',
                     breadcrumb: [
                         { name: '批次' },
                     ]
@@ -115,7 +114,7 @@ let sidebarRoutes = [
                         name: 'BatchList',
                         component: () => import('../views/Batch/Batch.vue'),
                         meta: {
-                            header_title: "批次列表",
+                            title: "批次列表",
                             panel: "batch",
                             breadcrumb: [
                                 { name: '批次', path: '/batch' },
@@ -130,7 +129,7 @@ let sidebarRoutes = [
                         component: () => import('../views/Batch/Detail.vue'),
                         meta: {
                             ignore: true,
-                            header_title: "批次详情",
+                            title: "批次详情",
                             panel: "batch",
                             breadcrumb: [
                                 { name: '批次', path: '/batch' },
@@ -146,7 +145,7 @@ let sidebarRoutes = [
                 name: 'User',
                 component: () => import('../views/User/User.vue'),
                 meta: {
-                    title: 'user', header_title: "用户管理", panel: "user", icon: 'UserFilled',
+                    title: "用户管理", panel: "user", icon: 'UserFilled',
                     breadcrumb: [
                         { name: '用户管理' },
                     ],
@@ -157,7 +156,7 @@ let sidebarRoutes = [
                 name: 'Role',
                 component: () => import('../views/Role/Role.vue'),
                 meta: {
-                    title: 'role', header_title: "角色管理", panel: "role", icon: 'Ticket',
+                    title: "角色管理", panel: "role", icon: 'Ticket',
                     breadcrumb: [
                         { name: '角色管理' },
                     ],
@@ -168,7 +167,7 @@ let sidebarRoutes = [
                 name: 'Audit',
                 component: () => import('../views/Audit/Audit.vue'),
                 meta: {
-                    title: 'audit', header_title: "审计日志", panel: "audit", icon: 'View',
+                    title: "审计日志", panel: "audit", icon: 'View',
                     breadcrumb: [
                         { name: '审计日志' },
                     ],
@@ -179,7 +178,7 @@ let sidebarRoutes = [
                 name: 'Plugin',
                 component: () => import('../views/Plugin/Plugin.vue'),
                 meta: {
-                    title: 'plugin', header_title: "插件管理", panel: "plugin", icon: 'Menu',
+                    title: "插件管理", panel: "plugin", icon: 'Menu',
                     breadcrumb: [
                         { name: '插件管理' },
                     ],
@@ -217,14 +216,22 @@ export function updateSidebarItems() {
             icon: "Menu",
             subMenus: null,
         }
-        console.log("new iframe component",obj)
         menus.push(obj)
 
         app.component(item.name, PluginFrame);
 
         router.addRoute("home",{
             path: item.path,
+            name: item.name,
             component: shallowRef(PluginFrame),
+            meta:{
+                path: item.path,
+                title: item.name,
+                hidden: false,
+                panel: item.name,
+                icon: "Menu",
+                subMenus: null,
+            },
         })
     }
 
@@ -244,7 +251,7 @@ function generateLocalMenus() {
                     }
                     let obj: Menu = {
                         path: item.path,
-                        title: item.meta.header_title,
+                        title: item.meta.title,
                         hidden: false,
                         panel: item.meta.panel,
                         icon: item.meta.icon,
@@ -257,7 +264,7 @@ function generateLocalMenus() {
 
         let obj: Menu = {
             path: route.path,
-            title: route.meta.header_title,
+            title: route.meta.title,
             hidden: false,
             panel: route.meta.panel,
             icon: route.meta.icon,
@@ -271,8 +278,8 @@ function generateLocalMenus() {
 }
 
 router.beforeEach((to, from) => {
-    if (to.meta && to.meta.header_title) {
-        document.title = to.meta.header_title as string
+    if (to.meta && to.meta.title) {
+        document.title = to.meta.title as string
     }
 })
 

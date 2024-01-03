@@ -15,7 +15,6 @@ export const iframeComponents = ref<any>([])
 export function updatePlugins() {
     getPlugins().then((res: any) => {
         if (res.code === RespCodeOK) {
-            console.log("resp data", res.data)
             let iframes: any = []
             res.data.forEach((item: any, index: number) => {
                 if (item.enabled === 0) {
@@ -37,7 +36,7 @@ export function updatePlugins() {
 
                 // 创建组件
                 let iframeObj = {
-                    path: '/plugin-' + index,
+                    path: '/plugin-' + item.name,
                     name: 'plugin-' + item.name,
                     // src: '/plugin/' + item.name,
                     // component: shallowRef(PluginFrame), // 组件文件的引用
