@@ -16,3 +16,29 @@ export function getPlugins() {
         method: 'get',
     })
 }
+
+export function addPlugin(data: any) {
+    return request({
+        url: '/plugins',
+        method: 'put',
+        data
+    })
+}
+
+// 启用/停用插件
+export function togglePlugin(data: any) {
+    return request({
+        url: '/plugins/' + data.uuid,
+        method: 'post',
+        data
+    })
+}
+
+//删除插件
+export function deletePlugins(data: any) {
+    return request({
+        url: '/plugins/' + data.UUID,
+        method: 'delete',
+        data
+    })
+}
