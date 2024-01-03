@@ -5,26 +5,38 @@
                 <el-button type="primary" @click="displayDialog = true">添加插件</el-button>
             </template>
             <template v-slot:content>
-                <el-table-column prop="name" label="名称" width="150">
+                <el-table-column align="center" prop="name" label="名称" width="150">
                 </el-table-column>
-                <el-table-column prop="version" label="版本" width="150">
+                <el-table-column align="center" prop="version" label="版本" width="150">
                 </el-table-column>
-                <el-table-column prop="description" label="概述" show-overflow-tooltip>
+                <el-table-column align="center" prop="description" label="概述" show-overflow-tooltip>
                 </el-table-column>
-                <el-table-column prop="url" label="服务端地址" width="250">
+                <el-table-column align="center" prop="url" label="服务端地址" width="250">
                 </el-table-column>
-                <el-table-column prop="enabled" label="状态" width="150">
+                <el-table-column align="center" prop="status" label="连接状态" width="150">
+                    <template #default="scope">
+                        <el-icon v-if="scope.row.status" style="color: green;">
+                            <SuccessFilled />
+                        </el-icon>
+                        <el-icon v-if="!scope.row.status" style="color: red;">
+                            <CircleCloseFilled />
+                        </el-icon>
+                        <span>{{ scope.row.status === true ? '连接' : '断开' }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column align="center" prop="lastheatbeat" label="上次心跳时间" width="250">
+                </el-table-column>
+                <el-table-column align="center" prop="enabled" label="状态" width="150">
                     <template #default="scope">
                         <span>{{ scope.row.enabled === 0 ? '已禁用' : '已启用' }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" fixed="right">
+                <el-table-column align="center" label="操作" width="160">
                     <template #default="scope">
-                        <el-button type="primary" plain name="default_all"
-                            @click="togglePluginState(scope.row)">
+                        <el-button type="primary" plain name="default_all" @click="togglePluginState(scope.row)">
                             {{ scope.row.enabled === 1 ? '禁用' : '启用' }}
                         </el-button>
-                        <el-button type="danger"  @click="onDeletePlugin(scope.row)">移除</el-button>
+                        <el-button type="danger" @click="onDeletePlugin(scope.row)">移除</el-button>
                     </template>
                 </el-table-column>
             </template>
@@ -32,7 +44,7 @@
         <el-dialog title="添加插件" v-model="displayDialog" width="560px">
             <AddPlugin @pluginUpdated="updatePluginList" @close="displayDialog = false" />
         </el-dialog>
-</div>
+    </div>
 </template>
 
 <script lang="ts" setup>
@@ -42,7 +54,7 @@ import { ElMessage } from 'element-plus';
 import PGTable from "@/components/PGTable.vue";
 import AddPlugin from "./components/AddPlugin.vue";
 
-import {  updatePlugins } from "@/views/Plugin/plugin";
+import { updatePlugins } from "@/views/Plugin/plugin";
 import { getPluginsPaged, togglePlugin, deletePlugins } from "@/request/plugin";
 import { RespCodeOK } from "@/request/request";
 
@@ -77,7 +89,7 @@ function updatePluginList() {
 
 function togglePluginState(item: any) {
     let targetEnabled = item.enabled === 1 ? 0 : 1
-    togglePlugin({ uuid: item.uuid, enable: targetEnabled }).then((res:any) => {
+    togglePlugin({ uuid: item.uuid, enable: targetEnabled }).then((res: any) => {
         if (res.code === RespCodeOK) {
             ElMessage.success(res.msg);
             // 更新插件列表
@@ -95,7 +107,7 @@ function togglePluginState(item: any) {
 }
 
 function onDeletePlugin(item: any) {
-    deletePlugins({ UUID: item.uuid}).then((res:any) => {
+    deletePlugins({ UUID: item.uuid }).then((res: any) => {
         if (res.code === RespCodeOK) {
             ElMessage.success(res.msg);
             // 更新插件列表
@@ -110,10 +122,10 @@ function onDeletePlugin(item: any) {
     })
 }
 
-import { tagviewStore} from '@/stores/tagview';
-function clearTagview(item:any) {
+import { tagviewStore } from '@/stores/tagview';
+function clearTagview(item: any) {
     for (let i = 0; i < tagviewStore().taginfos.length; i++) {
-        if (tagviewStore().taginfos[i].path === "/plugin-"+item.name) {
+        if (tagviewStore().taginfos[i].path === "/plugin-" + item.name) {
             tagviewStore().taginfos.splice(i, 1)
         }
     }
@@ -128,5 +140,4 @@ function clearTagview(item:any) {
 .container {
     height: 100%;
     width: 100%;
-}
-</style>
+}</style>
