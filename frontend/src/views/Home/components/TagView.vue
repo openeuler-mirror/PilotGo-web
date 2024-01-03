@@ -1,7 +1,7 @@
 <template>
     <div class="tags-view-wrapper">
         <div v-for="tag in tagviewStore().taginfos" class="tag">
-            <router-link ref="tag" :key="tag.path" :to="{ path: tag.path, query: tag.query, fullPath: tag.fullpath }"
+            <router-link ref="tag" :key="tag.path" :to="{ path: tag.path }"
                 class="tags-view-item">
                 {{ tag.title }}
                 <el-icon>
