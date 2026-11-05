@@ -3,36 +3,10 @@ English | [简体中文](./README.md)
 # PilotGo-web
 
 #### Description
-PilotGo-web contains web frontend for PilotGo.
+PilotGo-web is the web frontend for PilotGo.
 
-#### Software Architecture
-Software architecture description
+Note: The **PilotGo** project is currently under rapid development. To keep the frontend and backend features consistent, the source code of the **PilotGo** web frontend is hosted in the **PilotGo** main repository. Click [here](https://atomgit.com/openeuler/PilotGo) to view it.
 
-#### Installation
+#### Contributing
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1.  Please refer to the [PilotGo](https://atomgit.com/openeuler/PilotGo) main project
